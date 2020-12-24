@@ -1,0 +1,31 @@
+﻿@model ClinicResource
+@{
+    ViewBag.Title = "Настройка медицинской организаци";
+    ViewBag.PageId = "clinic-settings";
+}
+<h3>Настройка медицинской организации</h3>
+<form name="ClinicDetails">
+    <div class="form-group">
+        <label for="ClinicFullName">Полное наименование</label>
+        <input type="text" id="ClinicFullName" class="form-control" name="fullName" value="@Model.ClinicDetails.FullName" />
+    </div>
+    <div class="form-group">
+        <label for="ClinicShortName">Сокращенное наименование</label>
+        <input type="text" id="ClinicShortName" class="form-control" name="shortName" value="@Model.ClinicDetails.ShortName" />
+    </div>
+    <div class="form-group">
+        <label for="ClinicAddress">Адрес</label>
+        <input type="text" id="ClinicAddress" class="form-control" name="address" value="@Model.ClinicDetails.Address" />
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="ClinicPhone">Телефон</label>
+            <input type="text" id="ClinicPhone" class="form-control" data-mask="+7 000 0000000" placeholder="+7 ___ _______" name="phone" value="@Model.ClinicDetails.Phone" />
+        </div>
+        <div class="form-group col-md-6">
+            <label for="ClinicEmail">Электронная почта</label>
+            <input type="text" id="ClinicEmail" class="form-control" name="email" value="@Model.ClinicDetails.Email" />
+        </div>
+    </div>
+    <button id="SaveClinicDetails" class="btn btn-primary">Сохранить</button>
+</form>

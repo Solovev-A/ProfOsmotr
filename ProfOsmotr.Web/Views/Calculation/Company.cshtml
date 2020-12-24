@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "Расчет для предприятия";
+    ViewBag.PageId = "calculation-company";
+}
+<h3>Создание расчета для предприятия</h3>
+<form name="companyData" class="mb-3">
+    <input type="text" id="CompanyName" placeholder="Название предприятия (обязательно)" class="form-control js-validate" />
+</form>
+<div class="row">
+    <div class="col-md">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Конструктор профессии</h4>
+            </div>
+            <form name="professionConstructor" class="card-body" id="Constructor">
+                <div class="form-group">
+                    <input type="text" id="ProfessionName" name="ProfessionName" class="form-control" placeholder="Название профессии (обязательно)" />
+                </div>
+                <div class="form-group">
+                    <label for="OrderItems1">Вредные факторы (приложение 1)</label>
+                    <select id="OrderItems1"></select>
+                </div>
+                <div class="form-group">
+                    <label for="OrderItems2">Виды работ (приложение 2)</label>
+                    <select id="OrderItems2"></select>
+                </div>
+                <div class="form-group row">
+                    <label for="NumberOfPersons" class="col-sm-6 col-form-label">Численность работников</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="js-number form-control" id="NumberOfPersons" value="0">
+                    </div>
+                </div>
+                <p>в том числе:</p>
+                <div class="form-group row">
+                    <label for="NumberOfPersonsOver40" class="col-sm-6 col-form-label">работников старше 40 лет</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="js-number form-control" id="NumberOfPersonsOver40" value="0">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="NumberOfWomen" class="col-sm-6 col-form-label">женщин</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="js-number form-control" id="NumberOfWomen" value="0">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="NumberOfWomenOver40" class="col-sm-6 col-form-label">женщин старше 40 лет</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="js-number form-control" id="NumberOfWomenOver40" value="0">
+                    </div>
+                </div>
+                <input id="AddProfession" type="submit" value="Добавить профессию" class="btn btn-primary" />
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Добавленные профессии</h4>
+            </div>
+            <div class="card-body overflow-auto" id="ProfessionsList">
+            </div>
+        </div>
+    </div>
+</div>
+<button type="button" class="btn btn-success mt-3" id="CreateCompanyCalculation">Рассчитать</button>

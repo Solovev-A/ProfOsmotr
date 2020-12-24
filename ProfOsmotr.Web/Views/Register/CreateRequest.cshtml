@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Заявка на регистрацию";
+    ViewBag.PageId = "register-create-request";
+}
+<form name="RegisterRequest">
+    <h3>Заявка на регистрацию</h3>
+    <p>Все поля обязательны для заполнения</p>
+    <h4>Сведения об организации</h4>
+    <div class="form-group">
+        <label for="CandidateFullName">Полное наименование</label>
+        <input type="text" id="CandidateFullName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="CandidateShortName">Сокращенное наименование</label>
+        <input type="text" id="CandidateShortName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="CandidateAddress">Адрес</label>
+        <input type="text" id="CandidateAddress" class="form-control" />
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="CandidatePhone">Телефон</label>
+            <input type="text" id="CandidatePhone" class="form-control" data-mask="+7 000 0000000" placeholder="+7 ___ _______" />
+        </div>
+        <div class="form-group col-md-6">
+            <label for="CandidateEmail">Электронная почта</label>
+            <input type="text" id="CandidateEmail" class="form-control" />
+        </div>
+    </div>
+    <h4>Сведения для создания управляющего аккаунта</h4>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="CandidateModeratorName">ФИО</label>
+            <input type="text" id="CandidateModeratorName" class="form-control" />
+        </div>
+        <div class="form-group col-md-6">
+            <label for="CandidateModeratorPosition">Должность</label>
+            <input type="text" id="CandidateModeratorPosition" class="form-control" />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="CandidateModeratorUsername">Логин</label>
+            <input type="text" id="CandidateModeratorUsername" class="form-control" />
+        </div>
+        <div class="form-group col-md-6">
+            <label for="CandidateModeratorPassword">Пароль</label>
+            <input type="password" id="CandidateModeratorPassword" class="form-control" />
+        </div>
+    </div>
+    <button id="SubmitRegisterRequest" type="button" class="btn btn-primary">Отправить заявку</button>
+</form>
+<div class="alert alert-success d-none">
+    <p class="h4">Заявка успешно отправлена!</p>
+    <p>Мы свяжемся с вами в течение двух рабочих дней для уточнения деталей</p>
+</div>

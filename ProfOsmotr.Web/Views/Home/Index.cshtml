@@ -1,0 +1,57 @@
+﻿@{
+    @using ProfOsmotr.DAL;
+    @using ProfOsmotr.Web.Infrastructure.Extensions;
+    ViewBag.Title = "Главная";
+}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Расчеты</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><a href="~/Calculation/Single">Создать индивидуальный расчет</a></li>
+                    <li class="list-group-item"><a href="~/Calculation/Company">Создать расчет для предприятия</a></li>
+                    <li class="list-group-item"><a href="~/Calculation/List">История расчетов</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        @if (User.IsInRole(RoleId.ClinicModerator.ToClaimValue()) || User.IsInRole(RoleId.Administrator.ToClaimValue()))
+        {
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Управление</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><a href="~/Catalog/List">Каталог услуг</a></li>
+                        <li class="list-group-item"><a href="~/Clinic/Settings">Информация о МО</a></li>
+                        <li class="list-group-item"><a href="~/User/List">Пользователи</a></li>
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-md-4">
+        @if (User.IsInRole(RoleId.Administrator.ToClaimValue()))
+        {
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Администрирование</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><a href="~/Order/Items">Приказ 302н</a></li>
+                        <li class="list-group-item"><a href="~/Order/Examinations">Обследования по умолчанию</a></li>
+                        <li class="list-group-item"><a href="~/Register/Requests">Заявки на регистрацию</a></li>
+                        <li class="list-group-item"><a href="~/Clinic/List">Медицинские организации</a></li>
+                        <li class="list-group-item"><a href="~/User/List">Пользователи</a></li>
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+</div>

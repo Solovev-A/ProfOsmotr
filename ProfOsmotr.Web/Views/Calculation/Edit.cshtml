@@ -1,0 +1,64 @@
+﻿@using ProfOsmotr.Web.Models;
+@model CalculationResource
+@{
+    ViewBag.Title = Model.Name;
+    ViewBag.PageId = "calculation-edit";
+}
+<h3>Изменение расчета - @Model.Name</h3>
+<div class="alert alert-info">
+    После сохранения изменений будет создан новый расчет, а исходный будет доступен в первоначальном состоянии
+</div>
+<div>
+    <h4>Итого: <span id="TotalSum"></span>  ₽</h4>
+</div>
+<form name="Results">
+    <input type="hidden" id="CalculationId" value="@Model.Id">
+    <div class="font-weight-bold form-row text-center">
+        <div class="col-md-6">
+            Наименование услуги
+        </div>
+        <div class="col">
+            Цена
+        </div>
+        <div class="col">
+            Количество
+        </div>
+        <div class="col">
+            Сумма
+        </div>
+        <div class="col-md-2">
+            Доступность
+        </div>
+    </div>
+    @foreach (var item in Model.Results)
+    {
+        <div class="form-group row align-items-center" id="r-@item.Id">
+            <div class="col-md-6">
+                @item.FullName
+            </div>
+            <div class="col">
+                <input type="@GetInputType(item)" class="form-control js-result-price" value="@item.Price.ToString("0.00")" title="Цена" placeholder="Цена" />
+            </div>
+            <div class="col">
+                <input type="@GetInputType(item)" class="form-control js-result-amount" value="@item.Amount" title="Количество" placeholder="Количество" />
+            </div>
+            <div class="col font-weight-bold">
+                <input type="@GetInputType(item)" class="form-control-plaintext js-result-sum" value="@item.Sum.ToString("0.00")" readonly />
+            </div>
+            <div class="col-md-2">
+                <select class="form-control js-result-group">
+                    <!option value="1" selected="@(item.ServiceAvailabilityGroupId == 1)">Доступна</!option>
+                    <!option value="2" selected="@(item.ServiceAvailabilityGroupId == 2)">Недоступна</!option>
+                    <!option value="3" selected="@(item.ServiceAvailabilityGroupId == 3)">Включена</!option>
+                </select>
+            </div>
+        </div>
+    }
+    <input type="submit" value="Сохранить" class="btn btn-success" id="SaveChanges" />
+</form>
+@functions {
+    string GetInputType(CalculationResultItemResource item)
+    {
+        return item.ServiceAvailabilityGroupId == 1 ? "text" : "hidden";
+    }
+}

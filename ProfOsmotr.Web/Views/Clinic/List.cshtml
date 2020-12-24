@@ -1,0 +1,21 @@
+﻿@{
+    @using ProfOsmotr.Web.Services;
+    @using System.Security.Claims;
+    ViewBag.Title = "Список медицинских организаций";
+    ViewBag.PageId = "clinic-list";
+
+    string clinicId = User.FindFirstValue(AuthenticationService.ClinicIdClaimType) ?? string.Empty;
+}
+<h3>Список медицинских организаций</h3>
+<table id="ClinicsList" class="table table-bordered table-striped" style="width:100%" data-clinic="@clinicId">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Название</th>
+            <th>Телефон</th>
+            <th>Email</th>
+            <th>Статус</th>
+        </tr>
+    </thead>
+</table>
+

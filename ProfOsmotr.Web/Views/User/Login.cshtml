@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Вход в систему";
+    ViewBag.PageId = "user-login";
+}
+<div class="row justify-content-center">
+    <div class="col-md-5 cart">
+        <div class="card-header">
+            <h4 class="card-title">Вход в систему</h4>
+        </div>
+        <div class="card-body">
+            <form name="login">
+                <input type="text" class="form-control form-group" placeholder="Логин" name="username" />
+                <input type="password" class="form-control form-group" placeholder="Пароль" name="password" />
+                <button type="button" class="btn btn-primary" id="LoginButton">Войти</button>
+            </form>
+            <div class="alert alert-danger mt-3 d-none">
+                Неверный логин или пароль
+            </div>
+        </div>
+    </div>
+</div>

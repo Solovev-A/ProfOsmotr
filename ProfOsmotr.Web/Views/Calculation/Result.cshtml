@@ -1,0 +1,128 @@
+﻿@using ProfOsmotr.DAL;
+@using ProfOsmotr.Web.Models;
+@model CalculationResource
+@{
+    ViewBag.Title = Model.Name;
+}
+@{
+    IEnumerable<CalculationResultItemResource> available = Model.Results
+        .Where(i => i.ServiceAvailabilityGroupId == (int)ServiceAvailabilityGroupId.Available);
+
+    IEnumerable<CalculationResultItemResource> unavailable = Model.Results
+        .Where(i => i.ServiceAvailabilityGroupId == (int)ServiceAvailabilityGroupId.Unavailable);
+
+    IEnumerable<CalculationResultItemResource> included = Model.Results
+        .Where(i => i.ServiceAvailabilityGroupId == (int)ServiceAvailabilityGroupId.Included);
+}
+    <h3>
+        @Model.Name @if (Model.IsModified)
+    {
+            <span class="badge badge-warning">изменен</span>
+    }
+    </h3>
+<p>Создан: @Model.CreationDate - @Model.CreatorName, @Model.CreatorPosition (<a href="~/Calculation/Edit/@Model.Id">Редактировать</a>)</p>
+<a href="#calculation_source" data-toggle="collapse" aria-expanded="false" aria-controls="#calculation_source">
+    <h4>Исходные данные</h4>
+</a>
+<div class="collapse" id="calculation_source">
+    <table class="table table-sm">
+        <thead class="thead-light">
+            <tr>
+                <th rowspan="2" class="text-center">Профессия</th>
+                <th colspan="4" class="text-center">Численность работников</th>
+                <th rowspan="2" class="text-center">Пункты приказа</th>
+            </tr>
+            <tr>
+                <th class="col-50px text-center">Всего</th>
+                <th class="col-50px text-center">Старше 40 лет</th>
+                <th class="col-50px text-center">Женщин</th>
+                <th class="col-50px text-center">Женщин старше 40 лет</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Sources)
+            {
+                <tr>
+                    <td>@item.Profession</td>
+                    <td class="text-center">@item.NumberOfPersons</td>
+                    <td class="text-center">@item.NumberOfPersonsOver40</td>
+                    <td class="text-center">@item.NumberOfWomen</td>
+                    <td class="text-center">@item.NumberOfWomenOver40</td>
+                    <td>@string.Join("; ", item.OrderItems);</td>
+                </tr>
+            }
+            <tr class="font-weight-bold">
+                <td>Всего:</td>
+                <td class="text-center">@Model.NumberOfPersons</td>
+                <td class="text-center">@Model.NumberOfPersonsOver40</td>
+                <td class="text-center">@Model.NumberOfWomen</td>
+                <td class="text-center">@Model.NumberOfWomenOver40</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+@*<a href="Download/@Model.Id" class="btn btn-outline-primary">Скачать docx</a>*@
+<div class="row">
+    <div class="col-md-6">
+        <a href="#calculation_result_available" data-toggle="collapse" aria-expanded="false" aria-controls="#calculation_result_available">
+            <h4>Результат расчета</h4>
+        </a>
+    </div>
+    <div class="col-md-6">
+        <h4 style="text-align: right">@Model.TotalSum.ToString("0.00") ₽</h4>
+    </div>
+</div>
+<div class="collapse show" id="calculation_result_available">
+    <table class="table table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>Код услуги</th>
+                <th>Наименование обследования</th>
+                <th>Количество</th>
+                <th>Цена</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in available)
+            {
+                <tr>
+                    <td>@item.Code</td>
+                    <td>@item.ExaminationName</td>
+                    <td>@item.Amount</td>
+                    <td>@item.Price.ToString("0.00")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (unavailable.Any())
+{
+    <a href="#calculation_result_unavailable" data-toggle="collapse" aria-expanded="false" aria-controls="#calculation_result_unavailable">
+        <h4>Обследования, которые необходимо пройти в других учреждениях:</h4>
+    </a>
+    <div class="collapse" id="calculation_result_unavailable">
+        <p>
+            @foreach (var item in unavailable)
+            {
+                @item.ExaminationName<br />
+            }
+        </p>
+    </div>
+
+}
+@if (included.Any())
+{
+    <a href="#calculation_result_included" data-toggle="collapse" aria-expanded="false" aria-controls="#calculation_result_included">
+        <h4>Обследования, которые включены в мед. осмотр и не оплачиваются отдельно:</h4>
+    </a> 
+    <div class="collapse" id="calculation_result_included">
+        <p>
+            @foreach (var item in included)
+            {
+                @item.ExaminationName<br />
+            }
+        </p>
+    </div>
+}

@@ -1,0 +1,85 @@
+﻿@{
+    @using ProfOsmotr.DAL;
+    @using ProfOsmotr.Web.Infrastructure.Extensions;
+    bool authenticated = User.Identity.IsAuthenticated;
+    string authUrl = authenticated ? Url.Action("Logout", "User") : Url.Action("Login", "User");
+    string authText = authenticated ? "Выйти" : "Войти";
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - Калькулятор 302н</title>
+    <link rel="stylesheet" href="~/css/dist/vendor.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/dist/main.css" asp-append-version="true" />
+</head>
+<body data-page="@ViewBag.PageId">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 50px">
+            <a class="navbar-brand" href="~/">Калькулятор 302н</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="navbar-nav mr-auto">
+                    @if (authenticated)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="~/Home/Index">Главная</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+                                Расчеты
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="~/Calculation/Single">Создать индивидуальный расчет</a>
+                                <a class="dropdown-item" href="~/Calculation/Company">Создать расчет для предприятия</a>
+                                <a class="dropdown-item" href="~/Calculation/List">История расчетов</a>
+                            </div>
+                        </li>
+                    }
+                    @if (User.IsInRole(RoleId.ClinicModerator.ToClaimValue()) || User.IsInRole(RoleId.Administrator.ToClaimValue()))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+                                Управление
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="~/Catalog/List">Каталог услуг</a>
+                                <a class="dropdown-item" href="~/Clinic/Settings">Информация о МО</a>
+                                <a class="dropdown-item" href="~/User/List">Пользователи</a>
+                            </div>
+                        </li>
+                    }
+                    @if (User.IsInRole(RoleId.Administrator.ToClaimValue()))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+                                Администрирование
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="~/Order/Items">Приказ 302н</a>
+                                <a class="dropdown-item" href="~/Order/Examinations">Обследования по умолчанию</a>
+                                <a class="dropdown-item" href="~/Register/Requests">Заявки на регистрацию</a>
+                                <a class="dropdown-item" href="~/Clinic/List">Медицинские организации</a>
+                                <a class="dropdown-item" href="~/User/List">Пользователи</a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+                <span class="font-weight-bold mr-2">@User.Identity.Name</span>
+                <a href="@authUrl" class="btn btn-secondary">@authText</a>
+            </div>
+        </nav>
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Калькулятор 302н</p>
+        </footer>
+    </div>
+    <script src="~/js/dist/vendor.js" asp-append-version="true"></script>
+    <script src="~/js/dist/main.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

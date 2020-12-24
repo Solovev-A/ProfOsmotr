@@ -1,0 +1,116 @@
+﻿@using ProfOsmotr.Web.Models;
+@model PaginatedResource<CalculationGeneralDataResource>
+@{
+    ViewBag.Title = "Список расчетов";
+}
+<h3>История расчетов</h3>
+@if (Model.TotalCount == 0)
+{
+    <p>Список пуст. Создайте <a asp-action="Single">индивидуальный расчет</a> или <a asp-action="Company">расчет для предприятия</a>, и его результат появится здесь</p>
+}
+else
+{
+    <div class="row font-weight-bold mb-2">
+        <div class="col-md-2">Дата</div>
+        <div class="col-md-1"></div>
+        <div class="col-md-4">Название</div>
+        <div class="col-md-3">Пользователь</div>
+        <div class="col-md-1"></div>
+    </div>
+    @foreach (var item in Model.Items)
+    {
+        <div class="row mb-2 align-items-center">
+            <div class="col-md-2">@item.CreationDate</div>
+            <div class="col-md-1">
+                @if (item.IsModified)
+                {
+                    <span class="badge badge-warning">изменен</span>
+                }
+            </div>
+            <div class="col-md-4">@item.Name</div>
+            <div class="col-md-3">@item.CreatorName</div>
+            <div class="col-md-1">
+                <a href="/Calculation/Result/@item.Id" class="btn btn-outline-primary">Открыть</a>
+            </div>
+        </div>
+    }
+    <nav>
+        <ul class="pagination">
+            <li class="page-item@(Model.CurrentPage == 1? " disabled" : "")"><a class="page-link" href="/Calculation/List?@GetParameters(Model.CurrentPage - 1)">Назад</a></li>
+            @if (Model.TotalPages > 10)
+            {
+                RenderPartOfPages();
+            }
+            else
+            {
+                RenderAllPages();
+            }
+            <li class="page-item@(Model.CurrentPage == Model.TotalPages? " disabled" : "")"><a class="page-link" href="/Calculation/List?@GetParameters(Model.CurrentPage + 1)">Вперед</a></li>
+        </ul>
+    </nav>
+}
+@functions
+{
+    void RenderAllPages()
+    {
+        RenderPages(1, Model.TotalPages);
+    }
+
+    void RenderPartOfPages()
+    {
+        // При большом количестве страниц (> 10), отображаться будут только ссылки на часть из них:
+        // - первая страница (всегда);
+        // - последняя страница (всегда);
+        // - текущая страница (всегда);
+        // - первые 7 страниц, если номер текущей не больше 5;
+        // - последние 7 страниц, если текущая страница - одна из пяти последних;
+        // - 2 страницы до текущей и 2 страницы после текущей - во всех остальных случаях
+
+        RenderPages(1, 1);
+        if (Model.CurrentPage <= 5)
+        {
+            RenderPages(2, 7);
+            RenderPageSeparator();
+        }
+        else if (Model.CurrentPage >= Model.TotalPages - 4)
+        {
+            RenderPageSeparator();
+            RenderPages(Model.TotalPages - 6, Model.TotalPages - 1);
+        }
+        else
+        {
+            RenderPageSeparator();
+            RenderPages(Model.CurrentPage - 2, Model.CurrentPage + 2);
+            RenderPageSeparator();
+        }
+        RenderPages(Model.TotalPages, Model.TotalPages);
+    }
+
+    void RenderPageSeparator()
+    {
+        <li class="page-item disabled"><span class="page-link">...</span></li>
+    }
+
+    void RenderPages(int begin, int end)
+    {
+        for (int i = begin; i <= end; i++)
+        {
+            <li class="page-item@(CheckIsActive(i))"><a class="page-link" href="/Calculation/List?@GetParameters(i)">@i</a></li>
+        }
+    }
+
+    string GetParameters(int page)
+    {
+        var result = $"page={page}";
+        if (Context.Request.Query.TryGetValue("itemsPerPage", out var itemsPerPage))
+        {
+            result += $"&itemsPerPage={itemsPerPage}";
+        }
+        return result;
+    }
+
+    string CheckIsActive(int page)
+    {
+        return page == Model.CurrentPage ? " active" : "";
+    }
+}

@@ -1,0 +1,21 @@
+﻿@{
+    @using ProfOsmotr.DAL;
+    @using ProfOsmotr.Web.Infrastructure.Extensions;
+    ViewBag.Title = "Список пользователей";
+    ViewBag.PageId = "user-list";
+    bool isGlobal = User.IsInRole(RoleId.Administrator.ToClaimValue());
+}
+<h3 class="js-title">Список пользователей</h3>
+<table id="UsersList" class="table table-bordered table-striped w-100" data-global="@isGlobal">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Имя</th>
+            <th>Тип аккаунта</th>
+            @if (isGlobal)
+            {
+                <th>МО</th>
+            }
+        </tr>
+    </thead>
+</table>

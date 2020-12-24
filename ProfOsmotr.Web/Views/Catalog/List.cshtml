@@ -1,0 +1,33 @@
+﻿@using ProfOsmotr.Web.Models;
+@model IEnumerable<CatalogItemResource>
+@{
+    ViewBag.Title = "Каталог услуг";
+    ViewBag.PageId = "catalog-list";
+}
+<h3>Каталог услуг</h3>
+<table id="Catalog" class="table">
+    <thead>
+        <tr>
+            <th>Обследование по приказу</th>
+            <th>Код услуги</th>
+            <th>Наименование услуги</th>
+            <th>Цена</th>
+            <th>Доступность</th>
+            <th>Дата изменения</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr data-examination-id="@item.OrderExaminationId">
+                <td class="js-catalog-examination">@item.OrderExaminationName</td>
+                <td class="js-catalog-code">@item.Code</td>
+                <td class="js-catalog-name">@item.FullName</td>
+                <td class="js-catalog-price">@item.Price.ToString("0.00")</td>
+                <td class="js-catalog-group" data-group-id="@item.ServiceAvailabilityGroupId">@item.ServiceAvailabilityGroupName</td>
+                <td class="js-catalog-update-time">@item.UpdateTime</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
