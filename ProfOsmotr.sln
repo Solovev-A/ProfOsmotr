@@ -13,7 +13,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProfOsmotr.Web", "ProfOsmot
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2538DA10-FAC8-4436-8EC6-421D3C9DE2A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProfOsmotr.BL.Tests", "ProfOsmotr.BL.Tests\ProfOsmotr.BL.Tests.csproj", "{5E0C3983-3916-4EAF-824D-2A20B87EAD0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProfOsmotr.BL.Tests", "ProfOsmotr.BL.Tests\ProfOsmotr.BL.Tests.csproj", "{5E0C3983-3916-4EAF-824D-2A20B87EAD0D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1B4F3CDA-026B-479D-9E4A-8AE1D1DADCEC}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
