@@ -9,7 +9,7 @@
         /// Идентификатор целевой группы
         /// </summary>
         public TargetGroupId Id { get; set; }
-                
+
         /// <summary>
         /// Название целевой группы
         /// </summary>

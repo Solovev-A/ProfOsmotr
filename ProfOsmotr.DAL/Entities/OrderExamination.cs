@@ -48,5 +48,7 @@ namespace ProfOsmotr.DAL
         public virtual ICollection<ActualClinicService> ActualClinicServices { get; } = new List<ActualClinicService>();
 
         public virtual ICollection<OrderItemOrderExamination> OrderItemOrderExaminations { get; } = new List<OrderItemOrderExamination>();
+
+        public virtual ICollection<ExaminationResultIndex> ExaminationResultIndexes { get; } = new List<ExaminationResultIndex>();
     }
 }

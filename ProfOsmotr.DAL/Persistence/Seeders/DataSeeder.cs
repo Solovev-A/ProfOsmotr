@@ -12,10 +12,12 @@ namespace ProfOsmotr.DAL
             IEnumerable<OrderExamination> examinations = await new Order302Seeder(uow).Seed();
             User administrator = await new UserSeeder(uow, passwordHasher).SeedAsync();
             Clinic clinic = await new VirtualClinicSeeder(uow).SeedAsync();
-
             administrator.Clinic = clinic;
-
             await new ClinicCatalogSeeder().SeedDefaultCatalog(uow, clinic, examinations);
+
+            await new ICD10Seeder(uow).Seed();
+            await new MedicalExaminationDataSeeder(uow).Seed();
+
             await uow.SaveAsync();
         }
     }

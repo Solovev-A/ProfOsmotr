@@ -46,7 +46,7 @@ namespace ProfOsmotr.DAL
         /// Профиль пользователя
         /// </summary>
         public virtual UserProfile UserProfile { get; set; }
-        
+
         /// <summary>
         /// Расчеты, произведенные пользователем
         /// </summary>

@@ -56,7 +56,7 @@ namespace ProfOsmotr.DAL
         /// Группа доступности медицинской услуги
         /// </summary>
         public virtual ServiceAvailabilityGroup ServiceAvailabilityGroup { get; set; }
-        
+
         /// <summary>
         /// Последнее время изменения услуги
         /// </summary>
@@ -64,9 +64,9 @@ namespace ProfOsmotr.DAL
 
         public override bool Equals(object obj)
         {
-            return obj is Service other 
-                && other.Id == Id 
-                && other.OrderExaminationId == OrderExaminationId 
+            return obj is Service other
+                && other.Id == Id
+                && other.OrderExaminationId == OrderExaminationId
                 && other.ClinicId == ClinicId;
         }
 

@@ -11,11 +11,19 @@ namespace ProfOsmotr.DAL
         private readonly ProfContext context;
         private bool disposedValue = false;
 
+        #endregion Fields
+
+        #region Constructors
+
         public ProfEFUnitOfWork(ProfContext context,
                                 ICatalogRepository actualClinicServices,
                                 ICalculationRepository calculations,
+                                IRepository<CheckupResult> checkupResults,
                                 IQueryAwareRepository<ClinicRegisterRequest> clinicRegisterRequests,
                                 IQueryAwareRepository<Clinic> clinics,
+                                IRepository<Gender> genders,
+                                IRepository<ICD10Chapter> iCD10Chapters,
+                                IRepository<MedicalExaminationType> medicalExaminationTypes,
                                 IRepository<OrderAnnex> orderAnnexes,
                                 IRepository<OrderExamination> orderExaminations,
                                 IOrderReposytory orderItems,
@@ -29,8 +37,12 @@ namespace ProfOsmotr.DAL
             this.context = context ?? throw new ArgumentNullException(nameof(context));
             ActualClinicServices = actualClinicServices ?? throw new ArgumentNullException(nameof(actualClinicServices));
             Calculations = calculations ?? throw new ArgumentNullException(nameof(calculations));
+            CheckupResults = checkupResults ?? throw new ArgumentNullException(nameof(checkupResults));
             ClinicRegisterRequests = clinicRegisterRequests ?? throw new ArgumentNullException(nameof(clinicRegisterRequests));
             Clinics = clinics ?? throw new ArgumentNullException(nameof(clinics));
+            Genders = genders ?? throw new ArgumentNullException(nameof(genders));
+            ICD10Chapters = iCD10Chapters ?? throw new ArgumentNullException(nameof(iCD10Chapters));
+            MedicalExaminationTypes = medicalExaminationTypes ?? throw new ArgumentNullException(nameof(medicalExaminationTypes));
             OrderAnnexes = orderAnnexes ?? throw new ArgumentNullException(nameof(orderAnnexes));
             OrderExaminations = orderExaminations ?? throw new ArgumentNullException(nameof(orderExaminations));
             OrderItems = orderItems ?? throw new ArgumentNullException(nameof(orderItems));
@@ -42,12 +54,6 @@ namespace ProfOsmotr.DAL
             Users = users ?? throw new ArgumentNullException(nameof(users));
         }
 
-        #endregion Fields
-
-        #region Constructors
-
-
-
         #endregion Constructors
 
         #region Properties
@@ -56,9 +62,17 @@ namespace ProfOsmotr.DAL
 
         public ICalculationRepository Calculations { get; }
 
+        public IRepository<CheckupResult> CheckupResults { get; }
+
         public IQueryAwareRepository<ClinicRegisterRequest> ClinicRegisterRequests { get; }
 
         public IQueryAwareRepository<Clinic> Clinics { get; }
+
+        public IRepository<Gender> Genders { get; }
+
+        public IRepository<ICD10Chapter> ICD10Chapters { get; }
+
+        public IRepository<MedicalExaminationType> MedicalExaminationTypes { get; }
 
         public IRepository<OrderAnnex> OrderAnnexes { get; }
 

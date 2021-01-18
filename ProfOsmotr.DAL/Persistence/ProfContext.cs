@@ -26,6 +26,20 @@ namespace ProfOsmotr.DAL
 
         internal DbSet<ClinicRegisterRequest> ClinicRegisterRequests { get; private set; }
 
+        internal DbSet<IndividualMedicalExamination> IndividualMedicalExaminations { get; private set; }
+
+        internal DbSet<ContingentMedicalExamination> ContingentMedicalExaminations { get; private set; }
+
+        internal DbSet<IndividualCheckupStatus> IndividualCheckupStatuses { get; private set; }
+
+        internal DbSet<ContingentCheckupStatus> ContingentCheckupStatuses { get; private set; }
+
+        internal DbSet<Employer> Employers { get; private set; }
+
+        internal DbSet<ICD10Chapter> ICD10Chapters { get; private set; }
+
+        internal DbSet<Patient> Patients { get; private set; }
+
         public ProfContext(DbContextOptions<ProfContext> options)
             : base(options)
         {
@@ -47,6 +61,20 @@ namespace ProfOsmotr.DAL
             modelBuilder.Entity<Role>(EFConfigure.Role);
             modelBuilder.Entity<TargetGroup>(EFConfigure.TargetGroup);
             modelBuilder.Entity<ClinicRegisterRequest>(EFConfigure.ClinicRegisterRequest);
+            
+            modelBuilder.Entity<IndividualCheckupIndexValue>(EFConfigure.IndividualCheckupIndexValue);
+            modelBuilder.Entity<ContingentCheckupIndexValue>(EFConfigure.ContingentCheckupIndexValue);
+            modelBuilder.Entity<CheckupResult>(EFConfigure.CheckupResult);
+            modelBuilder.Entity<EmployerDepartment>(EFConfigure.EmployerDepartment);
+            modelBuilder.Entity<Gender>(EFConfigure.Gender);
+            modelBuilder.Entity<MedicalExaminationType>(EFConfigure.MedicalExaminationType);
+            modelBuilder.Entity<Patient>(EFConfigure.Patient);
+            modelBuilder.Entity<IndividualMedicalExamination>(EFConfigure.IndividualMedicalExamination);
+            modelBuilder.Entity<ContingentMedicalExamination>(EFConfigure.ContingentMedicalExamination);
+            modelBuilder.Entity<IndividualCheckupStatus>(EFConfigure.IndividualCheckupStatus);
+            modelBuilder.Entity<ContingentCheckupStatus>(EFConfigure.ContingentCheckupStatus);
+            modelBuilder.Entity<NewlyDiagnosedChronicSomaticDisease>(EFConfigure.NewlyDiagnosedChronicSomaticDisease);
+            modelBuilder.Entity<NewlyDiagnosedOccupationalDisease>(EFConfigure.NewlyDiagnosedOccupationalDisease);
         }
     }
 }

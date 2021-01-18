@@ -58,6 +58,10 @@ namespace ProfOsmotr.Web.Infrastructure
             services.AddTransient<IRepository<OrderAnnex>, EFRepository<OrderAnnex>>();
             services.AddTransient<IRepository<Role>, EFRepository<Role>>();
             services.AddTransient<IRepository<TargetGroup>, EFRepository<TargetGroup>>();
+            services.AddTransient<IRepository<ICD10Chapter>, EFRepository<ICD10Chapter>>();
+            services.AddTransient<IRepository<Gender>, EFRepository<Gender>>();
+            services.AddTransient<IRepository<CheckupResult>, EFRepository<CheckupResult>>();
+            services.AddTransient<IRepository<MedicalExaminationType>, EFRepository<MedicalExaminationType>>();
         }
 
         private static void AddAppServices(IServiceCollection services)

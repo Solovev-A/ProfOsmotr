@@ -9,22 +9,14 @@ namespace ProfOsmotr.DAL
 {
     internal class Order302Seeder
     {
-        #region Fields
+        private const string PREFIX_EXAMINATION_INDEX_LINE = "*";
 
         private IProfUnitOfWork uow;
-
-        #endregion Fields
-
-        #region Constructors
 
         internal Order302Seeder(IProfUnitOfWork uow)
         {
             this.uow = uow ?? throw new ArgumentNullException(nameof(uow));
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         /// <summary>
         /// Добавляет пункты приказа с обследованиями по приказу в хранилища
@@ -67,7 +59,7 @@ namespace ProfOsmotr.DAL
         private IList<ServiceDetails> GetDefaultDetails(string[] examinationsData)
         {
             List<ServiceDetails> result = new List<ServiceDetails>();
-            foreach (var line in examinationsData)
+            foreach (var line in examinationsData.Where(line => !line.StartsWith('*')))
             {
                 var data = SplitExaminationLine(line);
                 if (result.Any(item => item.FullName == data[2]))
@@ -86,18 +78,34 @@ namespace ProfOsmotr.DAL
                                                                IEnumerable<ServiceDetails> serviceDetails)
         {
             List<OrderExamination> result = new List<OrderExamination>();
+            OrderExamination currentExamination = null;
             foreach (var line in examinationsData)
             {
-                var data = SplitExaminationLine(line);
-                var targetGroup = GetTargetGroup(data);
-                var examination = new OrderExamination()
+                if (!line.StartsWith(PREFIX_EXAMINATION_INDEX_LINE))
                 {
-                    Name = data[0],
-                    TargetGroupId = targetGroup,
-                    DefaultServiceDetails = serviceDetails.Single(det => det.FullName == data[2])
+                    if (currentExamination != null)
+                        result.Add(currentExamination);
+
+                    var data = SplitExaminationLine(line);
+                    var targetGroup = GetTargetGroup(data);
+                    currentExamination = new OrderExamination()
+                    {
+                        Name = data[0],
+                        TargetGroupId = targetGroup,
+                        DefaultServiceDetails = serviceDetails.Single(det => det.FullName == data[2])
+                    };
+                    continue;
+                }
+
+                string[] indexData = SplitExaminationIndexLine(line);
+                var examinationResultIndex = new ExaminationResultIndex()
+                {
+                    Title = indexData[0],
+                    UnitOfMeasure = indexData[1]
                 };
-                result.Add(examination);
+                currentExamination.ExaminationResultIndexes.Add(examinationResultIndex);
             }
+            result.Add(currentExamination);
             return result;
         }
 
@@ -177,8 +185,8 @@ namespace ProfOsmotr.DAL
 
         private async Task<IEnumerable<OrderExamination>> SeedOrderAsync()
         {
-            string[] orderData = File.ReadAllLines(OrderDataConfiguration.OrderDataPath);
-            string[] examinationsData = File.ReadAllLines(OrderDataConfiguration.ExaminationsDataPath);
+            string[] orderData = await File.ReadAllLinesAsync(OrderDataConfiguration.OrderDataPath);
+            string[] examinationsData = await File.ReadAllLinesAsync(OrderDataConfiguration.ExaminationsDataPath);
             IList<ServiceDetails> details = GetDefaultDetails(examinationsData);
             IList<OrderExamination> examinations = GetDefaultExaminations(examinationsData, details);
             await AddExaminations(examinations);
@@ -197,11 +205,18 @@ namespace ProfOsmotr.DAL
             await uow.TargetGroups.AddRangeAsync(groups);
         }
 
+        private string[] SplitExaminationIndexLine(string line)
+        {
+            line = line.Substring(PREFIX_EXAMINATION_INDEX_LINE.Length);
+            var result = line.Split(';');
+            if (result.Length != 2)
+                throw new Exception("Ошибка в исходных данных: описание показателей обследования: " + line);
+            return result;
+        }
+
         private string[] SplitExaminationLine(string line)
         {
             return line.Split(new[] { ';' }, System.StringSplitOptions.RemoveEmptyEntries);
         }
-
-        #endregion Methods
     }
 }

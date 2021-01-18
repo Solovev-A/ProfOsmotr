@@ -12,9 +12,17 @@ namespace ProfOsmotr.DAL.Abstractions
 
         ICalculationRepository Calculations { get; }
 
+        IRepository<CheckupResult> CheckupResults { get; }
+
         IQueryAwareRepository<ClinicRegisterRequest> ClinicRegisterRequests { get; }
 
         IQueryAwareRepository<Clinic> Clinics { get; }
+
+        IRepository<ICD10Chapter> ICD10Chapters { get; }
+
+        IRepository<Gender> Genders { get; }
+
+        IRepository<MedicalExaminationType> MedicalExaminationTypes { get; }
 
         IRepository<OrderAnnex> OrderAnnexes { get; }
 
