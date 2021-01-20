@@ -23,5 +23,9 @@
         public virtual EmployerData EmployerData { get; set; }
 
         public string Recommendations { get; set; }
+
+        public int LastEditorId { get; set; }
+
+        public virtual User LastEditor { get; set; }
     }
 }

@@ -31,5 +31,9 @@ namespace ProfOsmotr.DAL
         public string MedicalReport { get; set; }
 
         public int? RegistrationJournalEntryNumber { get; set; }
+
+        public int LastEditorId { get; set; }
+
+        public virtual User LastEditor { get; set; }
     }
 }
