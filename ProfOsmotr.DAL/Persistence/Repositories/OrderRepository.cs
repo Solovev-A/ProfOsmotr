@@ -61,8 +61,7 @@ namespace ProfOsmotr.DAL
             var annexes = await context.OrderAnnex
                 .AsNoTracking()
                 .Include(x => x.OrderItems.Where(item => !item.IsDeleted))
-                    .ThenInclude(x => x.OrderItemOrderExaminations.OrderBy(ie => ie.OrderExamination.Name))
-                        .ThenInclude(x => x.OrderExamination)
+                    .ThenInclude(x => x.OrderExaminations.OrderBy(ex => ex.Name))
                 .ToListAsync();
 
             return annexes.Select(annex =>
@@ -75,9 +74,8 @@ namespace ProfOsmotr.DAL
         private IQueryable<OrderItem> GetOrderItemWithActualServicesQuery(int clinicId)
         {
             return dbSet
-                .Include(item => item.OrderItemOrderExaminations)
-                    .ThenInclude(i => i.OrderExamination.ActualClinicServices
-                                            .Where(actual => actual.ClinicId == clinicId))
+                .Include(item => item.OrderExaminations)
+                    .ThenInclude(ex => ex.ActualClinicServices.Where(actual => actual.ClinicId == clinicId))
                         .ThenInclude(actual => actual.Service.ServiceDetails);
         }
     }

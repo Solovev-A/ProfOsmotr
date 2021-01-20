@@ -19,9 +19,9 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
             CreateMap<CalculationSource, CalculationSourceResource>()
                 .ForMember(d => d.Profession, config => config.MapFrom(d => d.Profession.Name))
                 .ForMember(d => d.OrderItems, config => config
-                                              .MapFrom(d => d.Profession.ProfessionOrderItems
-                                                                .Where(po => po.OrderItem.OrderAnnexId != OrderAnnexId.General)
-                                                                .Select(po => GetFullItemKey(po.OrderItem))));
+                                              .MapFrom(d => d.Profession.OrderItems
+                                                                .Where(item => item.OrderAnnexId != OrderAnnexId.General)
+                                                                .Select(item => GetFullItemKey(item))));
 
             CreateMap<Calculation, CalculationResource>()
                 .ForMember(d => d.Sources, conf => conf.MapFrom(s => s.CalculationSources))
@@ -50,8 +50,7 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
             CreateMap<TargetGroup, TargetGroupResource>();
 
             CreateMap<OrderItem, OrderItemDetailedResource>()
-                .ForMember(d => d.OrderExaminations, conf => conf.MapFrom(s => s.OrderItemOrderExaminations
-                                                                                    .Select(x => x.OrderExamination.Id)))
+                .ForMember(d => d.OrderExaminations, conf => conf.MapFrom(s => s.OrderExaminations.Select(x => x.Id)))
                 .ForMember(d => d.AnnexId, conf => conf.MapFrom(s => s.OrderAnnexId));
 
             CreateMap<OrderAnnex, AnnexResource>();

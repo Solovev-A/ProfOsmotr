@@ -34,9 +34,9 @@ namespace ProfOsmotr.DAL
         /// </summary>
         public string Name { get; set; }
 
-        public virtual ICollection<OrderItemOrderExamination> OrderItemOrderExaminations { get; } = new List<OrderItemOrderExamination>();
+        public virtual ICollection<OrderExamination> OrderExaminations { get; } = new List<OrderExamination>();
 
-        public virtual ICollection<ProfessionOrderItem> ProfessionOrderItems { get; } = new List<ProfessionOrderItem>();
+        public virtual ICollection<Profession> Professions { get; } = new List<Profession>();
 
         /// <summary>
         /// Значение статуса удаления элемента

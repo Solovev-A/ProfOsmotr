@@ -56,8 +56,8 @@ namespace ProfOsmotr.BL
 
         private IEnumerable<Service> GetNecessaryServices(CalculationSource source)
         {
-            var sourceExaminations = source.Profession.ProfessionOrderItems
-                    .SelectMany(item => item.OrderItem.OrderItemOrderExaminations.Select(i => i.OrderExamination));
+            var sourceExaminations = source.Profession.OrderItems
+                    .SelectMany(item => item.OrderExaminations);
 
             return sourceExaminations
                     .Select(examination => examination.ActualClinicServices.Single().Service)

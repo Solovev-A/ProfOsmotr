@@ -138,11 +138,6 @@ namespace ProfOsmotr.DAL
                 .HasConversion<int>();
         }
 
-        internal static void OrderItemOrderExamination(EntityTypeBuilder<OrderItemOrderExamination> builder)
-        {
-            builder.HasKey(x => new { x.OrderItemId, x.OrderExaminationId });
-        }
-
         internal static void Patient(EntityTypeBuilder<Patient> builder)
         {
             builder.Property(x => x.GenderId)
@@ -151,11 +146,6 @@ namespace ProfOsmotr.DAL
             builder.Property(x => x.LastName).IsRequired();
             builder.Property(x => x.FirstName).IsRequired();
             builder.Property(x => x.PatronymicName).IsRequired();
-        }
-
-        internal static void ProfessionOrderItem(EntityTypeBuilder<ProfessionOrderItem> builder)
-        {
-            builder.HasKey(x => new { x.ProfessionId, x.OrderItemId });
         }
 
         internal static void Role(EntityTypeBuilder<Role> builder)

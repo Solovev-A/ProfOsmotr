@@ -17,6 +17,6 @@ namespace ProfOsmotr.DAL
         /// </summary>
         public string Name { get; set; }
 
-        public virtual ICollection<ProfessionOrderItem> ProfessionOrderItems { get; } = new List<ProfessionOrderItem>();
+        public virtual ICollection<OrderItem> OrderItems { get; } = new List<OrderItem>();
     }
 }

@@ -142,11 +142,7 @@ namespace ProfOsmotr.DAL
                     continue;
                 }
                 var examination = examinations.Single(ex => ex.Name == line);
-                var orderItemOrderExamination = new OrderItemOrderExamination()
-                {
-                    OrderExamination = examination,
-                };
-                currentItem.OrderItemOrderExaminations.Add(orderItemOrderExamination);
+                currentItem.OrderExaminations.Add(examination);
             }
             result.Add(currentItem);
             return result;
@@ -187,6 +183,7 @@ namespace ProfOsmotr.DAL
         {
             string[] orderData = await File.ReadAllLinesAsync(OrderDataConfiguration.OrderDataPath);
             string[] examinationsData = await File.ReadAllLinesAsync(OrderDataConfiguration.ExaminationsDataPath);
+
             IList<ServiceDetails> details = GetDefaultDetails(examinationsData);
             IList<OrderExamination> examinations = GetDefaultExaminations(examinationsData, details);
             await AddExaminations(examinations);

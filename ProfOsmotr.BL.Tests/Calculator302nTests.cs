@@ -180,7 +180,7 @@ namespace ProfOsmotr.BL.Tests
             var orderItem = new OrderItem();
             foreach (var examination in orderExaminations)
             {
-                orderItem.OrderItemOrderExaminations.Add(new OrderItemOrderExamination() { OrderExamination = examination });
+                orderItem.OrderExaminations.Add(examination);
             }
             return orderItem;
         }
@@ -190,7 +190,7 @@ namespace ProfOsmotr.BL.Tests
             var profession = new Profession();
             foreach (var item in orderItems)
             {
-                profession.ProfessionOrderItems.Add(new ProfessionOrderItem() { OrderItem = item });
+                profession.OrderItems.Add(item);
             }
             return profession;
         }

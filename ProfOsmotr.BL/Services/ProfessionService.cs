@@ -75,7 +75,7 @@ namespace ProfOsmotr.BL
 
                 if (!itemResponse.Succeed)
                     return new ProfessionResponse(itemResponse.Message);
-                profession.ProfessionOrderItems.Add(new ProfessionOrderItem() { OrderItem = itemResponse.Result });
+                profession.OrderItems.Add(itemResponse.Result);
             }
 
             return new ProfessionResponse(profession);

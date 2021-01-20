@@ -52,8 +52,6 @@ namespace ProfOsmotr.DAL
             modelBuilder.Entity<OrderExamination>(EFConfigure.OrderExamination);
             modelBuilder.Entity<OrderAnnex>(EFConfigure.OrderAnnex);
             modelBuilder.Entity<OrderItem>(EFConfigure.OrderItem);
-            modelBuilder.Entity<OrderItemOrderExamination>(EFConfigure.OrderItemOrderExamination);
-            modelBuilder.Entity<ProfessionOrderItem>(EFConfigure.ProfessionOrderItem);
             modelBuilder.Entity<Service>(EFConfigure.Service);
             modelBuilder.Entity<ServiceAvailabilityGroup>(EFConfigure.ServiceAvailabilityGroup);
             modelBuilder.Entity<Calculation>(EFConfigure.Calculation);

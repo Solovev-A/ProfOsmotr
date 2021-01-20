@@ -87,10 +87,7 @@ namespace ProfOsmotr.BL
                 OrderExamination orderExamination = await FindExaminationAsync(id);
                 if (orderExamination == null)
                     return new OrderItemResponse($"Обследование по приказу с id #{id} не найдено");
-                newOrderItem.OrderItemOrderExaminations.Add(new OrderItemOrderExamination()
-                {
-                    OrderExamination = orderExamination
-                });
+                newOrderItem.OrderExaminations.Add(orderExamination);
             }
 
             try
@@ -197,7 +194,7 @@ namespace ProfOsmotr.BL
                 return new OrderItemResponse("Элемент приказа не найден");
 
             existingItem.Name = request.Name;
-            existingItem.OrderItemOrderExaminations.Clear();
+            existingItem.OrderExaminations.Clear();
 
             foreach (var id in request.OrderExaminationIdentifiers)
             {
@@ -205,10 +202,7 @@ namespace ProfOsmotr.BL
                 if (orderExamination == null)
                     return new OrderItemResponse($"Обследование по приказу с id #{id} не найдено");
 
-                existingItem.OrderItemOrderExaminations.Add(new OrderItemOrderExamination()
-                {
-                    OrderExamination = orderExamination
-                });
+                existingItem.OrderExaminations.Add(orderExamination);
             }
 
             try
