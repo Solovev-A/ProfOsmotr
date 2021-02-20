@@ -26,6 +26,8 @@ namespace ProfOsmotr.DAL
 
         internal DbSet<ClinicRegisterRequest> ClinicRegisterRequests { get; private set; }
 
+        internal DbSet<ExaminationResultIndex> ExaminationResultIndexes { get; private set; }
+
         internal DbSet<IndividualMedicalExamination> IndividualMedicalExaminations { get; private set; }
 
         internal DbSet<ContingentMedicalExamination> ContingentMedicalExaminations { get; private set; }

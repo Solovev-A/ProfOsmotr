@@ -46,11 +46,11 @@ namespace ProfOsmotr.Web.Infrastructure
             services.AddTransient<DataSeeder>();
             services.AddTransient<IProfUnitOfWork, ProfEFUnitOfWork>();
             services.AddTransient<ICalculationRepository, CalculationRepository>();
-            services.AddTransient<IOrderReposytory, OrderRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IRepository<Profession>, EFRepository<Profession>>();
             services.AddTransient<IRepository<Service>, EFRepository<Service>>();
             services.AddTransient<IRepository<ServiceAvailabilityGroup>, EFRepository<ServiceAvailabilityGroup>>();
-            services.AddTransient<IRepository<OrderExamination>, EFRepository<OrderExamination>>();
+            services.AddTransient<IOrderExaminationRepository, OrderExaminationRepository>();
             services.AddTransient<ICatalogRepository, CatalogRepository>();
             services.AddTransient<IQueryAwareRepository<Clinic>, ClinicRepository>();
             services.AddTransient<IQueryAwareRepository<User>, UserRepository>();
@@ -62,6 +62,7 @@ namespace ProfOsmotr.Web.Infrastructure
             services.AddTransient<IRepository<Gender>, EFRepository<Gender>>();
             services.AddTransient<IRepository<CheckupResult>, EFRepository<CheckupResult>>();
             services.AddTransient<IRepository<MedicalExaminationType>, EFRepository<MedicalExaminationType>>();
+            services.AddTransient<IRepository<ExaminationResultIndex>, EFRepository<ExaminationResultIndex>>();
         }
 
         private static void AddAppServices(IServiceCollection services)

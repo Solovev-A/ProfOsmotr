@@ -1,5 +1,5 @@
 ﻿import Util from './util/common';
-import CustomBootstrapModal from './util/custom-modal';
+import ModalForm from './util/modal/modal-form';
 import CustomDataTable from './util/custom-datatable';
 import SuccessToast from './util/success-toast';
 import { DefaultChecks } from './util/custom-validation';
@@ -140,12 +140,12 @@ class OrderItemsPage {
             buttons: [
                 {
                     text: 'Сохранить',
-                    action: async (model) => await this._onSave(model)
+                    action: this._onSave.bind(this)
                 }
             ]
         };
 
-        this.orderItemModal = new CustomBootstrapModal(config);
+        this.orderItemModal = new ModalForm(config);
         this._initSelect2();
     }
 
@@ -191,14 +191,13 @@ class OrderItemsPage {
     }
 
     async _onSave(model) {
-        const _this = this;
         const examinations = $(SELECTOR_EXAMINATIONS).select2('data').map(i => parseInt(i.id));
         let response;
 
         if (model.editing === true) {
-            response = await updateOrderItem();
+            response = await updateOrderItem.call(this);
         } else {
-            response = await createOrderItem();
+            response = await createOrderItem.call(this);
         }
 
         if (response) {
@@ -217,9 +216,9 @@ class OrderItemsPage {
             });
 
             if (updatedItem) {
-                _this.orderTable
+                this.orderTable
                     .row((index, data, node) => data.id === updatedItem.id)
-                    .data(_this._convertToTableData(updatedItem))
+                    .data(this._convertToTableData(updatedItem))
                     .draw();
                 return updatedItem;
             }
@@ -234,9 +233,9 @@ class OrderItemsPage {
             });
 
             if (newItem) {
-                _this.orderTable
+                this.orderTable
                     .row
-                    .add(_this._convertToTableData(newItem))
+                    .add(this._convertToTableData(newItem))
                     .draw();
                 return newItem;
             }

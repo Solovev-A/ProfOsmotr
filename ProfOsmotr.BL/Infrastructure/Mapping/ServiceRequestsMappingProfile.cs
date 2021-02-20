@@ -41,6 +41,8 @@ namespace ProfOsmotr.BL.Infrastructure.Mapping
 
             CreateMap<UpdateClinicDetailsRequest, ClinicDetails>()
                 .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
+
+            CreateMap<SaveExaminationResultIndexRequest, ExaminationResultIndex>();
         }
     }
 }

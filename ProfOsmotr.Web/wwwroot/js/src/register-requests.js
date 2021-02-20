@@ -1,5 +1,5 @@
 ﻿import Util from './util/common';
-import CustomBootstrapModal from './util/custom-modal';
+import ModalForm from './util/modal/modal-form';
 import CustomDataTable from './util/custom-datatable';
 import SuccessToast from './util/success-toast';
 
@@ -143,20 +143,20 @@ class RegisterRequestsListPage {
             buttons: [
                 {
                     text: 'Одобрить',
-                    action: (model) => this._manageRegisterRequest(model, true),
+                    action: model => this._manageRegisterRequest(model, true),
                     className: 'btn btn-success',
-                    visibility: (model) => !model.approved
+                    visibility: model => !model.approved
                 },
                 {
                     text: 'Отклонить',
-                    action: (model) => this._manageRegisterRequest(model, false),
+                    action: model => this._manageRegisterRequest(model, false),
                     className: 'btn btn-danger',
-                    visibility: (model) => !model.processed
+                    visibility: model => !model.processed
                 }
             ]
         }
 
-        this.registerRequestModal = new CustomBootstrapModal(config);
+        this.registerRequestModal = new ModalForm(config);
     }
 
     async _manageRegisterRequest(model, approved) {

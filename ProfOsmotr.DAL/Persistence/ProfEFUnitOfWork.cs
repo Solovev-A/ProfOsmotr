@@ -21,12 +21,13 @@ namespace ProfOsmotr.DAL
                                 IRepository<CheckupResult> checkupResults,
                                 IQueryAwareRepository<ClinicRegisterRequest> clinicRegisterRequests,
                                 IQueryAwareRepository<Clinic> clinics,
+                                IRepository<ExaminationResultIndex> examintaionResultIndexes,
                                 IRepository<Gender> genders,
                                 IRepository<ICD10Chapter> iCD10Chapters,
                                 IRepository<MedicalExaminationType> medicalExaminationTypes,
                                 IRepository<OrderAnnex> orderAnnexes,
-                                IRepository<OrderExamination> orderExaminations,
-                                IOrderReposytory orderItems,
+                                IOrderExaminationRepository orderExaminations,
+                                IOrderRepository orderItems,
                                 IRepository<Profession> professions,
                                 IRepository<Role> roles,
                                 IRepository<ServiceAvailabilityGroup> serviceAvailabilityGroups,
@@ -40,6 +41,7 @@ namespace ProfOsmotr.DAL
             CheckupResults = checkupResults ?? throw new ArgumentNullException(nameof(checkupResults));
             ClinicRegisterRequests = clinicRegisterRequests ?? throw new ArgumentNullException(nameof(clinicRegisterRequests));
             Clinics = clinics ?? throw new ArgumentNullException(nameof(clinics));
+            ExamintaionResultIndexes = examintaionResultIndexes ?? throw new ArgumentNullException(nameof(examintaionResultIndexes));
             Genders = genders ?? throw new ArgumentNullException(nameof(genders));
             ICD10Chapters = iCD10Chapters ?? throw new ArgumentNullException(nameof(iCD10Chapters));
             MedicalExaminationTypes = medicalExaminationTypes ?? throw new ArgumentNullException(nameof(medicalExaminationTypes));
@@ -68,6 +70,8 @@ namespace ProfOsmotr.DAL
 
         public IQueryAwareRepository<Clinic> Clinics { get; }
 
+        public IRepository<ExaminationResultIndex> ExamintaionResultIndexes { get; }
+
         public IRepository<Gender> Genders { get; }
 
         public IRepository<ICD10Chapter> ICD10Chapters { get; }
@@ -76,9 +80,9 @@ namespace ProfOsmotr.DAL
 
         public IRepository<OrderAnnex> OrderAnnexes { get; }
 
-        public IRepository<OrderExamination> OrderExaminations { get; }
+        public IOrderExaminationRepository OrderExaminations { get; }
 
-        public IOrderReposytory OrderItems { get; }
+        public IOrderRepository OrderItems { get; }
 
         public IRepository<Profession> Professions { get; }
 

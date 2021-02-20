@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProfOsmotr.DAL
 {
-    public class OrderRepository : EFRepository<OrderItem>, IOrderReposytory
+    public class OrderRepository : EFRepository<OrderItem>, IOrderRepository
     {
         private const string itemsCollectionKey = "ORDER_ITEMS";
         private readonly IMemoryCache cache;
@@ -37,23 +37,6 @@ namespace ProfOsmotr.DAL
                 cache.Set(itemsCollectionKey, value, TimeSpan.FromMinutes(5));
             }
             return value;
-        }
-
-        public async Task<IEnumerable<OrderExamination>> GetExaminationsAsync()
-        {
-            return await context.OrderExaminations
-                .AsNoTracking()
-                .OrderBy(examination => examination.Name)
-                .ToListAsync();
-        }
-
-        public async Task<IEnumerable<OrderExamination>> GetExaminationsWithDetailsAsync()
-        {
-            return await context.OrderExaminations
-                .AsNoTracking()
-                .Include(x => x.DefaultServiceDetails)
-                .OrderBy(examination => examination.Name)
-                .ToListAsync();
         }
 
         public async Task<IEnumerable<OrderAnnex>> GetOrderAsync()

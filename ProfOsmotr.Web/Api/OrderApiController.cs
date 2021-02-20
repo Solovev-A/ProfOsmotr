@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace ProfOsmotr.Web.Api
 {
+    delegate Task<ExaminationResultIndexResponse> SaveIndexFunc(int targetId, SaveExaminationResultIndexRequest request);
+
     [Route("api/order")]
     public class OrderApiController : ControllerBase
     {
@@ -95,6 +97,49 @@ namespace ProfOsmotr.Web.Api
             return Ok(resource);
         }
 
+        [Route("getIndexes/{examinationId}")]
+        public async Task<IActionResult> GetIndexes(int examinationId)
+        {
+            var response = await orderService.GetExaminationResultIndexes(examinationId);
+
+            if (!response.Succeed)
+                return BadRequest(response.Message);
+
+            var resource = mapper.Map<IEnumerable<ExaminationResultIndexResource>>(response.Result);
+
+            return Ok(resource);
+        }
+
+        [HttpPost]
+        [Route("examination/{examinationId}/index")]
+        [ModelStateValidationFilter]
+        [AuthorizeAdministrator]
+        public async Task<IActionResult> CreateIndex(int examinationId, [FromBody] SaveExaminationResultIndexResource resource)
+        {
+            return await SaveExaminationIndex(examinationId, resource, orderService.AddIndexAsync);
+        }
+
+        [HttpPost]
+        [Route("index/{id}")]
+        [ModelStateValidationFilter]
+        [AuthorizeAdministrator]
+        public async Task<IActionResult> UpdateIndex(int id, [FromBody] SaveExaminationResultIndexResource resource)
+        {
+            return await SaveExaminationIndex(id, resource, orderService.UpdateIndexAsync);
+        }
+
+        [HttpDelete]
+        [Route("index/{id}")]
+        [AuthorizeAdministrator]
+        public async Task<IActionResult> DeleteIndex(int id)
+        {
+            var response = await orderService.DeleteIndexAsync(id);
+            if (!response.Succeed)
+                return BadRequest(new ErrorResource(response.Message));
+            var result = mapper.Map<ExaminationResultIndexResource>(response.Result);
+            return Ok(result);
+        }
+
         [Route("getItemsList")]
         public async Task<IActionResult> GetItemsList()
         {
@@ -147,6 +192,18 @@ namespace ProfOsmotr.Web.Api
             var itemResource = mapper.Map<OrderItemDetailedResource>(response.Result);
 
             return Ok(itemResource);
+        }
+
+        private async Task<IActionResult> SaveExaminationIndex(int targetId, SaveExaminationResultIndexResource resource, SaveIndexFunc func)
+        {
+            var request = mapper.Map<SaveExaminationResultIndexRequest>(resource);
+            ExaminationResultIndexResponse response = await func(targetId, request);
+
+            if (!response.Succeed)
+                return BadRequest(response.Message);
+
+            var result = mapper.Map<ExaminationResultIndexResource>(response.Result);
+            return Ok(result);
         }
 
         private OrderItemsListResource MapListResource(IEnumerable<DAL.OrderItem> orderItems)

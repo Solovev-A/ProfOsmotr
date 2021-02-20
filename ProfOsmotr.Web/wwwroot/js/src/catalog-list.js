@@ -1,5 +1,5 @@
 ﻿import Util from './util/common';
-import CustomBootstrapModal from './util/custom-modal';
+import ModalForm from './util/modal/modal-form';
 import CustomDataTable from './util/custom-datatable';
 import SuccessToast from './util/success-toast';
 import { DefaultChecks } from './util/custom-validation';
@@ -60,11 +60,11 @@ function initCatalogList() {
         buttons: [
             {
                 text: 'Сохранить',
-                action: async (model) => await onUpdateCatalogItem(model)
+                action: onUpdateCatalogItem
             }
         ]
     };
-    const serviceModal = new CustomBootstrapModal(modalOptions);
+    const serviceModal = new ModalForm(modalOptions);
 
 
     const dataTableConfig = {

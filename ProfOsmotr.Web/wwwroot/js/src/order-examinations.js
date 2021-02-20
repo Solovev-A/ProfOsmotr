@@ -1,8 +1,9 @@
 ﻿import Util from './util/common';
-import CustomBootstrapModal from './util/custom-modal';
+import ModalForm from './util/modal/modal-form';
 import CustomDataTable from './util/custom-datatable';
 import SuccessToast from './util/success-toast';
 import { DefaultChecks } from './util/custom-validation';
+import OrderExaminationIndexes from './order-examination-indexes';
 
 
 const URI_API_ORDER_EXAMINATIONS_DATA = '/api/order/getExaminations';
@@ -23,8 +24,9 @@ class OrderExaminationsPage {
 
             await _this._getExaminationsData();
 
-            _this._createDataTable()
+            _this._createDataTable();
             _this._createExaminationModal();
+            _this._createExaminationIndexesModal();
         })();
     }
 
@@ -70,6 +72,14 @@ class OrderExaminationsPage {
                             model.editing = true;
                             this._examinationModal.show(model);
                         }
+                    },
+                    {
+                        extend: 'selectedSingle',
+                        text: 'Показатели результата',
+                        action: (e, dt, button, config) => {
+                            let model = dt.row({ selected: true }).data();
+                            this._examinationIndexes.show(model.id, model.name);
+                        }
                     }
                 ]
             }
@@ -114,12 +124,16 @@ class OrderExaminationsPage {
             buttons: [
                 {
                     text: 'Сохранить',
-                    action: async (model) => await this._onSaveExamination(model)
+                    action: this._onSaveExamination.bind(this)
                 }
             ]
         }
 
-        this._examinationModal = new CustomBootstrapModal(config);
+        this._examinationModal = new ModalForm(config);
+    }
+
+    _createExaminationIndexesModal() {
+        this._examinationIndexes = new OrderExaminationIndexes(this.succesToast);
     }
 
     _getTableData() {
@@ -142,9 +156,7 @@ class OrderExaminationsPage {
     }
 
     async _onSaveExamination(model) {
-        const _this = this;
-
-        let data = {
+        const data = {
             name: model.name,
             defaultServiceCode: model.defaultServiceDetails.code,
             defaultServiceFullName: model.defaultServiceDetails.fullName,
@@ -154,9 +166,9 @@ class OrderExaminationsPage {
         let response;
 
         if (model.editing) {
-            response = await updateExamination();
+            response = await updateExamination.call(this);
         } else {
-            response = await createExamination();
+            response = await createExamination.call(this);
         }
 
         if (response) {
@@ -174,9 +186,9 @@ class OrderExaminationsPage {
             );
 
             if (updatedExamination) {
-                _this.examinationsTable
+                this.examinationsTable
                     .row((index, data, node) => data.id === updatedExamination.id)
-                    .data(_this._convertToTableData(updatedExamination))
+                    .data(this._convertToTableData(updatedExamination))
                     .draw();
                 return updatedExamination;
             }
@@ -186,9 +198,9 @@ class OrderExaminationsPage {
             const newExamination = await Util.postData(URI_API_ORDER_EXAMINATION_CREATE, data);
 
             if (newExamination) {
-                _this.examinationsTable
+                this.examinationsTable
                     .row
-                    .add(_this._convertToTableData(newExamination))
+                    .add(this._convertToTableData(newExamination))
                     .draw();
                 return newExamination;
             }

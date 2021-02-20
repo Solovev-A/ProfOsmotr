@@ -18,6 +18,8 @@ namespace ProfOsmotr.DAL.Abstractions
 
         IQueryAwareRepository<Clinic> Clinics { get; }
 
+        IRepository<ExaminationResultIndex> ExamintaionResultIndexes { get; }
+
         IRepository<ICD10Chapter> ICD10Chapters { get; }
 
         IRepository<Gender> Genders { get; }
@@ -26,9 +28,9 @@ namespace ProfOsmotr.DAL.Abstractions
 
         IRepository<OrderAnnex> OrderAnnexes { get; }
 
-        IRepository<OrderExamination> OrderExaminations { get; }
+        IOrderExaminationRepository OrderExaminations { get; }
 
-        IOrderReposytory OrderItems { get; }
+        IOrderRepository OrderItems { get; }
 
         IRepository<Profession> Professions { get; }
 

@@ -136,12 +136,12 @@ namespace ProfOsmotr.BL
 
         public async Task<IEnumerable<OrderExamination>> GetExaminationsAsync()
         {
-            return await uow.OrderItems.GetExaminationsWithDetailsAsync();
+            return await uow.OrderExaminations.GetExaminationsWithDetailsAsync();
         }
 
         public async Task<IEnumerable<OrderExamination>> GetExaminationsShortDataAsync()
         {
-            return await uow.OrderItems.GetExaminationsAsync();
+            return await uow.OrderExaminations.GetExaminationsAsync();
         }
 
         public async Task<IEnumerable<OrderAnnex>> GetOrderAsync()
@@ -234,6 +234,11 @@ namespace ProfOsmotr.BL
             return null;
         }
 
+        private async Task<ExaminationResultIndex> FindExaminationResultIndexAsync(int id)
+        {
+            return await uow.ExamintaionResultIndexes.FindAsync(id);
+        }
+
         async Task<OrderItemResponse> IOrderService.FindItemWithActualServicesAsync(int id, int clinicId)
         {
             var item = await uow.OrderItems.FindItemWithActualServicesAsync(id, clinicId);
@@ -245,6 +250,75 @@ namespace ProfOsmotr.BL
         async Task<IEnumerable<OrderItem>> IOrderService.GetGeneralOrderItemsAsync()
         {
             return await uow.OrderItems.FindAsync(item => item.OrderAnnexId == OrderAnnexId.General && !item.IsDeleted);
+        }
+
+        public async Task<ExaminationResultIndexesResponse> GetExaminationResultIndexes(int examinationId)
+        {
+            var examination = await FindExaminationAsync(examinationId);
+            if (examination == null)
+                return new ExaminationResultIndexesResponse($"Обследование с идентификатором ${examinationId} не найдено");
+
+            IEnumerable<ExaminationResultIndex> indexes = await uow.OrderExaminations.GetIndexes(examinationId);
+
+            return new ExaminationResultIndexesResponse(indexes);
+        }
+
+        public async Task<ExaminationResultIndexResponse> AddIndexAsync(int examinationId, SaveExaminationResultIndexRequest request)
+        {
+            var examination = await FindExaminationAsync(examinationId);
+            if (examination == null)
+                return new ExaminationResultIndexResponse($"Обследование с id {examinationId} не найдено");
+
+            ExaminationResultIndex newIndex = mapper.Map<ExaminationResultIndex>(request);
+            examination.ExaminationResultIndexes.Add(newIndex);
+
+            try
+            {
+                await uow.SaveAsync();
+                return new ExaminationResultIndexResponse(newIndex);
+            }
+            catch (Exception ex)
+            {
+                return new ExaminationResultIndexResponse(ex.Message);
+            }
+        }
+
+        public async Task<ExaminationResultIndexResponse> UpdateIndexAsync(int indexId, SaveExaminationResultIndexRequest request)
+        {
+            var index = await FindExaminationResultIndexAsync(indexId);
+            if (index == null)
+                return new ExaminationResultIndexResponse($"Показатель результата с id {indexId} не найден");
+
+            mapper.Map(request, index);
+
+            try
+            {
+                await uow.SaveAsync();
+                return new ExaminationResultIndexResponse(index);
+            }
+            catch (Exception ex)
+            {
+                return new ExaminationResultIndexResponse(ex.Message);
+            }
+        }
+
+        public async Task<ExaminationResultIndexResponse> DeleteIndexAsync(int indexId)
+        {
+            var index = await FindExaminationResultIndexAsync(indexId);
+            if (index == null)
+                return new ExaminationResultIndexResponse($"Показатель результата с id {indexId} не найден");
+
+            index.IsDeleted = true;
+
+            try
+            {
+                await uow.SaveAsync();
+                return new ExaminationResultIndexResponse(index);
+            }
+            catch (Exception ex)
+            {
+                return new ExaminationResultIndexResponse(ex.Message);
+            }
         }
 
         #endregion Methods

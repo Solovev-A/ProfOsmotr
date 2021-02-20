@@ -1,5 +1,5 @@
 ﻿import Util from './util/common';
-import CustomBootstrapModal from './util/custom-modal';
+import ModalForm from './util/modal/modal-form';
 import CustomDataTable from './util/custom-datatable';
 import SuccessToast from './util/success-toast';
 import { ValidityCheck, DefaultChecks } from './util/custom-validation';
@@ -67,11 +67,11 @@ function initUserList() {
         buttons: [
             {
                 text: 'Сохранить',
-                action: async (model) => await onUserCreate(model)
+                action: onUserCreate
             }
         ]
     }
-    const createUserModal = new CustomBootstrapModal(createUserModalConfig);
+    const createUserModal = new ModalForm(createUserModalConfig);
 
 
     //
@@ -87,11 +87,11 @@ function initUserList() {
         buttons: [
             {
                 text: 'Сохранить',
-                action: async (model) => await onUserProfileSave(model)
+                action: onUserProfileSave
             }
         ]
     }
-    const editProfileModal = new CustomBootstrapModal(editProfileModalConfig);
+    const editProfileModal = new ModalForm(editProfileModalConfig);
 
 
     //
@@ -106,11 +106,11 @@ function initUserList() {
         buttons: [
             {
                 text: 'Сохранить',
-                action: async (model) => await onPasswordChange(model)
+                action: onPasswordChange
             }
         ]
     }
-    const changePasswordModal = new CustomBootstrapModal(changePasswordModalConfig);
+    const changePasswordModal = new ModalForm(changePasswordModalConfig);
 
 
     //

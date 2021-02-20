@@ -1,5 +1,5 @@
 ﻿import Util from './util/common';
-import CustomBootstrapModal from './util/custom-modal';
+import ModalForm from './util/modal/modal-form';
 import CustomDataTable from './util/custom-datatable';
 import SuccessToast from './util/success-toast';
 
@@ -64,17 +64,17 @@ function initClinicList() {
                 text: 'Заблокировать',
                 className: 'btn btn-danger',
                 action: async (model) => await onManageClinic(model, true),
-                visibility: (model) => !model.isBlocked //&& model.id != currentUserId
+                visibility: (model) => !model.isBlocked && model.id != currentUserId
             },
             {
                 text: 'Разблокировать',
                 className: 'btn btn-success',
                 action: async (model) => await onManageClinic(model, false),
-                visibility: (model) => model.isBlocked //&& model.id != currentUserId
+                visibility: (model) => model.isBlocked && model.id != currentUserId
             }
         ]
     };
-    const modal = new CustomBootstrapModal(modalOptions);
+    const modal = new ModalForm(modalOptions);
 
 
     // ---------

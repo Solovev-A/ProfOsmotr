@@ -74,6 +74,8 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
                 .ForMember(d => d.ClinicShortName, conf => conf.MapFrom(s => s.Clinic.ClinicDetails.ShortName));
 
             CreateMap<Role, RoleResource>();
+
+            CreateMap<ExaminationResultIndex, ExaminationResultIndexResource>();
         }
 
         private string GetFullItemKey(OrderItem item)
