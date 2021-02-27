@@ -115,12 +115,6 @@ namespace ProfOsmotr.DAL
             builder.HasKey(x => new { x.ContingentCheckupStatusId, x.ICD10ChapterId });
         }
 
-        internal static void OrderAnnex(EntityTypeBuilder<OrderAnnex> builder)
-        {
-            builder.Property(x => x.Id)
-                .HasConversion<int>();
-        }
-
         internal static void OrderExamination(EntityTypeBuilder<OrderExamination> builder)
         {
             builder.Property(x => x.Name)
@@ -130,12 +124,6 @@ namespace ProfOsmotr.DAL
             builder.HasOne(x => x.DefaultServiceDetails)
                 .WithMany()
                 .HasForeignKey(x => x.DefaultServiceDetailsId);
-        }
-
-        internal static void OrderItem(EntityTypeBuilder<OrderItem> builder)
-        {
-            builder.Property(x => x.OrderAnnexId)
-                .HasConversion<int>();
         }
 
         internal static void Patient(EntityTypeBuilder<Patient> builder)

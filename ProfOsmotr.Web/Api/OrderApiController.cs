@@ -140,20 +140,11 @@ namespace ProfOsmotr.Web.Api
             return Ok(result);
         }
 
-        [Route("getItemsList")]
-        public async Task<IActionResult> GetItemsList()
-        {
-            var orderItems = await orderService.GetAllItems();
-            var result = MapListResource(orderItems);
-            return new JsonResult(result);
-        }
-
         [Route("getOrder")]
-        public async Task<IActionResult> GetOrder()
+        public async Task<IActionResult> GetOrder(bool nocache)
         {
-            var order = await orderService.GetOrderAsync();
-            var annexResources = mapper.Map<IEnumerable<AnnexResource>>(order);
-            var orderResource = new OrderResource(annexResources);
+            IEnumerable<DAL.OrderItem> order = await orderService.GetOrderAsync(nocache);
+            var orderResource = mapper.Map<IEnumerable<OrderItemDetailedResource>>(order);
 
             return Ok(orderResource);
         }
@@ -204,22 +195,6 @@ namespace ProfOsmotr.Web.Api
 
             var result = mapper.Map<ExaminationResultIndexResource>(response.Result);
             return Ok(result);
-        }
-
-        private OrderItemsListResource MapListResource(IEnumerable<DAL.OrderItem> orderItems)
-        {
-            var result = new OrderItemsListResource();
-            foreach (var item in orderItems)
-            {
-                var resource = new OrderItemResource() { Id = item.Id, Key = item.Key, Name = item.Name };
-                if (item.OrderAnnexId == DAL.OrderAnnexId.General)
-                    continue;
-                else if (item.OrderAnnexId == DAL.OrderAnnexId.HarmfulFactors)
-                    result.Annex1.Add(resource);
-                else
-                    result.Annex2.Add(resource);
-            }
-            return result;
         }
     }
 }

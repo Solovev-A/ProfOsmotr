@@ -6,16 +6,20 @@ using System.Linq;
 
 namespace ProfOsmotr.BL
 {
-    public class Calculator302n : IProfCalculator
+    public class ProfCalculator : IProfCalculator
     {
-        public IEnumerable<CalculationResultItem> CalculateResult(IEnumerable<CalculationSource> sources)
+        private CalculateResultRequest request;
+
+        public IEnumerable<CalculationResultItem> CalculateResult(CalculateResultRequest request)
         {
-            if (sources == null)
-                throw new ArgumentNullException(nameof(sources));
-            if (!sources.Any())
+            if (request == null)
+                throw new ArgumentNullException(nameof(request));
+            if (request.CalculationSources == null || !request.CalculationSources.Any())
                 throw new InvalidOperationException("Расчет результата невозможен, в связи с отсутствием исходных данных для расчета");
+            this.request = request;
+
             var amountByService = new Dictionary<Service, int>();
-            foreach (var source in sources)
+            foreach (var source in request.CalculationSources)
             {
                 var servicesForCurrentSourceProfession = GetNecessaryServices(source);
                 foreach (var service in servicesForCurrentSourceProfession)
@@ -56,10 +60,15 @@ namespace ProfOsmotr.BL
 
         private IEnumerable<Service> GetNecessaryServices(CalculationSource source)
         {
-            var sourceExaminations = source.Profession.OrderItems
+            var examinations = source.Profession.OrderItems
                     .SelectMany(item => item.OrderExaminations);
 
-            return sourceExaminations
+            if (request.MandatoryOrderExaminations != null)
+            {
+                examinations = examinations.Concat(request.MandatoryOrderExaminations);
+            }
+
+            return examinations
                     .Select(examination => examination.ActualClinicServices.Single().Service)
                     .Distinct();
         }

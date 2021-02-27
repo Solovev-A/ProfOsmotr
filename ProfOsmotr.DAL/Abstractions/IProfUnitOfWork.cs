@@ -26,8 +26,6 @@ namespace ProfOsmotr.DAL.Abstractions
 
         IRepository<MedicalExaminationType> MedicalExaminationTypes { get; }
 
-        IRepository<OrderAnnex> OrderAnnexes { get; }
-
         IOrderExaminationRepository OrderExaminations { get; }
 
         IOrderRepository OrderItems { get; }

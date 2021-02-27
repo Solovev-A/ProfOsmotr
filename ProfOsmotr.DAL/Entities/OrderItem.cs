@@ -14,16 +14,6 @@ namespace ProfOsmotr.DAL
         public int Id { get; private set; }
 
         /// <summary>
-        /// Идентификатор приложения приказа
-        /// </summary>
-        public OrderAnnexId OrderAnnexId { get; set; }
-
-        /// <summary>
-        /// Приложение приказа
-        /// </summary>
-        public virtual OrderAnnex OrderAnnex { get; set; }
-
-        /// <summary>
         /// Ключ, номер пункта по приказу
         /// </summary>
         [Required]

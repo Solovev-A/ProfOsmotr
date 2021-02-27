@@ -14,6 +14,7 @@ namespace ProfOsmotr.BL
 
         private readonly ICalculationSourceFactory calculationSourceFactory;
         private readonly ICatalogService catalogService;
+        private readonly IOrderService orderService;
         private readonly IProfCalculator profCalculator;
         private readonly IProfUnitOfWork uow;
 
@@ -21,15 +22,17 @@ namespace ProfOsmotr.BL
 
         #region Constructors
 
-        public CalculationService(ICatalogService catalogService,
+        public CalculationService(ICalculationSourceFactory calculationSourceFactory,
+                                  ICatalogService catalogService,
+                                  IOrderService orderService,
                                   IProfCalculator profCalculator,
-                                  IProfUnitOfWork uow,
-                                  ICalculationSourceFactory calculationSourceFactory)
+                                  IProfUnitOfWork uow)
         {
+            this.calculationSourceFactory = calculationSourceFactory ?? throw new ArgumentNullException(nameof(calculationSourceFactory));
             this.catalogService = catalogService ?? throw new ArgumentNullException(nameof(catalogService));
+            this.orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
             this.profCalculator = profCalculator ?? throw new ArgumentNullException(nameof(profCalculator));
             this.uow = uow ?? throw new ArgumentNullException(nameof(uow));
-            this.calculationSourceFactory = calculationSourceFactory ?? throw new ArgumentNullException(nameof(calculationSourceFactory));
         }
 
         #endregion Constructors
@@ -92,7 +95,7 @@ namespace ProfOsmotr.BL
 
             try
             {
-                var calculation = CreateCalculation(sourceResponse.Result, request, user, clinic);
+                var calculation = await CreateCalculationAsync(sourceResponse.Result, request, user, clinic);
                 await uow.Calculations.AddAsync(calculation);
                 await uow.SaveAsync();
                 return new CalculationResponse(calculation);
@@ -147,14 +150,19 @@ namespace ProfOsmotr.BL
             }
         }
 
-        private Calculation CreateCalculation(IEnumerable<CalculationSource> calculationSources,
-                                              CreateCalculationRequest request,
-                                              User user,
-                                              Clinic clinic)
+        private async Task<Calculation> CreateCalculationAsync(IEnumerable<CalculationSource> calculationSources,
+                                                               CreateCalculationRequest request,
+                                                               User user,
+                                                               Clinic clinic)
         {
+            var calculateResultRequest = new CalculateResultRequest()
+            {
+                CalculationSources = calculationSources,
+                MandatoryOrderExaminations = await orderService.GetMandatoryOrderExaminationsWithActualServicesAsync(clinic.Id)
+            };
             return new Calculation()
             {
-                CalculationResultItems = profCalculator.CalculateResult(calculationSources).ToList(),
+                CalculationResultItems = profCalculator.CalculateResult(calculateResultRequest).ToList(),
                 CalculationSources = calculationSources.ToList(),
                 Clinic = clinic,
                 Creator = user,

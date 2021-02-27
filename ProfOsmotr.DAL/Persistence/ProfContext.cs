@@ -8,8 +8,6 @@ namespace ProfOsmotr.DAL
 
         internal DbSet<OrderItem> OrderItems { get; private set; }
 
-        internal DbSet<OrderAnnex> OrderAnnex { get; private set; }
-
         internal DbSet<Profession> Professions { get; private set; }
 
         internal DbSet<Service> Services { get; private set; }
@@ -52,16 +50,13 @@ namespace ProfOsmotr.DAL
         {
             modelBuilder.Entity<ActualClinicService>(EFConfigure.ActualClinicService);
             modelBuilder.Entity<OrderExamination>(EFConfigure.OrderExamination);
-            modelBuilder.Entity<OrderAnnex>(EFConfigure.OrderAnnex);
-            modelBuilder.Entity<OrderItem>(EFConfigure.OrderItem);
             modelBuilder.Entity<Service>(EFConfigure.Service);
             modelBuilder.Entity<ServiceAvailabilityGroup>(EFConfigure.ServiceAvailabilityGroup);
             modelBuilder.Entity<Calculation>(EFConfigure.Calculation);
             modelBuilder.Entity<User>(EFConfigure.User);
             modelBuilder.Entity<Role>(EFConfigure.Role);
             modelBuilder.Entity<TargetGroup>(EFConfigure.TargetGroup);
-            modelBuilder.Entity<ClinicRegisterRequest>(EFConfigure.ClinicRegisterRequest);
-            
+            modelBuilder.Entity<ClinicRegisterRequest>(EFConfigure.ClinicRegisterRequest);            
             modelBuilder.Entity<IndividualCheckupIndexValue>(EFConfigure.IndividualCheckupIndexValue);
             modelBuilder.Entity<ContingentCheckupIndexValue>(EFConfigure.ContingentCheckupIndexValue);
             modelBuilder.Entity<CheckupResult>(EFConfigure.CheckupResult);

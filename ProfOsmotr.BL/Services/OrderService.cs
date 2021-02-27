@@ -67,20 +67,13 @@ namespace ProfOsmotr.BL
                 return new OrderItemResponse("Запрос не может быть пустым");
             if (!request.OrderExaminationIdentifiers.Any())
                 return new OrderItemResponse("Список обследований не должен быть пустым");
-            if (!Enum.IsDefined(typeof(OrderAnnexId), request.AnnexId))
-                return new OrderItemResponse("Приложение с таким номером не существует");
 
             OrderItem existingItem = await uow.OrderItems
-                .FirstOrDefaultAsync(item => item.OrderAnnexId == (OrderAnnexId)request.AnnexId
-                                          && item.Key == request.Key
-                                          && !item.IsDeleted);
+                .FirstOrDefaultAsync(item => item.Key == request.Key && !item.IsDeleted);
             if (existingItem != null)
                 return new OrderItemResponse("Пункт приказа с таким номером уже существует");
 
-            var annex = await uow.OrderAnnexes.FirstOrDefaultAsync(a => a.Id == (OrderAnnexId)request.AnnexId);
-
             OrderItem newOrderItem = mapper.Map<AddOrderItemRequest, OrderItem>(request);
-            newOrderItem.OrderAnnex = annex;
 
             foreach (var id in request.OrderExaminationIdentifiers)
             {
@@ -129,11 +122,6 @@ namespace ProfOsmotr.BL
             return new OrderItemResponse(result);
         }
 
-        public async Task<IEnumerable<OrderItem>> GetAllItems()
-        {
-            return await uow.OrderItems.GetActualItems();
-        }
-
         public async Task<IEnumerable<OrderExamination>> GetExaminationsAsync()
         {
             return await uow.OrderExaminations.GetExaminationsWithDetailsAsync();
@@ -144,9 +132,9 @@ namespace ProfOsmotr.BL
             return await uow.OrderExaminations.GetExaminationsAsync();
         }
 
-        public async Task<IEnumerable<OrderAnnex>> GetOrderAsync()
+        public async Task<IEnumerable<OrderItem>> GetOrderAsync(bool nocache)
         {
-            return await uow.OrderItems.GetOrderAsync();
+            return await uow.OrderItems.GetOrderAsync(nocache);
         }
 
         public async Task<IEnumerable<TargetGroup>> GetTargetGroupsAsync()
@@ -247,9 +235,9 @@ namespace ProfOsmotr.BL
             return new OrderItemResponse(item);
         }
 
-        async Task<IEnumerable<OrderItem>> IOrderService.GetGeneralOrderItemsAsync()
+        async Task<IEnumerable<OrderExamination>> IOrderService.GetMandatoryOrderExaminationsWithActualServicesAsync(int clinicId)
         {
-            return await uow.OrderItems.FindAsync(item => item.OrderAnnexId == OrderAnnexId.General && !item.IsDeleted);
+            return await uow.OrderExaminations.GetMandatoryExaminationsWithActualServicesAsync(clinicId);
         }
 
         public async Task<ExaminationResultIndexesResponse> GetExaminationResultIndexes(int examinationId)

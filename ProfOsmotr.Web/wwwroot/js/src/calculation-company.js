@@ -10,8 +10,7 @@ async function initCalculationCompany() {
     const inputsToValidateOnCreateCalculation = document.querySelectorAll('.js-validate');
 
     // Selectors
-    const SELECTOR_ORDER_ITEMS1_SELECT = '#OrderItems1';
-    const SELECTOR_ORDER_ITEMS2_SELECT = '#OrderItems2';
+    const SELECTOR_ORDER_ITEMS_SELECT = '#OrderItems';
     const SELECTOR_PROFESSIONS_LIST = '#ProfessionsList';
     const SELECTOR_COMPANY_NAME_INPUT = '#CompanyName';
     const SELECTOR_ADD_PROFESSION_BUTTON = '#AddProfession';
@@ -51,9 +50,8 @@ async function initCalculationCompany() {
             },
             {
                 source: () => {
-                    let annex1Items = $(SELECTOR_ORDER_ITEMS1_SELECT).select2('data');
-                    let annex2Items = $(SELECTOR_ORDER_ITEMS2_SELECT).select2('data');
-                    return annex1Items.concat(annex2Items).map((item) => parseInt(item.id));
+                    return $(SELECTOR_ORDER_ITEMS_SELECT).select2('data')
+                        .map((item) => parseInt(item.id));
                 },
                 path: 'orderItems'
             }
@@ -161,8 +159,7 @@ async function initCalculationCompany() {
 
     function clearConstructor() {
         professionConstructor.reset();
-        $(SELECTOR_ORDER_ITEMS1_SELECT).val(null).trigger('change');
-        $(SELECTOR_ORDER_ITEMS2_SELECT).val(null).trigger('change');
+        $(SELECTOR_ORDER_ITEMS_SELECT).val(null).trigger('change');
         resetValidation(inputsToValidateOnAddProfession);
     }
 

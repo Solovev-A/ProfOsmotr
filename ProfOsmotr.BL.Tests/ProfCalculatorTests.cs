@@ -6,14 +6,14 @@ using Xunit;
 
 namespace ProfOsmotr.BL.Tests
 {
-    public class Calculator302nTests
+    public class ProfCalculatorTests
     {
         [Fact]
         public void ShouldCompanyCalculationBeCorrect()
         {
             // Arrange
 
-            var calculator = new Calculator302n();
+            var calculator = new ProfCalculator();
 
             var orderExamination1 = CreateOrderExamination(1, 100);
             var orderExamination2 = CreateOrderExamination(2, 119);
@@ -41,9 +41,11 @@ namespace ProfOsmotr.BL.Tests
                 Profession = CreateProfessionWith(orderItem2, orderItem3)
             };
 
+            var request = CreateCalculateResultRequest(calcSource1, calcSource2);
+
             // Act
 
-            IEnumerable<CalculationResultItem> results = calculator.CalculateResult(new[] { calcSource1, calcSource2 });
+            IEnumerable<CalculationResultItem> results = calculator.CalculateResult(request);
 
             // Assert
 
@@ -56,7 +58,7 @@ namespace ProfOsmotr.BL.Tests
         {
             // Arrange
 
-            var calculator = new Calculator302n();
+            var calculator = new ProfCalculator();
 
             var orderExamination1 = CreateOrderExamination(1, 100);
             var orderExamination2 = CreateOrderExamination(2, 111);
@@ -70,9 +72,11 @@ namespace ProfOsmotr.BL.Tests
                 Profession = CreateProfessionWith(orderItem)
             };
 
+            var request = CreateCalculateResultRequest(calcSource);
+
             // Act
 
-            IEnumerable<CalculationResultItem> results = calculator.CalculateResult(new[] { calcSource });
+            IEnumerable<CalculationResultItem> results = calculator.CalculateResult(request);
 
             // Assert
 
@@ -86,7 +90,7 @@ namespace ProfOsmotr.BL.Tests
         {
             // Arrange
 
-            var calculator = new Calculator302n();
+            var calculator = new ProfCalculator();
 
             var orderExaminationForWomenOnly = CreateOrderExamination(1, 101, TargetGroupId.ForWomenOnly);
             var orderExaminationForPersonsOver40Only = CreateOrderExamination(2, 119, TargetGroupId.ForPersonsOver40Only);
@@ -105,9 +109,11 @@ namespace ProfOsmotr.BL.Tests
                 Profession = CreateProfessionWith(orderItem)
             };
 
+            var request = CreateCalculateResultRequest(calcSource);
+
             // Act
 
-            IEnumerable<CalculationResultItem> results = calculator.CalculateResult(new[] { calcSource });
+            IEnumerable<CalculationResultItem> results = calculator.CalculateResult(request);
 
             // Assert
 
@@ -122,7 +128,7 @@ namespace ProfOsmotr.BL.Tests
         {
             // Arrange
 
-            var calculator = new Calculator302n();
+            var calculator = new ProfCalculator();
 
             var orderExamination = CreateOrderExamination(1, 100);
 
@@ -135,9 +141,11 @@ namespace ProfOsmotr.BL.Tests
                 Profession = CreateProfessionWith(orderItem1, orderItem2)
             };
 
+            var request = CreateCalculateResultRequest(calcSource);
+
             // Act
 
-            IEnumerable<CalculationResultItem> results = calculator.CalculateResult(new[] { calcSource });
+            IEnumerable<CalculationResultItem> results = calculator.CalculateResult(request);
 
             // Assert
 
@@ -148,10 +156,24 @@ namespace ProfOsmotr.BL.Tests
         [Fact]
         public void ThrowsOnNullOrEmptySources()
         {
-            var calculator = new Calculator302n();
+            var calculator = new ProfCalculator();
+            var emptySourceRequest = CreateCalculateResultRequest();
+            var nullSourceRequest = new CalculateResultRequest()
+            {
+                CalculationSources = null
+            };
 
             Assert.Throws<ArgumentNullException>(() => calculator.CalculateResult(null));
-            Assert.Throws<InvalidOperationException>(() => calculator.CalculateResult(new CalculationSource[] { }));
+            Assert.Throws<InvalidOperationException>(() => calculator.CalculateResult(emptySourceRequest));
+            Assert.Throws<InvalidOperationException>(() => calculator.CalculateResult(nullSourceRequest));
+        }
+
+        private CalculateResultRequest CreateCalculateResultRequest(params CalculationSource[] sources)
+        {
+            return new CalculateResultRequest()
+            {
+                CalculationSources = sources
+            };
         }
 
         private OrderExamination CreateOrderExamination(int id, // для исключения повторов услуги сравниваются по id услуги, МО и обследования

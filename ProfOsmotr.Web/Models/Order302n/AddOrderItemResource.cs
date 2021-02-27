@@ -5,8 +5,6 @@ namespace ProfOsmotr.Web.Models
 {
     public class AddOrderItemResource
     {
-        public int AnnexId { get; set; }
-
         [Required]
         [StringLength(70)]
         public string Key { get; set; }

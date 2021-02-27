@@ -16,5 +16,7 @@ namespace ProfOsmotr.DAL.Abstractions
         Task<IEnumerable<OrderExamination>> GetExaminationsAsync();
 
         Task<IEnumerable<ExaminationResultIndex>> GetIndexes(int examinationId);
+
+        Task<IEnumerable<OrderExamination>> GetMandatoryExaminationsWithActualServicesAsync(int clinicId);
     }
 }

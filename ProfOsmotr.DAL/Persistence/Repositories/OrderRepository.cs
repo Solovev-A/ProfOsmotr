@@ -25,33 +25,22 @@ namespace ProfOsmotr.DAL
             return await query.FirstOrDefaultAsync(item => item.Id == itemId && !item.IsDeleted);
         }
 
-        public async Task<IEnumerable<OrderItem>> GetActualItems()
+
+        public async Task<IEnumerable<OrderItem>> GetOrderAsync(bool nocache)
         {
-            if (!cache.TryGetValue(itemsCollectionKey, out IEnumerable<OrderItem> value))
+            if (!cache.TryGetValue(itemsCollectionKey, out IEnumerable<OrderItem> value) || nocache)
             {
                 value = await dbSet
+                    .AsNoTracking()
+                    .Include(item => item.OrderExaminations.OrderBy(ex => ex.Name))
                     .Where(item => !item.IsDeleted)
                     .ToListAsync();
-                value = value.OrderBy(item => item.Key, new OrderItemKeyComparer()).ToList();
-                
+
+                value = value.OrderBy(item => item.Key, new OrderItemKeyComparer());
+
                 cache.Set(itemsCollectionKey, value, TimeSpan.FromMinutes(5));
             }
             return value;
-        }
-
-        public async Task<IEnumerable<OrderAnnex>> GetOrderAsync()
-        {
-            var annexes = await context.OrderAnnex
-                .AsNoTracking()
-                .Include(x => x.OrderItems.Where(item => !item.IsDeleted))
-                    .ThenInclude(x => x.OrderExaminations.OrderBy(ex => ex.Name))
-                .ToListAsync();
-
-            return annexes.Select(annex =>
-            {
-                annex.OrderItems = annex.OrderItems.OrderBy(item => item.Key, new OrderItemKeyComparer()).ToList();
-                return annex;
-            });
         }
 
         private IQueryable<OrderItem> GetOrderItemWithActualServicesQuery(int clinicId)

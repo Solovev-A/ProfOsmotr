@@ -46,12 +46,6 @@ namespace ProfOsmotr.BL.Abstractions
         Task<OrderItemResponse> DeleteItemAsync(int id);
 
         /// <summary>
-        /// Предоставляте все актуальные пункты приказа
-        /// </summary>
-        /// <returns></returns>
-        Task<IEnumerable<OrderItem>> GetAllItems();
-
-        /// <summary>
         /// Предоставляет показатели результата обследвоания по приказу
         /// </summary>
         /// <param name="examinationId">
@@ -76,7 +70,7 @@ namespace ProfOsmotr.BL.Abstractions
         /// Предоставляет все актуальные пункты приказа, сгруппированные по приложениям
         /// </summary>
         /// <returns>Перечисление приложений приказа</returns>
-        Task<IEnumerable<OrderAnnex>> GetOrderAsync();
+        Task<IEnumerable<OrderItem>> GetOrderAsync(bool nocache);
 
         /// <summary>
         /// Предоставляет все целевые группы обследований
@@ -129,6 +123,6 @@ namespace ProfOsmotr.BL.Abstractions
         /// обследуемых, вне зависмости от условий труда
         /// </summary>
         /// <returns></returns>
-        internal Task<IEnumerable<OrderItem>> GetGeneralOrderItemsAsync();
+        internal Task<IEnumerable<OrderExamination>> GetMandatoryOrderExaminationsWithActualServicesAsync(int clinicId);
     }
 }

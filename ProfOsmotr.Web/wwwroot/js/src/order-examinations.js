@@ -119,6 +119,12 @@ class OrderExaminationsPage {
                     label: 'Полное наименование услуги по умолчанию',
                     type: 'textarea',
                     validityCheck: DefaultChecks.requiredText500
+                },
+                {
+                    id: 'is-mandatory',
+                    path: 'isMandatory',
+                    label: 'Обязательное при любом осмотре',
+                    type: 'input-checkbox'
                 }
             ],
             buttons: [
@@ -151,7 +157,8 @@ class OrderExaminationsPage {
                     .find(group => group.id == examination.targetGroupId)
                     .name
             },
-            defaultServiceDetails: examination.defaultServiceDetails
+            defaultServiceDetails: examination.defaultServiceDetails,
+            isMandatory: examination.isMandatory
         };
     }
 
@@ -160,7 +167,8 @@ class OrderExaminationsPage {
             name: model.name,
             defaultServiceCode: model.defaultServiceDetails.code,
             defaultServiceFullName: model.defaultServiceDetails.fullName,
-            targetGroupId: +model.targetGroup.id
+            targetGroupId: +model.targetGroup.id,
+            isMandatory: model.isMandatory
         };
 
         let response;

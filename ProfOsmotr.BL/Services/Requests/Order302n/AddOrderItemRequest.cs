@@ -8,11 +8,6 @@ namespace ProfOsmotr.BL
     public class AddOrderItemRequest
     {
         /// <summary>
-        /// Идентификатор приложения приказа
-        /// </summary>
-        public int AnnexId { get; set; }
-
-        /// <summary>
         /// Ключ, номер пункта по приказу
         /// </summary>
         public string Key { get; set; }

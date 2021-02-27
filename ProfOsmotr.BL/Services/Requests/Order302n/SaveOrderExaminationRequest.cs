@@ -24,5 +24,10 @@
         /// Полной наименование услуги, используемой в отношении обследования, по умолчаюнию
         /// </summary>
         public string DefaultServiceFullName { get; set; }
+
+        /// <summary>
+        /// Признак обязательности обследования при любом медицинском осмотре
+        /// </summary>
+        public bool IsMandatory { get; set; }
     }
 }

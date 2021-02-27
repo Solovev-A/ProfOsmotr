@@ -9,7 +9,7 @@ namespace ProfOsmotr.DAL
     {
         public async Task Seed(IProfUnitOfWork uow, IPasswordHasher passwordHasher, OrderDataConfiguration configuration)
         {
-            IEnumerable<OrderExamination> examinations = await new Order302Seeder(uow).Seed();
+            IEnumerable<OrderExamination> examinations = await new OrderSeeder(uow).Seed();
             User administrator = await new UserSeeder(uow, passwordHasher).SeedAsync();
             Clinic clinic = await new VirtualClinicSeeder(uow).SeedAsync();
             administrator.Clinic = clinic;

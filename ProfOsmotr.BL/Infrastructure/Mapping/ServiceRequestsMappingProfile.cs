@@ -24,8 +24,7 @@ namespace ProfOsmotr.BL.Infrastructure.Mapping
                 .ForMember(d => d.DefaultServiceFullName, opt => opt.MapFrom(s => s.DefaultServiceDetails.FullName))
                 .ReverseMap();
 
-            CreateMap<AddOrderItemRequest, OrderItem>()
-                .ForMember(d => d.OrderAnnexId, conf => conf.Ignore());
+            CreateMap<AddOrderItemRequest, OrderItem>();
 
             //CreateMap<User, UpdateUserRequest>()
             //    .ForMember(d => d.Name, opt => opt.MapFrom(s => s.UserProfile.Name))

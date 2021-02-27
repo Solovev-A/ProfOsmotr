@@ -39,5 +39,14 @@ namespace ProfOsmotr.DAL
                 .OrderBy(index => index.Title)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<OrderExamination>> GetMandatoryExaminationsWithActualServicesAsync(int clinicId)
+        {
+            return await dbSet
+                .Include(ex => ex.ActualClinicServices.Where(actual => actual.ClinicId == clinicId))
+                    .ThenInclude(actual => actual.Service.ServiceDetails)
+                .Where(ex => ex.IsMandatory)
+                .ToListAsync();
+        }
     }
 }

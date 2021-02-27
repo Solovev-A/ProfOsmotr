@@ -18,6 +18,11 @@ namespace ProfOsmotr.DAL
         public string Name { get; set; }
 
         /// <summary>
+        /// Признак обязательности обследования для любого медицинского осмотра
+        /// </summary>
+        public bool IsMandatory { get; set; }
+
+        /// <summary>
         /// Идентификатор целевой группы
         /// </summary>
         public TargetGroupId TargetGroupId { get; set; }
@@ -49,6 +54,6 @@ namespace ProfOsmotr.DAL
 
         public virtual ICollection<OrderItem> OrderItems { get; } = new List<OrderItem>();
 
-        public virtual ICollection<ExaminationResultIndex> ExaminationResultIndexes { get; } = new List<ExaminationResultIndex>();
+        public virtual ICollection<ExaminationResultIndex> ExaminationResultIndexes { get; } = new List<ExaminationResultIndex>();        
     }
 }

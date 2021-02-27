@@ -4,6 +4,8 @@
     {
         public int TargetGroupId { get; set; }
 
+        public bool IsMandatory { get; set; }
+
         public ServiceDetailsResource DefaultServiceDetails { get; set; }
     }
 }

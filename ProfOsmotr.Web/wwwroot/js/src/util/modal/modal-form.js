@@ -93,7 +93,11 @@ class ModalForm extends CustomBootstrapModalBase {
             let id = element.dataset[ID_DATA_ATTR_DATASET];
             let path = this._getPathById(id);
             if (path && element.dataset[RENDER_DATA_ATTR_DATASET] !== RENDER_DATA_ATTR_VALUE) {
-                this._updateModel(path, element.value);
+                if (element.type === 'checkbox') {
+                    this._updateModel(path, element.checked);
+                } else {
+                    this._updateModel(path, element.value);
+                }
             }
         };
     };
@@ -108,6 +112,8 @@ class ModalForm extends CustomBootstrapModalBase {
             case 'input-password':
                 control = _getInput('password');
                 break;
+            case 'input-checkbox':
+                return _getCheckbox();
             case 'textarea':
                 control = _getFormControl('textarea');
                 break;
@@ -163,6 +169,22 @@ class ModalForm extends CustomBootstrapModalBase {
         function _getFormRow() {
             return Util.toElement(TEMPLATE_FORM_ROW);
         };
+
+        function _getCheckbox() {
+            const template = `<div class="form-group form-check">    
+                                <label class="form-check-label">${data.label}</label>
+                              </div>`;
+            const container = Util.toElement(template);
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.classList.add(CLASSNAME_CUSTOM_MODAL, 'form-check-input');
+            checkbox.dataset[ID_DATA_ATTR_DATASET] = data.id;
+            checkbox.disabled = isDisabled;
+
+            container.insertBefore(checkbox, container.firstChild);
+            return container;
+        }
     };
 
     _addValidation(validityCheck, element) {
@@ -185,7 +207,11 @@ class ModalForm extends CustomBootstrapModalBase {
             if (value === null || value === undefined)
                 continue;
             let element = this._modalElement.querySelector(`[${ID_DATA_ATTR}="${dataObj.id}"]`);
-            element.value = dataObj.render ? dataObj.render(value) : value;
+            if (element.type === 'checkbox') {
+                element.checked = value ? true : false;
+            } else {
+                element.value = dataObj.render ? dataObj.render(value) : value;
+            }
         }
     };
 }

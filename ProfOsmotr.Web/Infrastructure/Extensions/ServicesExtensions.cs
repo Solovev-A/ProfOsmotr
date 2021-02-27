@@ -55,7 +55,6 @@ namespace ProfOsmotr.Web.Infrastructure
             services.AddTransient<IQueryAwareRepository<Clinic>, ClinicRepository>();
             services.AddTransient<IQueryAwareRepository<User>, UserRepository>();
             services.AddTransient<IQueryAwareRepository<ClinicRegisterRequest>, ClinicRegisterRequestRepository>();
-            services.AddTransient<IRepository<OrderAnnex>, EFRepository<OrderAnnex>>();
             services.AddTransient<IRepository<Role>, EFRepository<Role>>();
             services.AddTransient<IRepository<TargetGroup>, EFRepository<TargetGroup>>();
             services.AddTransient<IRepository<ICD10Chapter>, EFRepository<ICD10Chapter>>();
@@ -73,7 +72,7 @@ namespace ProfOsmotr.Web.Infrastructure
             services.AddTransient<ICalculationSourceFactory, CalculationSourceFactory>();
             services.AddTransient<ICatalogService, CatalogService>();
             services.AddTransient<IClinicService, ClinicService>();
-            services.AddTransient<IProfCalculator, Calculator302n>();
+            services.AddTransient<IProfCalculator, ProfCalculator>();
             services.AddTransient<IProfessionService, ProfessionService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAuthService, AuthenticationService>();

@@ -9,16 +9,11 @@ namespace ProfOsmotr.DAL.Abstractions
     public interface IOrderRepository : IRepository<OrderItem>
     {
         /// <summary>
-        /// Предоставляет актуальные элементы приказа
-        /// </summary>
-        /// <returns></returns>
-        Task<IEnumerable<OrderItem>> GetActualItems();
-
-        /// <summary>
         /// Предоставляет пункты приказа с обследованиями, сгруппированные по приложениям приказа
         /// </summary>
+        /// <param name="nocache">Признак необходимости получения результата не из кэша</param>
         /// <returns>Перечисление приложений приказа</returns>
-        Task<IEnumerable<OrderAnnex>> GetOrderAsync();
+        Task<IEnumerable<OrderItem>> GetOrderAsync(bool nocache = false);
 
         /// <summary>
         /// Предоставляет пункт приказа с идентификатором <paramref name="itemId"/>, включая

@@ -25,7 +25,6 @@ namespace ProfOsmotr.DAL
                                 IRepository<Gender> genders,
                                 IRepository<ICD10Chapter> iCD10Chapters,
                                 IRepository<MedicalExaminationType> medicalExaminationTypes,
-                                IRepository<OrderAnnex> orderAnnexes,
                                 IOrderExaminationRepository orderExaminations,
                                 IOrderRepository orderItems,
                                 IRepository<Profession> professions,
@@ -45,7 +44,6 @@ namespace ProfOsmotr.DAL
             Genders = genders ?? throw new ArgumentNullException(nameof(genders));
             ICD10Chapters = iCD10Chapters ?? throw new ArgumentNullException(nameof(iCD10Chapters));
             MedicalExaminationTypes = medicalExaminationTypes ?? throw new ArgumentNullException(nameof(medicalExaminationTypes));
-            OrderAnnexes = orderAnnexes ?? throw new ArgumentNullException(nameof(orderAnnexes));
             OrderExaminations = orderExaminations ?? throw new ArgumentNullException(nameof(orderExaminations));
             OrderItems = orderItems ?? throw new ArgumentNullException(nameof(orderItems));
             Professions = professions ?? throw new ArgumentNullException(nameof(professions));
@@ -77,8 +75,6 @@ namespace ProfOsmotr.DAL
         public IRepository<ICD10Chapter> ICD10Chapters { get; }
 
         public IRepository<MedicalExaminationType> MedicalExaminationTypes { get; }
-
-        public IRepository<OrderAnnex> OrderAnnexes { get; }
 
         public IOrderExaminationRepository OrderExaminations { get; }
 

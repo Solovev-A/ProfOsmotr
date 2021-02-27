@@ -2,7 +2,6 @@
 using ProfOsmotr.BL.Infrastructure;
 using ProfOsmotr.DAL;
 using ProfOsmotr.DAL.Abstractions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,7 +30,7 @@ namespace ProfOsmotr.BL
         #region Methods
 
         public async Task<ProfessionResponse> CreateProfession(CreateProfessionRequest request)
-        {            
+        {
             return await CreateProfessionResponse(request);
         }
 
@@ -62,14 +61,10 @@ namespace ProfOsmotr.BL
                 return new ProfessionResponse("Запрос не может быть пустым");
 
             var profession = new Profession() { Name = request.Name };
-            IEnumerable<OrderItem> generalOrderItems = await orderService.GetGeneralOrderItemsAsync();
 
-            var orderItemIdentifiersToAdd = request.OrderItemIdentifiers
-                .Concat(generalOrderItems.Select(item => item.Id));
-
-            foreach (var id in orderItemIdentifiersToAdd)
+            foreach (var id in request.OrderItemIdentifiers)
             {
-                var itemResponse = clinicId.HasValue 
+                var itemResponse = clinicId.HasValue
                     ? await orderService.FindItemWithActualServicesAsync(id, clinicId.Value)
                     : await orderService.FindItemAsync(id);
 

@@ -19,5 +19,7 @@ namespace ProfOsmotr.Web.Models
         public string DefaultServiceFullName { get; set; }
 
         public int TargetGroupId { get; set; }
+
+        public bool IsMandatory { get; set; }
     }
 }
