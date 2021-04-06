@@ -47,7 +47,10 @@ namespace ProfOsmotr.Web
             services.AddAuthorization(auth => auth.AddPolicy(GLOBAL_AUTH_POLICY_NAME,
                                         policy => policy.Requirements.Add(new NotBannedRequirement())));
 
-            services.AddControllersWithViews(options => options.Filters.Add(new AuthorizeFilter(GLOBAL_AUTH_POLICY_NAME)))
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add(new AuthorizeFilter(GLOBAL_AUTH_POLICY_NAME));
+            })
                 .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
             services.AddMemoryCache();

@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-module.exports = {
+const generalConfig = {
     entry: path.resolve(__dirname, 'wwwroot/js/src/main.js'),
     output: {
         path: path.resolve(__dirname, 'wwwroot/js/dist'),
@@ -20,14 +20,6 @@ module.exports = {
                 filename: "../../css/dist/[name].css"
             }),
     ],
-    module: {
-        rules: [
-            {
-                test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader']
-            }
-        ]
-    },
     optimization: {
         splitChunks: {
             cacheGroups: {
@@ -39,5 +31,41 @@ module.exports = {
                 },
             }
         }
+    },
+    module: {
+        rules: [
+            {
+                test: /\.css$/,
+                use: [MiniCssExtractPlugin.loader, 'css-loader']
+            }
+        ]
     }
-};
+}
+
+const reactConfig = {
+    entry: {
+        index: path.resolve(__dirname, 'OperatorClientApp/index.js')
+    },
+    output: {
+        path: path.resolve(__dirname, 'wwwroot/js/dist'),
+        filename: "operator-workplace.js"
+    },
+    module: {
+        rules: [
+            {
+                use: {
+                    loader: "babel-loader"
+                },
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/
+            },
+            {
+                test: /\.css$/,
+                use: [MiniCssExtractPlugin.loader, 'css-loader']
+            }
+        ]
+    }
+}
+
+
+module.exports = [generalConfig, reactConfig];
