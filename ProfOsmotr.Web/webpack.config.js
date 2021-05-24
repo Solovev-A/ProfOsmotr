@@ -64,7 +64,8 @@ const reactConfig = {
                 use: [MiniCssExtractPlugin.loader, 'css-loader']
             }
         ]
-    }
+    },
+    devtool: 'inline-source-map'
 }
 
 

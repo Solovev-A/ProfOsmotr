@@ -1,8 +1,5 @@
 ﻿import React from 'react';
 import ReactDOM from 'react-dom';
-
-const App = () => (
-    <div>Здесь будет АРМ оператора</div>
-);
+import App from './App';
 
 ReactDOM.render(<App />, document.getElementById("operator-workplace"));
