@@ -6,9 +6,10 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const generalConfig = {
     entry: path.resolve(__dirname, 'wwwroot/js/src/main.js'),
     output: {
-        path: path.resolve(__dirname, 'wwwroot/js/dist'),
+        path: path.resolve(__dirname, 'wwwroot/js/dist/general'),
         filename: '[name].js'
     },
+    devtool: 'source-map',
     plugins: [
         new webpack.ProvidePlugin({
             $: "jquery",
@@ -17,7 +18,7 @@ const generalConfig = {
         new CleanWebpackPlugin(),
         new MiniCssExtractPlugin(
             {
-                filename: "../../css/dist/[name].css"
+                filename: "../../../css/dist/[name].css"
             }),
     ],
     optimization: {
@@ -47,8 +48,8 @@ const reactConfig = {
         index: path.resolve(__dirname, 'OperatorClientApp/index.js')
     },
     output: {
-        path: path.resolve(__dirname, 'wwwroot/js/dist'),
-        filename: "operator-workplace.js"
+        path: path.resolve(__dirname, 'wwwroot/js/dist/operator-workplace'),
+        filename: "main.js"
     },
     module: {
         rules: [
@@ -65,7 +66,10 @@ const reactConfig = {
             }
         ]
     },
-    devtool: 'inline-source-map'
+    devtool: 'source-map',
+    plugins: [
+        new CleanWebpackPlugin()
+    ]
 }
 
 
