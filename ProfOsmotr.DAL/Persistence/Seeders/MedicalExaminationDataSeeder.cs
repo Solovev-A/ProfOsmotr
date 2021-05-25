@@ -18,15 +18,6 @@ namespace ProfOsmotr.DAL
         {
             await SeedGenders();
             await SeedCheckupResults();
-            await SeedMedicalExaminationTypes();
-        }
-
-        private async Task SeedMedicalExaminationTypes()
-        {
-            var types = Enum.GetValues(typeof(MedicalExaminationTypeId))
-                .Cast<MedicalExaminationTypeId>()
-                .Select(e => new MedicalExaminationType() { Id = e, Name = e.Description() });
-            await uow.MedicalExaminationTypes.AddRangeAsync(types);
         }
 
         private async Task SeedCheckupResults()

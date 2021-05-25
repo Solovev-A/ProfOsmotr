@@ -24,8 +24,6 @@ namespace ProfOsmotr.DAL.Abstractions
 
         IRepository<Gender> Genders { get; }
 
-        IRepository<MedicalExaminationType> MedicalExaminationTypes { get; }
-
         IOrderExaminationRepository OrderExaminations { get; }
 
         IOrderRepository OrderItems { get; }

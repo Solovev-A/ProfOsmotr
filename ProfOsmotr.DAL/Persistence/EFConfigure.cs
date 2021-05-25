@@ -39,7 +39,7 @@ namespace ProfOsmotr.DAL
 
         internal static void ContingentCheckupStatus(EntityTypeBuilder<ContingentCheckupStatus> builder)
         {
-            builder.HasAlternateKey(x => new { x.ContingentMedicalExaminationId, x.PatientId });
+            builder.HasAlternateKey(x => new { x.PeriodicMedicalExaminationId, x.PatientId });
             builder.Property(x => x.CheckupResultId)
                 .HasConversion<int>();
             builder.HasOne(x => x.LastEditor)
@@ -47,10 +47,8 @@ namespace ProfOsmotr.DAL
                 .HasForeignKey(x => x.LastEditorId);
         }
 
-        internal static void ContingentMedicalExamination(EntityTypeBuilder<ContingentMedicalExamination> builder)
+        internal static void PeriodicMedicalExamination(EntityTypeBuilder<PeriodicMedicalExamination> builder)
         {
-            builder.Property(x => x.MedicalExaminationTypeId)
-                .HasConversion<int>();
             builder.HasOne(x => x.LastEditor)
                 .WithMany()
                 .HasForeignKey(x => x.LastEditorId);
@@ -76,10 +74,10 @@ namespace ProfOsmotr.DAL
 
         internal static void IndividualCheckupStatus(EntityTypeBuilder<IndividualCheckupStatus> builder)
         {
-            builder.HasOne(x => x.IndividualMedicalExamination)
+            builder.HasOne(x => x.PreliminaryMedicalExamination)
                 .WithOne(e => e.CheckupStatus)
-                .HasForeignKey<IndividualCheckupStatus>(x => x.IndividualMedicalExaminationId);
-            builder.HasAlternateKey(x => new { x.IndividualMedicalExaminationId, x.PatientId });
+                .HasForeignKey<IndividualCheckupStatus>(x => x.PreliminaryMedicalExaminationId);
+            builder.HasAlternateKey(x => new { x.PreliminaryMedicalExaminationId, x.PatientId });
             builder.Property(x => x.CheckupResultId)
                 .HasConversion<int>();
             builder.HasOne(x => x.LastEditor)
@@ -87,22 +85,14 @@ namespace ProfOsmotr.DAL
                 .HasForeignKey(x => x.LastEditorId);
         }
 
-        internal static void IndividualMedicalExamination(EntityTypeBuilder<IndividualMedicalExamination> builder)
+        internal static void PreliminaryMedicalExamination(EntityTypeBuilder<PreliminaryMedicalExamination> builder)
         {
             builder.HasOne(x => x.CheckupStatus)
-                .WithOne(c => c.IndividualMedicalExamination)
-                .HasForeignKey<IndividualMedicalExamination>(x => x.CheckupStatusId);
-            builder.Property(x => x.MedicalExaminationTypeId)
-                .HasConversion<int>();
+                .WithOne(c => c.PreliminaryMedicalExamination)
+                .HasForeignKey<PreliminaryMedicalExamination>(x => x.CheckupStatusId);
             builder.HasOne(x => x.LastEditor)
                 .WithMany()
                 .HasForeignKey(x => x.LastEditorId);
-        }
-
-        internal static void MedicalExaminationType(EntityTypeBuilder<MedicalExaminationType> builder)
-        {
-            builder.Property(x => x.Id)
-                .HasConversion<int>();
         }
 
         internal static void NewlyDiagnosedChronicSomaticDisease(EntityTypeBuilder<NewlyDiagnosedChronicSomaticDisease> builder)

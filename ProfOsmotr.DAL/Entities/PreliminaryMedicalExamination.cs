@@ -1,6 +1,6 @@
 ﻿namespace ProfOsmotr.DAL
 {
-    public class IndividualMedicalExamination : MedicalExamination
+    public class PreliminaryMedicalExamination : MedicalExamination
     {
         public int CheckupStatusId { get; set; }
 

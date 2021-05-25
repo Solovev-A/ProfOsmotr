@@ -7,9 +7,9 @@ namespace ProfOsmotr.DAL
     /// </summary>
     public class ContingentCheckupStatus : CheckupStatus
     {
-        public int ContingentMedicalExaminationId { get; set; }
+        public int PeriodicMedicalExaminationId { get; set; }
 
-        public virtual ContingentMedicalExamination ContingentMedicalExamination { get; set; }
+        public virtual PeriodicMedicalExamination PeriodicMedicalExamination { get; set; }
 
         public bool CheckupStarted { get; set; }
 
@@ -28,13 +28,13 @@ namespace ProfOsmotr.DAL
 
         public bool NeedDispensaryObservation { get; set; }
 
-        public virtual ICollection<NewlyDiagnosedChronicSomaticDisease> NewlyDiagnosedChronicSomaticDiseases { get; set; } 
+        public virtual ICollection<NewlyDiagnosedChronicSomaticDisease> NewlyDiagnosedChronicSomaticDiseases { get; set; }
             = new List<NewlyDiagnosedChronicSomaticDisease>();
 
-        public virtual ICollection<NewlyDiagnosedOccupationalDisease> NewlyDiagnosedOccupationalDiseases { get; set; } 
+        public virtual ICollection<NewlyDiagnosedOccupationalDisease> NewlyDiagnosedOccupationalDiseases { get; set; }
             = new List<NewlyDiagnosedOccupationalDisease>();
 
-        public virtual ICollection<ContingentCheckupIndexValue> ContingentCheckupIndexValues { get; } 
+        public virtual ICollection<ContingentCheckupIndexValue> ContingentCheckupIndexValues { get; }
             = new List<ContingentCheckupIndexValue>();
     }
 }

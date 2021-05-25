@@ -7,9 +7,9 @@ namespace ProfOsmotr.DAL
     /// </summary>
     public class IndividualCheckupStatus : CheckupStatus
     {
-        public int IndividualMedicalExaminationId { get; set; }
+        public int PreliminaryMedicalExaminationId { get; set; }
 
-        public virtual IndividualMedicalExamination IndividualMedicalExamination { get; set; }
+        public virtual PreliminaryMedicalExamination PreliminaryMedicalExamination { get; set; }
 
         public virtual ICollection<IndividualCheckupIndexValue> IndividualCheckupIndexValues { get; }
             = new List<IndividualCheckupIndexValue>();

@@ -25,8 +25,8 @@ namespace ProfOsmotr.DAL
 
         public virtual Clinic Clinic { get; set; }
 
-        public virtual ICollection<IndividualMedicalExamination> IndividualMedicalExaminations { get; } = new List<IndividualMedicalExamination>();
-        
-        public virtual ICollection<ContingentMedicalExamination> ContingentMedicalExaminations { get; } = new List<ContingentMedicalExamination>();
+        public virtual ICollection<IndividualCheckupStatus> IndividualCheckupStatuses { get; } = new List<IndividualCheckupStatus>();
+
+        public virtual ICollection<ContingentCheckupStatus> ContingentCheckupStatuses { get; } = new List<ContingentCheckupStatus>();
     }
 }

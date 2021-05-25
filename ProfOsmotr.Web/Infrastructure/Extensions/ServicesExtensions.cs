@@ -60,7 +60,6 @@ namespace ProfOsmotr.Web.Infrastructure
             services.AddTransient<IRepository<ICD10Chapter>, EFRepository<ICD10Chapter>>();
             services.AddTransient<IRepository<Gender>, EFRepository<Gender>>();
             services.AddTransient<IRepository<CheckupResult>, EFRepository<CheckupResult>>();
-            services.AddTransient<IRepository<MedicalExaminationType>, EFRepository<MedicalExaminationType>>();
             services.AddTransient<IRepository<ExaminationResultIndex>, EFRepository<ExaminationResultIndex>>();
         }
 
