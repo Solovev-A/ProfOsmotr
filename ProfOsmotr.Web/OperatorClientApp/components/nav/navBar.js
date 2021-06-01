@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 
-import routes from '../routes';
-import { NavPills, NavItem } from './NavPills'
+import routes from '../../routes';
+import { NavPills, NavItem } from './navPills'
 
 
 const NavBar = () => (
