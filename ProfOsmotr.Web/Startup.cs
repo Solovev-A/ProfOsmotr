@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Converters;
 using ProfOsmotr.Web.Infrastructure;
 using ProfOsmotr.Web.Services;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ProfOsmotr.Web
@@ -51,7 +51,11 @@ namespace ProfOsmotr.Web
             {
                 options.Filters.Add(new AuthorizeFilter(GLOBAL_AUTH_POLICY_NAME));
             })
-                .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                    options.SerializerSettings.ContractResolver = new PatchRequestContractResolver();
+                });
 
             services.AddMemoryCache();
             services.AddProfOsmotr(connection);
