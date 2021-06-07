@@ -61,6 +61,7 @@ namespace ProfOsmotr.Web.Infrastructure
             services.AddTransient<IRepository<Gender>, EFRepository<Gender>>();
             services.AddTransient<IRepository<CheckupResult>, EFRepository<CheckupResult>>();
             services.AddTransient<IRepository<ExaminationResultIndex>, EFRepository<ExaminationResultIndex>>();
+            services.AddTransient<IPatientRepository, PatientRepository>();
         }
 
         private static void AddAppServices(IServiceCollection services)
@@ -76,6 +77,8 @@ namespace ProfOsmotr.Web.Infrastructure
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAuthService, AuthenticationService>();
             services.AddTransient<IAccessService, AccessService>();
+            services.AddTransient<IPatientService, PatientService>();
+            services.AddTransient<IQueryHandler, ApiQueryHandler>();
         }
     }
 }

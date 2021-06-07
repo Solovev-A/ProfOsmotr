@@ -26,6 +26,7 @@ namespace ProfOsmotr.DAL
                                 IRepository<ICD10Chapter> iCD10Chapters,
                                 IOrderExaminationRepository orderExaminations,
                                 IOrderRepository orderItems,
+                                IPatientRepository patients,
                                 IRepository<Profession> professions,
                                 IRepository<Role> roles,
                                 IRepository<ServiceAvailabilityGroup> serviceAvailabilityGroups,
@@ -44,6 +45,7 @@ namespace ProfOsmotr.DAL
             ICD10Chapters = iCD10Chapters ?? throw new ArgumentNullException(nameof(iCD10Chapters));
             OrderExaminations = orderExaminations ?? throw new ArgumentNullException(nameof(orderExaminations));
             OrderItems = orderItems ?? throw new ArgumentNullException(nameof(orderItems));
+            Patients = patients ?? throw new ArgumentNullException(nameof(patients));
             Professions = professions ?? throw new ArgumentNullException(nameof(professions));
             Roles = roles ?? throw new ArgumentNullException(nameof(roles));
             ServiceAvailabilityGroups = serviceAvailabilityGroups ?? throw new ArgumentNullException(nameof(serviceAvailabilityGroups));
@@ -75,6 +77,8 @@ namespace ProfOsmotr.DAL
         public IOrderExaminationRepository OrderExaminations { get; }
 
         public IOrderRepository OrderItems { get; }
+
+        public IPatientRepository Patients { get; }
 
         public IRepository<Profession> Professions { get; }
 

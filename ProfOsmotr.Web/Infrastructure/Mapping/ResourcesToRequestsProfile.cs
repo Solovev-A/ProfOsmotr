@@ -49,6 +49,10 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
             CreateMap<UpdateClinicDetailsResource, UpdateClinicDetailsRequest>();
 
             CreateMap<SaveExaminationResultIndexResource, SaveExaminationResultIndexRequest>();
+
+            CreateMap<SearchPaginationQuery, ListPatientsRequest>();
+
+            CreateMap<CreatePatientQuery, CreatePatientRequest>();
         }
     }
 }

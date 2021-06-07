@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ProfOsmotr.Web.Models
+namespace ProfOsmotr.BL
 {
     // Позаимствовано из: https://github.com/Shaddix/HttpPatchSample/blob/master/Models/PatchDtoBase.cs
 

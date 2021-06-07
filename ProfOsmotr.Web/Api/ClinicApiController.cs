@@ -67,13 +67,13 @@ namespace ProfOsmotr.Web.Api
                                                            query.Descending);
             if (!response.Succeed)
                 return BadRequest(new ErrorResource(response.Message));
-            var resource = mapper.Map<IEnumerable<ClinicResource>>(response.Result.Data);
+            var resource = mapper.Map<IEnumerable<ClinicResource>>(response.Result.Items);
             var result = new DataTablesResult<ClinicResource>()
             {
                 Data = resource,
                 Draw = parameters.Draw,
-                RecordsFiltered = response.Result.TotalItems,
-                RecordsTotal = response.Result.TotalItems
+                RecordsFiltered = response.Result.TotalCount,
+                RecordsTotal = response.Result.TotalCount
             };
             return Ok(result);
         }
@@ -176,13 +176,13 @@ namespace ProfOsmotr.Web.Api
             QueryResponse<ClinicRegisterRequest> response = await listGetter(query);
             if (!response.Succeed)
                 return BadRequest(new ErrorResource(response.Message));
-            var resource = mapper.Map<IEnumerable<RegisterRequestResource>>(response.Result.Data);
+            var resource = mapper.Map<IEnumerable<RegisterRequestResource>>(response.Result.Items);
             var result = new DataTablesResult<RegisterRequestResource>()
             {
                 Data = resource,
                 Draw = parameters.Draw,
-                RecordsFiltered = response.Result.TotalItems,
-                RecordsTotal = response.Result.TotalItems
+                RecordsFiltered = response.Result.TotalCount,
+                RecordsTotal = response.Result.TotalCount
             };
             return Ok(result);
         }

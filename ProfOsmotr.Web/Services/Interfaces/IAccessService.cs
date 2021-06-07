@@ -37,5 +37,6 @@ namespace ProfOsmotr.Web.Services
         /// <param name="userId">Идентификатор пользователя, доступ к управлению котором проверяется</param>
         /// <returns></returns>
         Task<AccessResult> CanManageUserAsync(int userId);
+        Task<AccessResult> CanAccessPatientAsync(int patientId);
     }
 }

@@ -28,6 +28,8 @@ namespace ProfOsmotr.DAL.Abstractions
 
         IOrderRepository OrderItems { get; }
 
+        IPatientRepository Patients { get; }
+
         IRepository<Profession> Professions { get; }
 
         IRepository<Role> Roles { get; }

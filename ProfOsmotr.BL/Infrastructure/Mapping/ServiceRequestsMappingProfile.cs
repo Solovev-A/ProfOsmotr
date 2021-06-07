@@ -42,6 +42,23 @@ namespace ProfOsmotr.BL.Infrastructure.Mapping
                 .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
 
             CreateMap<SaveExaminationResultIndexRequest, ExaminationResultIndex>();
+
+            CreateMap<CreatePatientRequest, Patient>()
+                .ForMember(d => d.Gender, conf => conf.Ignore())
+                .ForMember(d => d.GenderId, conf => conf.MapFrom(s => s.Gender));
+
+            CreateMap<PatchPatientQuery, Patient>()
+                .ForMember(d => d.Gender, conf => conf.Ignore())
+                .ForMember(d => d.Address, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.Address))))
+                .ForMember(d => d.FirstName, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.FirstName))))
+                .ForMember(d => d.LastName, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.LastName))))
+                .ForMember(d => d.PatronymicName, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.PatronymicName))))
+                .ForMember(d => d.DateOfBirth, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.DateOfBirth))))
+                .ForMember(d => d.GenderId, conf =>
+                {
+                    conf.Condition(s => s.IsFieldPresent(nameof(s.Gender)));
+                    conf.MapFrom(s => s.Gender);
+                });
         }
     }
 }

@@ -137,13 +137,13 @@ namespace ProfOsmotr.Web.Api
         {
             if (!response.Succeed)
                 return BadRequest(new ErrorResource(response.Message));
-            IEnumerable<TModel> resource = mapper.Map<IEnumerable<TModel>>(response.Result.Data);
+            IEnumerable<TModel> resource = mapper.Map<IEnumerable<TModel>>(response.Result.Items);
             DataTablesResult<TModel> result = new DataTablesResult<TModel>()
             {
                 Data = resource,
                 Draw = parameters.Draw,
-                RecordsFiltered = response.Result.TotalItems,
-                RecordsTotal = response.Result.TotalItems
+                RecordsFiltered = response.Result.TotalCount,
+                RecordsTotal = response.Result.TotalCount
             };
             return Ok(result);
         }

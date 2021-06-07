@@ -19,7 +19,7 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
             CreateMap<CalculationSource, CalculationSourceResource>()
                 .ForMember(d => d.Profession, config => config.MapFrom(d => d.Profession.Name))
                 .ForMember(d => d.OrderItems, config => config
-                                              .MapFrom(d => d.Profession.OrderItems                                                                
+                                              .MapFrom(d => d.Profession.OrderItems
                                                                 .Select(item => GetFullItemKey(item))));
 
             CreateMap<Calculation, CalculationResource>()
@@ -72,6 +72,32 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
             CreateMap<Role, RoleResource>();
 
             CreateMap<ExaminationResultIndex, ExaminationResultIndexResource>();
+
+            CreateMap<Patient, PatientResource>()
+                .ForMember(d => d.Gender, conf => conf.MapFrom(s => s.GenderId.ToString().ToLower()))
+                .ForMember(d => d.PreliminaryMedicalExaminations, conf => conf.MapFrom(s => s.IndividualCheckupStatuses));
+
+
+            CreateMap<CheckupStatus, PatientCheckupStatusListItemResource>()
+                .ForMember(d => d.Result, conf => conf.MapFrom(s => s.CheckupResultId.HasValue
+                                                                  ? s.CheckupResultId.ToString()
+                                                                  : null))
+                .ForMember(d => d.Profession, conf => conf.MapFrom(s => s.Profession.Name))
+                .ForMember(d => d.OrderItems, conf => conf.MapFrom(s => s.Profession.OrderItems.Select(oi => oi.Key)));
+
+            CreateMap<IndividualCheckupStatus, PatientCheckupStatusListItemResource>()
+                .IncludeBase<CheckupStatus, PatientCheckupStatusListItemResource>()
+                .ForMember(d => d.Id, conf => conf.MapFrom(s => s.PreliminaryMedicalExaminationId))
+                .ForMember(d => d.Employer, conf => conf.MapFrom(s => s.PreliminaryMedicalExamination.Employer.Name));
+
+            CreateMap<ContingentCheckupStatus, PatientCheckupStatusListItemResource>()
+                .IncludeBase<CheckupStatus, PatientCheckupStatusListItemResource>()
+                .ForMember(d => d.Employer, conf => conf.MapFrom(s => s.PeriodicMedicalExamination.Employer.Name));
+
+            CreateMap<Patient, PatientsListItemResource>();
+
+            CreateMap(typeof(QueryResult<>), typeof(PagedResource<>));
+
         }
 
         private string GetFullItemKey(OrderItem item)
