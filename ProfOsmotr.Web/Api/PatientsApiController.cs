@@ -29,7 +29,7 @@ namespace ProfOsmotr.Web.Api
 
         [HttpGet]
         [ModelStateValidationFilter]
-        public async Task<IActionResult> Get([FromBody] SearchPaginationQuery query)
+        public async Task<IActionResult> Get([FromQuery] SearchPaginationQuery query)
         {
             if (!accessService.TryGetUserClinicId(out int clinicId))
                 return Forbid();
