@@ -18,10 +18,12 @@ namespace ProfOsmotr.Web
     public class Startup
     {
         private const string GLOBAL_AUTH_POLICY_NAME = "AuthenticatedAndNotBanned";
+        private readonly bool isAuthorizationEnabled;
 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            isAuthorizationEnabled = bool.Parse(Configuration["AuthorizationEnabled"] ?? bool.TrueString);
         }
 
         public IConfiguration Configuration { get; }
@@ -43,13 +45,24 @@ namespace ProfOsmotr.Web
                         OnRedirectToAccessDenied = (context) => SendStatusCodeForApiRequest(context, 403)
                     };
                 });
-            services.AddTransient<IAuthorizationHandler, NotBannedHandler>();
-            services.AddAuthorization(auth => auth.AddPolicy(GLOBAL_AUTH_POLICY_NAME,
-                                        policy => policy.Requirements.Add(new NotBannedRequirement())));
+
+            if (isAuthorizationEnabled)
+            {
+                services.AddTransient<IAuthorizationHandler, NotBannedHandler>();
+                services.AddAuthorization(auth => auth.AddPolicy(GLOBAL_AUTH_POLICY_NAME,
+                                            policy => policy.Requirements.Add(new NotBannedRequirement())));
+            }
+            else
+            {
+                services.AddSingleton<IAuthorizationHandler, AllowAnonymousHandler>();
+            }
 
             services.AddControllersWithViews(options =>
             {
-                options.Filters.Add(new AuthorizeFilter(GLOBAL_AUTH_POLICY_NAME));
+                if (isAuthorizationEnabled)
+                {
+                    options.Filters.Add(new AuthorizeFilter(GLOBAL_AUTH_POLICY_NAME));
+                }
             })
                 .AddNewtonsoftJson(options =>
                 {
@@ -58,7 +71,7 @@ namespace ProfOsmotr.Web
                 });
 
             services.AddMemoryCache();
-            services.AddProfOsmotr(connection);
+            services.AddProfOsmotr(connection, isAuthorizationEnabled);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -89,9 +102,11 @@ namespace ProfOsmotr.Web
 
             app.UseEndpoints(endpoints =>
             {
+                var action = isAuthorizationEnabled ? "About" : "Index";
+
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=About}/{id?}");
+                    pattern: $"{{controller=Home}}/{{action={action}}}/{{id?}}");
             });
         }
 

@@ -15,12 +15,12 @@ namespace ProfOsmotr.Web.Infrastructure
     {
         private static readonly ILoggerFactory loggerFactory = LoggerFactory.Create(conf => conf.AddDebug());
 
-        public static void AddProfOsmotr(this IServiceCollection services, string connectionString)
+        public static void AddProfOsmotr(this IServiceCollection services, string connectionString, bool isAuthorizationEnabled)
         {
             AddAutoMapper(services);
             AddDatabase(services, connectionString);
             AddRepositories(services);
-            AddAppServices(services);
+            AddAppServices(services, isAuthorizationEnabled);
         }
 
         private static void AddAutoMapper(IServiceCollection services)
@@ -64,7 +64,7 @@ namespace ProfOsmotr.Web.Infrastructure
             services.AddTransient<IPatientRepository, PatientRepository>();
         }
 
-        private static void AddAppServices(IServiceCollection services)
+        private static void AddAppServices(IServiceCollection services, bool isAuthorizationEnabled)
         {
             services.AddTransient<IPasswordHasher, PasswordHasher>();
             services.AddTransient<IOrderService, OrderService>();
@@ -76,7 +76,14 @@ namespace ProfOsmotr.Web.Infrastructure
             services.AddTransient<IProfessionService, ProfessionService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAuthService, AuthenticationService>();
-            services.AddTransient<IAccessService, AccessService>();
+            if (isAuthorizationEnabled)
+            {
+                services.AddTransient<IAccessService, AccessService>();
+            }
+            else
+            {
+                services.AddTransient<IAccessService, DevelopmentAccessService>();
+            }
             services.AddTransient<IPatientService, PatientService>();
             services.AddTransient<IQueryHandler, ApiQueryHandler>();
         }
