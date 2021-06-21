@@ -1,46 +1,34 @@
 import api from './api';
-import { successToast, errorToast } from './toasts';
-
-const handleResponse = (response, showSuccessToast = false) => {
-    if (response.success === false) {
-        errorToast(response.message);
-    }
-    else if (showSuccessToast) {
-        successToast();
-    }
-    return response;
-}
 
 class PatientApiService {
     baseUrl = '/patients';
 
-    listPatients = async (search, page, itemsPerPage) => {
-        const response = await api.get(this.baseUrl, {
+    listPatients = (search, page, itemsPerPage) => {
+        return api.get(this.baseUrl, {
             params: { search, page, itemsPerPage }
         });
-        return handleResponse(response);
     }
 
-    getPatient = async (id) => {
-        const response = await api.get(`${this.baseUrl}/${id}`);
-        return handleResponse(response);
+    listActualPatients = () => {
+        return api.get(`${this.baseUrl}/actual`);
     }
 
-    createPatient = async ({ lastName, firstName, patronymicName, gender, dateOfBirth, address }) => {
-        const response = await api.post(this.baseUrl, {
+    getPatient = (id) => {
+        return api.get(`${this.baseUrl}/${id}`);
+    }
+
+    createPatient = ({ lastName, firstName, patronymicName, gender, dateOfBirth, address }) => {
+        return api.post(this.baseUrl, {
             lastName, firstName, patronymicName, gender, dateOfBirth, address
         });
-        return handleResponse(response, true);
     }
 
-    updatePatient = async (id, patchedData) => {
-        const response = await api.patch(`${this.baseUrl}/${id}`, patchedData);
-        return handleResponse(response, true);
+    updatePatient = (id, patchedData) => {
+        return api.patch(`${this.baseUrl}/${id}`, patchedData);
     }
 
-    deletePatient = async (id) => {
-        const response = await api.delete(`${this.baseUrl}/${id}`);
-        return handleResponse(response, true);
+    deletePatient = (id) => {
+        return api.delete(`${this.baseUrl}/${id}`);
     }
 }
 

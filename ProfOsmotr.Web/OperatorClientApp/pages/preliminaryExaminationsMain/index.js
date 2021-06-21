@@ -1,6 +1,6 @@
 ﻿import { observer } from 'mobx-react-lite';
 import React from 'react';
-import SearchInput from '../../components/SearchInput';
+import SearchInput from '../../components/searchInput';
 import useStore from '../../hooks/useStore';
 
 const PreliminaryExaminations = () => {

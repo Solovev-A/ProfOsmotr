@@ -1,48 +1,43 @@
-﻿import { runInAction } from 'mobx';
-import { observer } from 'mobx-react-lite';
-import React from 'react';
+﻿import React, { useState } from 'react';
+import Card from './card';
+import SubmitBtn from './forms/general/submitBtn';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
-const SearchInput = ({ search, placeholder, onSearch }) => {
 
-    const onInputChange = (event) => {
-        runInAction(() => {
-            search.query = event.target.value;
-        })
-    }
+const SearchInput = ({ disabled, placeholder, onSearch }) => {
+    const [searchQuerry, setSearchQuerry] = useState('');
 
     const onKeyDown = (event) => {
         if (event.keyCode === 13) {
             // 'Enter' key
             event.preventDefault();
-            onSearch();
+            onSearch(searchQuerry);
         }
     }
 
+    const handleBtnClick = (event) => {
+        event.preventDefault();
+        onSearch(searchQuerry);
+    }
+
     return (
-        <div className='card'>
-            <div className="card-header">
-                Поиск
+        <Card title={<><FontAwesomeIcon icon={faSearch} /> Поиск</>}>
+            <div className="form-inline">
+                <input
+                    type="text"
+                    className="form-control flex-grow-1 mr-3"
+                    placeholder={placeholder}
+                    value={searchQuerry}
+                    onChange={(e) => setSearchQuerry(e.target.value)}
+                    onKeyDown={onKeyDown}
+                />
+                <SubmitBtn disabled={disabled} processing={disabled} onClick={handleBtnClick}>
+                    Найти
+                </SubmitBtn>
             </div>
-            <div className="card-body">
-                <div className="form-inline">
-                    <input
-                        type="text"
-                        className="form-control flex-grow-1 mr-3"
-                        placeholder={placeholder}
-                        value={search.query}
-                        onChange={onInputChange}
-                        onKeyDown={onKeyDown}
-                    />
-                    <button
-                        type="button"
-                        className="btn btn-primary"
-                        onClick={onSearch}
-                        disabled={search.isDisabled}
-                    >Найти</button>
-                </div>
-            </div>
-        </div >
+        </Card>
     )
 }
 
-export default observer(SearchInput);
+export default SearchInput;

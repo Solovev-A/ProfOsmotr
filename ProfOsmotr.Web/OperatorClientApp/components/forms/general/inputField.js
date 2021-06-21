@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 import classNames from 'classnames';
 
-const InputField = ({ name, value, onChange, type, id, label, placeholder, isInvalid, errorMessage }) => {
+const InputField = ({ label, onChange, isInvalid, errorMessage, ...inputProps }) => {
     const changeHandler = (event) => {
         const input = event.target;
         onChange(input.name, input.value);
@@ -11,12 +11,9 @@ const InputField = ({ name, value, onChange, type, id, label, placeholder, isInv
 
     return (
         <div className="form-group">
-            <label htmlFor={id}>{label}</label>
-            <input type={type || 'text'}
-                id={id}
-                name={name}
-                value={value}
-                placeholder={placeholder || ''}
+            <label htmlFor={inputProps.id}>{label}</label>
+            <input {...inputProps}
+                type={inputProps.type || 'text'}
                 onChange={changeHandler}
                 className={inputClassname}
             />

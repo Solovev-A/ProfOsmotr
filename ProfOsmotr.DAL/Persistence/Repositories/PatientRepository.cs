@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProfOsmotr.DAL.Abstractions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -13,9 +14,9 @@ namespace ProfOsmotr.DAL
         {
         }
 
-        public Task<Patient> FindPatientAsync(int id)
+        public async Task<Patient> FindPatientAsync(int id)
         {
-            return dbSet.AsNoTracking()
+            return await dbSet.AsNoTracking()
                 .Include(patient => patient.ContingentCheckupStatuses)
                     .ThenInclude(cs => cs.PeriodicMedicalExamination.Employer)
                 .Include(patient => patient.ContingentCheckupStatuses)
@@ -56,7 +57,7 @@ namespace ProfOsmotr.DAL
                 return string.Empty;
 
             string lower = query.ToLower();
-            return lower.Replace(lower[0], char.ToUpper(lower[0]));
+            return lower.First().ToString().ToUpper() + lower.Substring(1);
         }
     }
 }

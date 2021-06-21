@@ -1,18 +1,30 @@
-﻿import { makeAutoObservable, toJS } from 'mobx';
+﻿import { makeObservable, observable, action, computed, toJS, runInAction } from 'mobx';
 
 // Не поддерживает вложенные объекты!
 
 class BaseFormStore {
-    constructor(validation = {}) {
+    constructor(template, validation = {}) {
+        this._template = template;
         this._validation = validation;
-        this._shouldValidateOnChange = false;
-        this._editedProperties = new Set();
         this._initialValues = {};
-        this.model = {};
-        this.errors = {};
-        this.isProcessing = false;
+        this.model = {}
+        this.clear();
 
-        makeAutoObservable(this);
+        makeObservable(this, {
+            model: observable,
+            errors: observable,
+            isLoading: observable,
+            isProcessing: observable,
+            updateProperty: action,
+            clear: action,
+            setInitialValues: action,
+            validate: action,
+            validateAll: action,
+            onSendingData: action,
+            patchedData: computed,
+            data: computed,
+            isValid: computed
+        });
     }
 
     updateProperty = (name, newValue) => {
@@ -25,17 +37,17 @@ class BaseFormStore {
     }
 
     setInitialValues = (values) => {
-        this.reset();
+        this._editedProperties = new Set();
+        this.errors = {};
+        this._shouldValidateOnChange = false;
+        this.isLoading = false;
+        this.isProcessing = false;
         Object.assign(this._initialValues, values);
         Object.assign(this.model, values);
     }
 
-    reset = () => {
-        Object.assign(this.model, this._initialValues);
-        this._editedProperties = new Set();
-        this.errors = {};
-        this._shouldValidateOnChange = false;
-        this.isProcessing = false;
+    clear = () => {
+        this.setInitialValues(this._template);
     }
 
     validate = (propName) => {
@@ -56,6 +68,27 @@ class BaseFormStore {
         })
 
         this._shouldValidateOnChange = true;
+    }
+
+    onSendingData = (handler, shouldValidate = true) => {
+        if (shouldValidate) {
+            this.validateAll();
+            if (!this.isValid) return;
+        }
+
+        this.isProcessing = true;
+
+        const result = handler()
+            .then(response => {
+                // обработка прекращается, если ответ оказался неудачным, 
+                // либо, в случае успеха - при очистке, 
+                // которую следует производить во время анмаунта формы (при переходе на страницу результата)
+                if (response.success === false) {
+                    runInAction(() => this.isProcessing = false);
+                }
+                return response;
+            });
+        return result;
     }
 
     get patchedData() {
@@ -80,6 +113,10 @@ class BaseFormStore {
 
     get data() {
         return toJS(this.model);
+    }
+
+    get isValid() {
+        return Object.entries(this.errors).every(([key, value]) => !value && value !== '');
     }
 }
 

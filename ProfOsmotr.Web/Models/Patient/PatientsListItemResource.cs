@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ProfOsmotr.Web.Models
+﻿namespace ProfOsmotr.Web.Models
 {
     public class PatientsListItemResource
     {
@@ -12,6 +10,6 @@ namespace ProfOsmotr.Web.Models
 
         public string PatronymicName { get; set; }
 
-        public DateTime DateOfBirth { get; set; }
+        public string DateOfBirth { get; set; }
     }
 }

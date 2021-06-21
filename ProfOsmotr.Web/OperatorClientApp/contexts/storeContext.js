@@ -1,8 +1,7 @@
 ﻿import { createContext } from 'react';
-import PreliminaryExaminationsStore from '../stores/preliminaryExaminationsStore';
+import RootStore from './../stores/rootStore';
 
-
-const store = new PreliminaryExaminationsStore();
+const store = new RootStore();
 const StoreContext = createContext(store);
 
 export default StoreContext;

@@ -3,6 +3,7 @@ using ProfOsmotr.BL.Abstractions;
 using ProfOsmotr.DAL;
 using ProfOsmotr.DAL.Abstractions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -38,10 +39,29 @@ namespace ProfOsmotr.BL
             int start = (request.Page - 1) * request.ItemsPerPage;
             try
             {
-                var result = await uow.Patients.ExecuteQuery(start,
+                var result = await uow.Patients.ExecuteQuery(patient => patient.LastName,
+                                                             false,
+                                                             start,
                                                              request.ItemsPerPage,
                                                              request.Search,
                                                              patient => patient.ClinicId == request.ClinicId);
+                return new QueryResponse<Patient>(result);
+            }
+            catch (Exception ex)
+            {
+                return new QueryResponse<Patient>(ex.Message);
+            }
+        }
+
+        public async Task<QueryResponse<Patient>> ListActualPatientsAsync(int clinicId)
+        {
+            try
+            {
+                var result = await uow.Patients.ExecuteQuery(
+                    orderingSelector: patient => patient.Id,
+                    descending: true,
+                    length: 20,
+                    customFilter: patient => patient.ClinicId == clinicId);
                 return new QueryResponse<Patient>(result);
             }
             catch (Exception ex)

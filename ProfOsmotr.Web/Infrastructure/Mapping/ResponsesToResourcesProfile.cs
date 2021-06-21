@@ -7,6 +7,8 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
 {
     public class ResponsesToResourcesProfile : Profile
     {
+        const string DATE_FORMAT_FOR_DISPLAY = "dd.MM.yyyy";
+
         public ResponsesToResourcesProfile()
         {
             CreateMap<CalculationResultItem, CalculationResultItemResource>()
@@ -74,6 +76,7 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
             CreateMap<ExaminationResultIndex, ExaminationResultIndexResource>();
 
             CreateMap<Patient, PatientResource>()
+                .ForMember(d => d.DateOfBirth, conf => conf.MapFrom(s => s.DateOfBirth.ToString(DATE_FORMAT_FOR_DISPLAY)))
                 .ForMember(d => d.Gender, conf => conf.MapFrom(s => s.GenderId.ToString().ToLower()))
                 .ForMember(d => d.PreliminaryMedicalExaminations, conf => conf.MapFrom(s => s.IndividualCheckupStatuses));
 
@@ -94,10 +97,10 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
                 .IncludeBase<CheckupStatus, PatientCheckupStatusListItemResource>()
                 .ForMember(d => d.Employer, conf => conf.MapFrom(s => s.PeriodicMedicalExamination.Employer.Name));
 
-            CreateMap<Patient, PatientsListItemResource>();
-
             CreateMap(typeof(QueryResult<>), typeof(PagedResource<>));
 
+            CreateMap<Patient, PatientsListItemResource>()
+                .ForMember(d => d.DateOfBirth, conf => conf.MapFrom(s => s.DateOfBirth.ToString(DATE_FORMAT_FOR_DISPLAY)));
         }
 
         private string GetFullItemKey(OrderItem item)

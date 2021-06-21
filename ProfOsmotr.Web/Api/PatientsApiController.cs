@@ -7,6 +7,7 @@ using ProfOsmotr.Web.Infrastructure;
 using ProfOsmotr.Web.Models;
 using ProfOsmotr.Web.Services;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ProfOsmotr.Web.Api
@@ -39,6 +40,16 @@ namespace ProfOsmotr.Web.Api
 
             return await queryHandler.HandleQuery<QueryResult<Patient>, PagedResource<PatientsListItemResource>>(
                 async () => await patientService.ListPatientsAsync(request));
+        }
+
+        [HttpGet("actual")]
+        public async Task<IActionResult> Get()
+        {
+            if (!accessService.TryGetUserClinicId(out int clinicId))
+                return Forbid();
+
+            return await queryHandler.HandleQuery<QueryResult<Patient>, PagedResource<PatientsListItemResource>>(
+                async () => await patientService.ListActualPatientsAsync(clinicId));
         }
 
         [HttpGet("{id}")]
