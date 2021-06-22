@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ProfOsmotr.Hashing;
 using ProfOsmotr.DAL;
+using System;
 
 namespace ProfOsmotr.BL.Infrastructure.Mapping
 {
@@ -59,6 +60,15 @@ namespace ProfOsmotr.BL.Infrastructure.Mapping
                     conf.Condition(s => s.IsFieldPresent(nameof(s.Gender)));
                     conf.MapFrom(s => s.Gender);
                 });
+
+            CreateMap<CreateEmployerRequest, Employer>();
+
+            CreateMap<PatchEmployerQuery, Employer>()
+                .ForMember(d => d.Name, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.Name))))
+                .ForMember(d => d.HeadFirstName, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.HeadFirstName))))
+                .ForMember(d => d.HeadLastName, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.HeadLastName))))
+                .ForMember(d => d.HeadPatronymicName, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.HeadPatronymicName))))
+                .ForMember(d => d.HeadPosition, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.HeadPosition))));
         }
     }
 }

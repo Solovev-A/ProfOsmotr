@@ -17,6 +17,7 @@ namespace ProfOsmotr.Web.Services
         #region Fields
 
         private readonly ICalculationService calculationService;
+        private readonly IEmployerService employerService;
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IPatientService patientService;
         private readonly IUserService userService;
@@ -26,14 +27,16 @@ namespace ProfOsmotr.Web.Services
         #region Constructors
 
         public AccessService(ICalculationService calculationService,
-                             IPatientService patientService,
                              IHttpContextAccessor httpContextAccessor,
-                             IUserService userService)
+                             IPatientService patientService,
+                             IUserService userService,
+                             IEmployerService employerService)
         {
             this.calculationService = calculationService ?? throw new ArgumentNullException(nameof(calculationService));
-            this.patientService = patientService ?? throw new ArgumentNullException(nameof(patientService));
             this.httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+            this.patientService = patientService ?? throw new ArgumentNullException(nameof(patientService));
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            this.employerService = employerService ?? throw new ArgumentNullException(nameof(employerService));
         }
 
         #endregion Constructors
@@ -49,6 +52,11 @@ namespace ProfOsmotr.Web.Services
         public async Task<AccessResult> CanAccessCalculationAsync(int calculationId)
         {
             return await GetAccessResultBasedOnClinicId(calculationId, CanWorkWithCalculation);
+        }
+
+        public async Task<AccessResult> CanAccessEmployerAsync(int employerId)
+        {
+            return await GetAccessResultBasedOnClinicId(employerId, CanWorkWithEmployer);
         }
 
         public async Task<AccessResult> CanAccessPatientAsync(int patientId)
@@ -105,6 +113,22 @@ namespace ProfOsmotr.Web.Services
             }
 
             if (calculationResponse.Result.ClinicId == currentUserClinicId)
+            {
+                return new AccessResult();
+            }
+
+            return new AccessDeniedResult();
+        }
+
+        private async Task<AccessResult> CanWorkWithEmployer(int employerId, int currentUserClinicId)
+        {
+            var employerResponse = await employerService.GetEmployerAsync(employerId);
+            if (!employerResponse.Succeed)
+            {
+                return new AccessDeniedResult(employerResponse.Message);
+            }
+
+            if (employerResponse.Result.ClinicId == currentUserClinicId)
             {
                 return new AccessResult();
             }

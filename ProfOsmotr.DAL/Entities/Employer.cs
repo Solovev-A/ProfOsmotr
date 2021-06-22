@@ -21,5 +21,7 @@ namespace ProfOsmotr.DAL
         public int ClinicId { get; set; }
 
         public virtual Clinic Clinic { get; set; }
+
+        public virtual ICollection<PeriodicMedicalExamination> PeriodicMedicalExaminations { get; } = new List<PeriodicMedicalExamination>();
     }
 }

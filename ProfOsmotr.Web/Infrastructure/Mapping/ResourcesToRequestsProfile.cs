@@ -53,6 +53,10 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
             CreateMap<SearchPaginationQuery, ListPatientsRequest>();
 
             CreateMap<CreatePatientQuery, CreatePatientRequest>();
+
+            CreateMap<SearchPaginationQuery, ExequteQueryBaseRequest>();
+
+            CreateMap<CreateEmployerQuery, CreateEmployerRequest>();
         }
     }
 }

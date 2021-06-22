@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProfOsmotr.DAL.Abstractions;
+using ProfOsmotr.DAL.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,21 +44,9 @@ namespace ProfOsmotr.DAL
             return x => (EF.Functions.Like(x.LastName, $"{lastName}%")
             && EF.Functions.Like(x.FirstName, $"{firstName}%")
             && EF.Functions.Like(x.PatronymicName, $"{patronimycName}%"))
-            || (EF.Functions.Like(x.LastName, $"{NormalizeSQLiteNameSearchQuery(lastName)}%")
-            && EF.Functions.Like(x.FirstName, $"{NormalizeSQLiteNameSearchQuery(firstName)}%")
-            && EF.Functions.Like(x.PatronymicName, $"{NormalizeSQLiteNameSearchQuery(patronimycName)}%"));
-        }
-
-        private string NormalizeSQLiteNameSearchQuery(string query)
-        {
-            // SQLite не поддерживает регистронезависмый фильтр для кириллицы (без низкоуровневых танцев с бубном)
-            // Эта нормализация не решает проблему, но повышает качество поиска
-
-            if (string.IsNullOrEmpty(query))
-                return string.Empty;
-
-            string lower = query.ToLower();
-            return lower.First().ToString().ToUpper() + lower.Substring(1);
+            || (EF.Functions.Like(x.LastName, $"{DBHelper.NormalizeSQLiteNameSearchQuery(lastName)}%")
+            && EF.Functions.Like(x.FirstName, $"{DBHelper.NormalizeSQLiteNameSearchQuery(firstName)}%")
+            && EF.Functions.Like(x.PatronymicName, $"{DBHelper.NormalizeSQLiteNameSearchQuery(patronimycName)}%"));
         }
     }
 }

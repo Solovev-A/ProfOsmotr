@@ -41,6 +41,7 @@ namespace ProfOsmotr.DAL.Abstractions
         IRepository<TargetGroup> TargetGroups { get; }
 
         IQueryAwareRepository<User> Users { get; }
+        IEmployerRepository Employers { get; }
 
         /// <summary>
         /// Сохраняет изменения, сделанные в хранилищах

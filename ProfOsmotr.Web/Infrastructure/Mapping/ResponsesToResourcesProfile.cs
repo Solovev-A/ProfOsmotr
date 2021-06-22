@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ProfOsmotr.DAL;
 using ProfOsmotr.Web.Models;
+using System;
 using System.Linq;
 
 namespace ProfOsmotr.Web.Infrastructure.Mapping
@@ -101,11 +102,35 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
 
             CreateMap<Patient, PatientsListItemResource>()
                 .ForMember(d => d.DateOfBirth, conf => conf.MapFrom(s => s.DateOfBirth.ToString(DATE_FORMAT_FOR_DISPLAY)));
+
+            CreateMap<Employer, EmployerListItemResource>();
+
+            CreateMap<Employer, EmployerResource>();
+
+            CreateMap<PeriodicMedicalExamination, EmployerPeriodicMedicalExaminationResource>()
+                .ForMember(d => d.ReportDate, conf => conf.MapFrom(s => ToString(s.ReportDate)));
+
+            CreateMap<PreliminaryMedicalExamination, EmployerPreliminaryMedicalExaminationResource>()
+                .ForMember(d => d.Patient, conf => conf.MapFrom(s => GetFullName(s.CheckupStatus.Patient)))
+                .ForMember(d => d.ReportDate, conf => conf.MapFrom(s => ToString(s.CheckupStatus.DateOfCompletion)));
+
         }
 
         private string GetFullItemKey(OrderItem item)
         {
             return $"п. {item.Key}";
+        }
+
+        private string GetFullName(Patient patient)
+        {
+            return $"{patient.LastName} {patient.FirstName} {patient.PatronymicName ?? string.Empty}";
+        }
+
+        private string ToString(DateTime? dateTime)
+        {
+            return dateTime.HasValue
+                ? dateTime.Value.ToString("dd.MM.yyyy")
+                : null;
         }
     }
 }
