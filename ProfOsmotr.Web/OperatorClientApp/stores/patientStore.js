@@ -27,7 +27,7 @@ class PatientStore {
         if (!this.patientId) return;
 
         this.isLoading = true;
-        const response = await patientApiService.getPatient(this.patientId);
+        const response = await patientApiService.getEntity(this.patientId);
         if (!cancellationToken.isCancelled) {
             if (response.success === false) throw response.message
             runInAction(() => {

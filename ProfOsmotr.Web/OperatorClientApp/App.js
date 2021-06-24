@@ -7,6 +7,9 @@ import PreliminaryExaminations from './pages/preliminaryExaminationsMain';
 import PatientListPage from './pages/patientList';
 import PatientEditorPage from './pages/patientEditor';
 import PatientPage from './pages/patient';
+import EmployerEditorPage from './pages/employerEditor';
+import EmployerListPage from './pages/employerList'
+import EmployerPage from './pages/employer'
 import ErrorBoundary from './components/errorBoundary';
 import routes from './routes';
 
@@ -22,6 +25,10 @@ const App = () => (
                 <Route path={routes.createPatient.path} component={PatientEditorPage} exact />
                 <Route path={routes.patient.path} component={PatientPage} exact />
                 <Route path={routes.editPatient.path} component={PatientEditorPage} exact />
+                <Route path={routes.employers.path} component={EmployerListPage} exact />
+                <Route path={routes.createEmployer.path} component={EmployerEditorPage} exact />
+                <Route path={routes.employer.path} component={EmployerPage} exact />
+                <Route path={routes.editEmployer.path} component={EmployerEditorPage} exact />
             </Switch>
         </ErrorBoundary>
         <ToastContainer

@@ -48,6 +48,7 @@ class BaseFormStore {
 
     clear = () => {
         this.setInitialValues(this._template);
+        this.isLoading = true;
     }
 
     validate = (propName) => {

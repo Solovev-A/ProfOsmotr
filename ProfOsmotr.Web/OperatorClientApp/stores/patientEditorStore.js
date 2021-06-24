@@ -48,11 +48,11 @@ class PatientEditorStore extends BaseFormStore {
     }
 
     loadInitialValues = async (cancellationToken) => {
-        if (!this.patientId) return;
-
-        this.isLoading = true;
-
-        const data = await patientApiService.getPatient(this.patientId);
+        if (!this.patientId) {
+            this.isLoading = false;
+            return;
+        }
+        const data = await patientApiService.getEntity(this.patientId);
         if (!cancellationToken.isCancelled) {
             if (data.success === false) throw data.message
 
@@ -67,10 +67,13 @@ class PatientEditorStore extends BaseFormStore {
 
     onSubmit = async () => {
         const handler = this.patientId
-            ? () => patientApiService.updatePatient(this.patientId, this.patchedData)
-            : () => patientApiService.createPatient(this.data);
+            ? () => patientApiService.updateEntity(this.patientId, this.patchedData)
+            : () => patientApiService.createEntity(this.data);
 
         const response = await this.onSendingData(handler);
+
+        if (!response) return;
+
         return handleResponseWithToasts(response, true);
     }
 }

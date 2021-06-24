@@ -100,5 +100,22 @@ namespace ProfOsmotr.BL
                 return new EmployerResponse(ex.Message);
             }
         }
+
+        public async Task<QueryResponse<Employer>> ListActualEmployersAsync(int clinicId)
+        {
+            try
+            {
+                var result = await uow.Employers.ExecuteQuery(
+                    orderingSelector: employer => employer.Id,
+                    descending: true,
+                    length: 20,
+                    customFilter: employer => employer.ClinicId == clinicId);
+                return new QueryResponse<Employer>(result);
+            }
+            catch (Exception ex)
+            {
+                return new QueryResponse<Employer>(ex.Message);
+            }
+        }
     }
 }

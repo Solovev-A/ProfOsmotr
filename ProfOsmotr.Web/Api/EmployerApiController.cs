@@ -35,6 +35,16 @@ namespace ProfOsmotr.Web.Api
                 async () => await accessService.CanAccessEmployerAsync(id));
         }
 
+        [HttpGet("actual")]
+        public async Task<IActionResult> Get()
+        {
+            if (!accessService.TryGetUserClinicId(out int clinicId))
+                return Forbid();
+
+            return await queryHandler.HandleQuery<QueryResult<Employer>, PagedResource<EmployerListItemResource>>(
+                async () => await employerService.ListActualEmployersAsync(clinicId));
+        }
+
         [HttpGet]
         [ModelStateValidationFilter]
         public async Task<IActionResult> Get([FromQuery] SearchPaginationQuery query)

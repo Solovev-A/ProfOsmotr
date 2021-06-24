@@ -1,14 +1,14 @@
 import api from './api';
 import ApiServiceBase from './apiServiceBase';
 
-class PatientApiService extends ApiServiceBase {
+class EmployerApiService extends ApiServiceBase {
     constructor() {
-        super('/patients');
+        super('/employers');
     }
 
-    listActualPatients = () => {
+    listActualEmployers = () => {
         return api.get(`${this.baseUrl}/actual`);
     }
 }
 
-export default new PatientApiService();
+export default new EmployerApiService();
