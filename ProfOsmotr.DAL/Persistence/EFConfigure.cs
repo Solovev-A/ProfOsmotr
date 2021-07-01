@@ -88,8 +88,7 @@ namespace ProfOsmotr.DAL
         internal static void PreliminaryMedicalExamination(EntityTypeBuilder<PreliminaryMedicalExamination> builder)
         {
             builder.HasOne(x => x.CheckupStatus)
-                .WithOne(c => c.PreliminaryMedicalExamination)
-                .HasForeignKey<PreliminaryMedicalExamination>(x => x.CheckupStatusId);
+                .WithOne(c => c.PreliminaryMedicalExamination);
             builder.HasOne(x => x.LastEditor)
                 .WithMany()
                 .HasForeignKey(x => x.LastEditorId);

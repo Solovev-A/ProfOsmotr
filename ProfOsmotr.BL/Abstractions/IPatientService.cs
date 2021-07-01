@@ -9,6 +9,7 @@ namespace ProfOsmotr.BL.Abstractions
 {
     public interface IPatientService
     {
+        Task<PatientResponse> CheckPatientAsync(int id);
         Task<PatientResponse> CreatePatient(CreatePatientRequest request);
         Task<PatientResponse> DeletePatientAsync(int id);
         Task<PatientResponse> GetPatientAsync(int id);

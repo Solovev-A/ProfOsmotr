@@ -1,6 +1,6 @@
 ﻿namespace ProfOsmotr.BL
 {
-    public class ExequteQueryBaseRequest
+    public class ExecuteQueryBaseRequest
     {
         public int ClinicId { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿namespace ProfOsmotr.Web.Models
 {
-    internal class ExaminationResultIndexResource
+    public class ExaminationResultIndexResource
     {
         public int Id { get; set; }
 

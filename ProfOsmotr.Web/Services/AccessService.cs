@@ -18,6 +18,7 @@ namespace ProfOsmotr.Web.Services
 
         private readonly ICalculationService calculationService;
         private readonly IEmployerService employerService;
+        private readonly IExaminationsService examinationsService;
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IPatientService patientService;
         private readonly IUserService userService;
@@ -26,17 +27,20 @@ namespace ProfOsmotr.Web.Services
 
         #region Constructors
 
-        public AccessService(ICalculationService calculationService,
-                             IHttpContextAccessor httpContextAccessor,
-                             IPatientService patientService,
-                             IUserService userService,
-                             IEmployerService employerService)
+        public AccessService(
+            ICalculationService calculationService,
+            IEmployerService employerService,
+            IExaminationsService examinationsService,
+            IHttpContextAccessor httpContextAccessor,
+            IPatientService patientService,
+            IUserService userService)
         {
             this.calculationService = calculationService ?? throw new ArgumentNullException(nameof(calculationService));
+            this.employerService = employerService ?? throw new ArgumentNullException(nameof(employerService));
+            this.examinationsService = examinationsService ?? throw new ArgumentNullException(nameof(examinationsService));
             this.httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
             this.patientService = patientService ?? throw new ArgumentNullException(nameof(patientService));
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
-            this.employerService = employerService ?? throw new ArgumentNullException(nameof(employerService));
         }
 
         #endregion Constructors
@@ -62,6 +66,11 @@ namespace ProfOsmotr.Web.Services
         public async Task<AccessResult> CanAccessPatientAsync(int patientId)
         {
             return await GetAccessResultBasedOnClinicId(patientId, CanWorkWithPatient);
+        }
+
+        public async Task<AccessResult> CanAccessPrealiminaryExaminationAsync(int examinationId)
+        {
+            return await GetAccessResultBasedOnClinicId(examinationId, CanWorkWithPreliminaryExamination);
         }
 
         public async Task<AccessResult> CanManageUserAsync(int userId)
@@ -145,6 +154,22 @@ namespace ProfOsmotr.Web.Services
             }
 
             if (patientResponse.Result.ClinicId == currentUserClinicId)
+            {
+                return new AccessResult();
+            }
+
+            return new AccessDeniedResult();
+        }
+
+        private async Task<AccessResult> CanWorkWithPreliminaryExamination(int examinationId, int currentUserClinicId)
+        {
+            var examinationClinicId = await examinationsService.GetPreliminaryMedicalExaminationClinicIdAsync(examinationId);
+            if (examinationClinicId < 0)
+            {
+                return new AccessDeniedResult();
+            }
+
+            if (examinationClinicId == currentUserClinicId)
             {
                 return new AccessResult();
             }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ProfOsmotr.DAL;
 using ProfOsmotr.Web.Models;
+using ProfOsmotr.Web.Models.MedicalExaminations;
 using System;
 using System.Linq;
 
@@ -111,9 +112,57 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
                 .ForMember(d => d.ReportDate, conf => conf.MapFrom(s => ToString(s.ReportDate)));
 
             CreateMap<PreliminaryMedicalExamination, EmployerPreliminaryMedicalExaminationResource>()
+                .ForMember(d => d.CheckupStatusId, conf => conf.MapFrom(s => s.CheckupStatus.Id))
                 .ForMember(d => d.Patient, conf => conf.MapFrom(s => GetFullName(s.CheckupStatus.Patient)))
                 .ForMember(d => d.ReportDate, conf => conf.MapFrom(s => ToString(s.CheckupStatus.DateOfCompletion)));
 
+            CreateMap<PreliminaryMedicalExamination, PreliminaryMedicalExaminationsListItemResource>()
+                .ForMember(d => d.Profession, conf => conf.MapFrom(s => s.CheckupStatus.Profession.Name))
+                .ForMember(d => d.OrderItems, conf => conf.MapFrom(s => s.CheckupStatus.Profession.OrderItems.Select(oi => oi.Key)))
+                .ForMember(d => d.DateOfCompletion, conf => conf.MapFrom(s => s.CheckupStatus.DateOfCompletion))
+                .ForMember(d => d.EmployerName, conf => conf.MapFrom(s => s.Employer.Name))
+                .ForMember(d => d.IsCompleted, conf => conf.MapFrom(s => s.Completed))
+                .ForMember(d => d.Patient, conf => conf.MapFrom(s => s.CheckupStatus.Patient));
+
+            CreateMap<PreliminaryMedicalExamination, PreliminaryMedicalExaminationResource>()
+                .ForMember(d => d.CheckupIndexValues, conf => conf.MapFrom(s => s.CheckupStatus.IndividualCheckupIndexValues))
+                .ForMember(d => d.DateOfComplition, conf => conf.MapFrom(s => ToString(s.CheckupStatus.DateOfCompletion)))
+                .ForMember(d => d.MedicalReport, conf => conf.MapFrom(s => s.CheckupStatus.MedicalReport))
+                .ForMember(d => d.Patient, conf => conf.MapFrom(s => s.CheckupStatus.Patient))
+                .ForMember(d => d.RegistrationJournalEntryNumber, conf => conf.MapFrom(s => s.CheckupStatus.RegistrationJournalEntryNumber))
+                .ForMember(d => d.Result, conf => conf.MapFrom(s => s.CheckupStatus.CheckupResult))
+                .ForPath(d => d.WorkPlace.Profession, conf => conf.MapFrom(s => s.CheckupStatus.Profession))
+                .ForPath(d => d.WorkPlace.Employer, conf => conf.MapFrom(s => s.Employer))
+                .ForPath(d => d.WorkPlace.Employer.Department, conf => conf.MapFrom(s => s.CheckupStatus.EmployerDepartment))
+                .AfterMap((s, d) =>
+                {
+                    if (s.Employer is null)
+                        d.WorkPlace.Employer = null;
+                    // чтобы не оставался объект с id: 0
+                });
+
+            CreateMap<Profession, ExaminationProfessionResource>();
+
+            CreateMap<OrderItem, ExaminationOrderItemResource>();
+
+            CreateMap<Employer, PreliminaryExaminationEmployerResource>();
+
+            CreateMap<EmployerDepartment, EmployerDepartmentResource>();
+
+            CreateMap<IndividualCheckupIndexValue, CheckupIndexValueResource>()
+                .ForMember(d => d.Index, conf => conf.MapFrom(s => s.ExaminationResultIndex));
+
+            CreateMap<Patient, ExaminationPatientResource>()
+                .ForMember(d => d.DateOfBirth, conf => conf.MapFrom(s => s.DateOfBirth.ToString(DATE_FORMAT_FOR_DISPLAY)));
+
+            CreateMap<User, ExaminationEditorResource>()
+                .ForMember(d => d.FullName, conf => conf.MapFrom(s => s.UserProfile.Name))
+                .ForMember(d => d.Position, conf => conf.MapFrom(s => s.UserProfile.Position));
+
+            CreateMap<CheckupResult, CheckupResultResource>()
+                .ForMember(d => d.Id, conf => conf.MapFrom(s => s.ToString()));
+
+            CreateMap<PreliminaryMedicalExamination, CreatedPreliminaryExaminationResource>();
         }
 
         private string GetFullItemKey(OrderItem item)

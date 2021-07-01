@@ -52,7 +52,7 @@ namespace ProfOsmotr.Web.Api
             if (!accessService.TryGetUserClinicId(out int clinicId))
                 return Forbid();
 
-            var request = mapper.Map<ExequteQueryBaseRequest>(query);
+            var request = mapper.Map<ExecuteQueryBaseRequest>(query);
             request.ClinicId = clinicId;
 
             return await queryHandler.HandleQuery<QueryResult<Employer>, PagedResource<EmployerListItemResource>>(

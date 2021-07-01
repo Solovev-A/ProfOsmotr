@@ -32,7 +32,7 @@ namespace ProfOsmotr.BL
             return new EmployerResponse(employer);
         }
 
-        public async Task<QueryResponse<Employer>> ListEmployersAsync(ExequteQueryBaseRequest request)
+        public async Task<QueryResponse<Employer>> ListEmployersAsync(ExecuteQueryBaseRequest request)
         {
             try
             {

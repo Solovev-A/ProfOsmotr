@@ -42,6 +42,7 @@ namespace ProfOsmotr.DAL.Abstractions
 
         IQueryAwareRepository<User> Users { get; }
         IEmployerRepository Employers { get; }
+        IPreliminaryMedicalExaminationRepository PreliminaryMedicalExaminations { get; }
 
         /// <summary>
         /// Сохраняет изменения, сделанные в хранилищах
