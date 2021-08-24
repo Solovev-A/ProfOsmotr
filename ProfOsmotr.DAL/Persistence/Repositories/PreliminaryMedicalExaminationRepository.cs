@@ -23,7 +23,7 @@ namespace ProfOsmotr.DAL
                 .Include(ex => ex.LastEditor.UserProfile)
                 .Include(ex => ex.CheckupStatus.CheckupResult)
                 .Include(ex => ex.CheckupStatus.IndividualCheckupIndexValues)
-                    .ThenInclude(indexValue => indexValue.ExaminationResultIndex)
+                    .ThenInclude(indexValue => indexValue.ExaminationResultIndex.OrderExamination)
                 .FirstOrDefaultAsync(ex => ex.Id == id);
         }
 

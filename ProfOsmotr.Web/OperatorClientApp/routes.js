@@ -12,9 +12,28 @@ const routes = {
         path: getFullPath('/examinations/preliminary'),
         name: 'Предварительные осмотры'
     },
+    preliminaryExamination: {
+        path: getFullPath('/examinations/preliminary/:id'),
+        getUrl(id) { return getUrl(this.path, ':id', id) },
+        name: 'Карта предварительного осмотра'
+    },
+    createPreliminaryExamination: {
+        path: getFullPath('/examinations/preliminary/new'),
+        name: 'Создание предварительного осмотра'
+    },
     periodicExaminations: {
         path: getFullPath('/examinations/periodic'),
         name: 'Периодические осмотры'
+    },
+    periodicExamination: {
+        path: getFullPath('/examinations/periodic/:id'),
+        getUrl(id) { return getUrl(this.path, ':id', id) },
+        name: 'Карта периодического осмотра'
+    },
+    contingentCheckupStatus: {
+        path: getFullPath('/examinations/periodic/checkup-statuses/:id'),
+        getUrl(id) { return getUrl(this.path, ':id', id) },
+        name: 'Карта периодического медосмотра пациента'
     },
     patients: {
         path: getFullPath('/patients'),

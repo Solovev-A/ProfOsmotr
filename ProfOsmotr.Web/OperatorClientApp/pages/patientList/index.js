@@ -7,13 +7,13 @@ import SearchInput from '../../components/searchInput';
 import PatientListActions from './components/patientListActions';
 import Pagination from './../../components/pagination';
 import Card from './../../components/card';
-import useListStore from './../../hooks/useListStore';
+import useListPage from './../../hooks/useListPage';
 import ItemsList from './../../components/itemsList';
 import routes from './../../routes';
 
 const PatientListPage = (props) => {
     const { patientsListStore } = useStore();
-    useListStore(patientsListStore);
+    useListPage(patientsListStore);
 
     const { items, inProgress, inSearch, totalCount, page, totalPages, onSearch, loadPage } = patientsListStore;
 
@@ -32,7 +32,7 @@ const PatientListPage = (props) => {
                     : <ItemsList
                         columns={listColumns}
                         items={items}
-                        onItemCLick={(item) => props.history.push(routes.patient.getUrl(item.id))}
+                        getItemUrl={(item) => routes.patient.getUrl(item.id)}
                     />}
                 {totalPages > 1
                     ? <Pagination currentPage={page} totalPages={totalPages} onPageChange={loadPage} />

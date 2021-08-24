@@ -27,6 +27,7 @@ namespace ProfOsmotr.DAL
             return await dbSet
                 .AsNoTracking()
                 .Include(x => x.DefaultServiceDetails)
+                .Include(x => x.ExaminationResultIndexes)
                 .OrderBy(examination => examination.Name)
                 .ToListAsync();
         }

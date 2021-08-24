@@ -1,6 +1,4 @@
-﻿using ProfOsmotr.Web.Models.MedicalExaminations;
-
-namespace ProfOsmotr.Web.Models
+﻿namespace ProfOsmotr.Web.Models
 {
     public class PreliminaryExaminationEmployerResource
     {

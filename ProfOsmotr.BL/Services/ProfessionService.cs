@@ -1,7 +1,10 @@
 ﻿using ProfOsmotr.BL.Abstractions;
 using ProfOsmotr.BL.Infrastructure;
+using ProfOsmotr.BL.Models;
 using ProfOsmotr.DAL;
 using ProfOsmotr.DAL.Abstractions;
+using ProfOsmotr.DAL.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,6 +16,7 @@ namespace ProfOsmotr.BL
         #region Fields
 
         private readonly IOrderService orderService;
+        private readonly IEmployerService employerService;
         private readonly IProfUnitOfWork uow;
 
         #endregion Fields
@@ -31,7 +35,21 @@ namespace ProfOsmotr.BL
 
         public async Task<ProfessionResponse> CreateProfession(CreateProfessionRequest request)
         {
-            return await CreateProfessionResponse(request);
+            var response = await CreateProfessionResponse(request);
+            if (response.Succeed)
+            {
+                try
+                {
+                    await uow.Professions.AddAsync(response.Result);
+                    await uow.SaveAsync();
+                }
+                catch (Exception ex)
+                {
+                    return new ProfessionResponse(ex.Message);
+                }
+            }
+
+            return response;
         }
 
         public async Task<ProfessionResponse> CreateProfessionForCalculation(CreateProfessionRequest request, int clinicId)
@@ -42,6 +60,34 @@ namespace ProfOsmotr.BL
         public async Task<IEnumerable<Profession>> GetAllProfessionsAsync()
         {
             return await uow.Professions.GetAllAsync();
+        }
+
+        public async Task<ProfessionSearchResultResponse> FindProfessionWithSuggestions(FindProfessionRequest request)
+        {
+            try
+            {
+                var itemsResult = await uow.Professions.ExecuteQuery(length: 20, search: request.Search);
+
+                IEnumerable<Profession> suggestions = new Profession[0];
+                if (request.EmployerId.HasValue)
+                {
+                    suggestions = await uow.Professions.GetSuggestedProfessions(request.Search, request.EmployerId.Value);
+                }
+
+                var items = itemsResult.Items.Except(suggestions, new ProfessionByIdEqualityComparer());
+
+                var result = new ProfessionSearchResult()
+                {
+                    Items = items,
+                    Suggestions = suggestions
+                };
+
+                return new ProfessionSearchResultResponse(result);
+            }
+            catch (Exception ex)
+            {
+                return new ProfessionSearchResultResponse(ex.Message);
+            }
         }
 
         public async Task<IEnumerable<Profession>> ListFavoritesAsync()

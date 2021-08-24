@@ -6,14 +6,14 @@ import Spinner from '../../components/spinner';
 import SearchInput from '../../components/searchInput';
 import Pagination from './../../components/pagination';
 import Card from './../../components/card';
-import useListStore from './../../hooks/useListStore';
+import useListPage from '../../hooks/useListPage';
 import EmployerListActions from './components/employerListActions';
 import ItemsList from './../../components/itemsList';
 import routes from './../../routes';
 
 const EmployerListPage = (props) => {
     const { employersStore } = useStore();
-    useListStore(employersStore);
+    useListPage(employersStore);
 
     const { items, inProgress, inSearch, totalCount, page, totalPages, loadPage, onSearch } = employersStore;
 
@@ -30,7 +30,7 @@ const EmployerListPage = (props) => {
                     ? <Spinner />
                     : <ItemsList columns={listColumns}
                         items={items}
-                        onItemCLick={(item) => props.history.push(routes.employer.getUrl(item.id))} />
+                        getItemUrl={(item) => routes.employer.getUrl(item.id)} />
                 }
                 {totalPages > 1
                     ? <Pagination currentPage={page} totalPages={totalPages} onPageChange={loadPage} />

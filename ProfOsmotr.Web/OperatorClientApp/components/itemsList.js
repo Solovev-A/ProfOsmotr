@@ -1,22 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const ListItemView = ({ item, columns, onClick }) => {
-    const [hover, setHover] = useState(false);
-    const style = {
-        cursor: 'pointer',
-        backgroundColor: hover ? 'rgba(0,0,0,.03)' : '#fff'
-    }
+const ListItemView = ({ item, columns, itemUrl }) => {
 
     return (
-        <tr onClick={() => onClick(item)}
-            style={style}
-            onMouseEnter={() => setHover(true)}
-            onMouseLeave={() => setHover(false)}
-        >
+        <tr>
             {
                 columns.map((col, index) => {
+                    const stretchedLink = col.disableLink ? null : <Link to={itemUrl} className='stretched-link' />
                     return (
-                        <td key={index}>
+                        <td key={index} style={{ position: 'relative' }}>
+                            {stretchedLink}
                             {col.render(item)}
                         </td>
                     )
@@ -26,9 +20,19 @@ const ListItemView = ({ item, columns, onClick }) => {
     )
 }
 
-const ItemsList = ({ items, onItemCLick, columns }) => {
+const ItemsList = ({ items, getItemUrl, columns }) => {
+    if (!columns) throw 'Отсутствует обязательное свойство columns'
+
+    if (!items.length) {
+        return (
+            <div className="text-center font-italic">
+                Список пуст
+            </div>
+        )
+    }
+
     return (
-        <table className="table">
+        <table className="table table-hover">
             <thead>
                 <tr>
                     {
@@ -46,7 +50,7 @@ const ItemsList = ({ items, onItemCLick, columns }) => {
             </thead>
             <tbody>
                 {
-                    items.map(item => <ListItemView key={item.id} item={item} columns={columns} onClick={onItemCLick} />)
+                    items.map(item => <ListItemView key={item.id} item={item} columns={columns} itemUrl={getItemUrl(item)} />)
                 }
             </tbody>
         </table>

@@ -76,7 +76,7 @@ namespace ProfOsmotr.BL
         {
             if (request is null)
                 return new CalculationResponse("Запрос не может быть пустым");
-            if (!request.CreateProfessionRequests.Any())
+            if (!request.CreateCalculationSourceRequests.Any())
                 return new CalculationResponse("Для расчета необходимо добавить хотя бы одну профессию");
 
             Clinic clinic = await uow.Clinics.FindAsync(request.ClinicId);

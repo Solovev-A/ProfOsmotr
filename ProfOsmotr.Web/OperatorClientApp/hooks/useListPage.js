@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import useErrorHandler from './useErrorHandler';
 
-const useListStore = (listStore) => {
+const useListPage = (listStore) => {
     const errorHandler = useErrorHandler();
 
     useEffect(() => {
@@ -15,4 +15,4 @@ const useListStore = (listStore) => {
     }, []);
 }
 
-export default useListStore;
+export default useListPage;

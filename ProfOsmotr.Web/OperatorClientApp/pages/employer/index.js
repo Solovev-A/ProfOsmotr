@@ -8,6 +8,7 @@ import routes from './../../routes';
 import useErrorHandler from './../../hooks/useErrorHandler';
 import EmployerActions from './components/employerActions';
 import EmployerInfo from './components/employerInfo';
+import EmployerExamiantions from './components/employerExaminations';
 
 const EmployerPage = (props) => {
     const employerId = props.match.params.id;
@@ -45,6 +46,7 @@ const EmployerPage = (props) => {
             <EmployerActions employerId={employerId}
                 onAddPeriodicExamination={onAddPeriodicExamination}
             />
+            <EmployerExamiantions />
         </>
     )
 }

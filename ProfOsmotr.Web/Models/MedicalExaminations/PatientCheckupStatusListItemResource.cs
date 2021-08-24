@@ -14,7 +14,7 @@ namespace ProfOsmotr.Web.Models
 
         public IEnumerable<string> OrderItems { get; set; }
 
-        public DateTime? DateOfCompletion { get; set; }
+        public string DateOfCompletion { get; set; }
 
         public string Result { get; set; }
     }

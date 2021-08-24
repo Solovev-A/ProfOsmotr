@@ -4,6 +4,7 @@ import BaseFormStore from './baseFormStore';
 import { requiredString } from './../utils/validation';
 import patientApiService from './../services/patientApiService';
 import { handleResponseWithToasts } from './../utils/toasts';
+import { formatDateStringForDateInput } from './../utils/formatDate';
 
 const validation = {
     lastName: {
@@ -76,16 +77,6 @@ class PatientEditorStore extends BaseFormStore {
 
         return handleResponseWithToasts(response, true);
     }
-}
-
-function formatDateStringForDateInput(value) {
-    const date = value.split('.');
-
-    const dd = date[0];
-    const MM = date[1];
-    const yyyy = date[2];
-
-    return `${yyyy}-${MM}-${dd}`;
 }
 
 export default PatientEditorStore;

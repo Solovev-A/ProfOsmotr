@@ -50,7 +50,7 @@ class PatientStore {
     }
 
     get hasExaminations() {
-        return this.preliminaryMedicalExaminations.length > 0 && this.contingentCheckupStatuses.length > 0;
+        return this.preliminaryMedicalExaminations.length > 0 || this.contingentCheckupStatuses.length > 0;
     }
 
     get fullName() {

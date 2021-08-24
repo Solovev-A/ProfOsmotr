@@ -1,23 +1,12 @@
-﻿using System.Collections.Generic;
-
-namespace ProfOsmotr.BL
+﻿namespace ProfOsmotr.BL
 {
     /// <summary>
     /// Исходные данные для создания профессии, в отношении которой планируется проведение
     /// медицинского осмотра
     /// </summary>
-    public class CreateProfessionRequest
+    public class CreateCalculationSourceRequest
     {
-        /// <summary>
-        /// Название профессии
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Перечисление идентификаторов пунктов приказа, соответствующих условиям труда,
-        /// свойственным данной профессии
-        /// </summary>
-        public IEnumerable<int> OrderItemIdentifiers { get; set; }
+        public CreateProfessionRequest Profession { get; set; }
 
         /// <summary>
         /// Общая численность работников

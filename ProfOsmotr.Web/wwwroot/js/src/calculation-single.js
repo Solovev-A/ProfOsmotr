@@ -53,7 +53,7 @@ async function initCalculationSingle() {
             alert('Выберите хотя бы один пункт приказа');
             return;
         }
-        
+
         let isWoman = document.querySelector(SELECTOR_IS_WOMAN_CHECKBOX).checked;
         let womenCount = isWoman ? 1 : 0;
 
@@ -64,13 +64,15 @@ async function initCalculationSingle() {
 
         return {
             name: 'Индивидуальный расчет',
-            professions: [{
-                name: professionName,
+            sources: [{
+                profession: {
+                    name: professionName,
+                    orderItems: orderItems
+                },
                 numberOfPersons: 1,
                 numberOfWomen: womenCount,
                 numberOfWomenOver40: womenOver40Count,
-                numberOfPersonsOver40: over40Count,
-                orderItems: orderItems
+                numberOfPersonsOver40: over40Count
             }]
         };
     }

@@ -9,6 +9,7 @@ import PatientInfo from './components/patientInfo';
 import PatientActions from './components/patientActions';
 import PatientExamiantions from './components/patientExaminations';
 import useErrorHandler from './../../hooks/useErrorHandler';
+import preliminaryExaminationsApiService from './../../services/preliminaryExaminationsApiService';
 
 const PatientPage = (props) => {
     const patientId = props.match.params.id;
@@ -28,11 +29,12 @@ const PatientPage = (props) => {
         }
     }, [patientId]);
 
-    const onAddPreliminaryExamination = () => {
-        // ... вызов api для создания медосмотра
-        const id = 0;
-        const newUrl = routes.preliminaryExaminations.getUrl(id);
-        props.history.push(newUrl);
+    const onAddPreliminaryExamination = async () => {
+        const response = await preliminaryExaminationsApiService.createEntity({ patientId });
+        if (response.success !== false) {
+            const newUrl = routes.preliminaryExamination.getUrl(response.id);
+            props.history.push(newUrl);
+        }
     }
 
     const { isLoading,

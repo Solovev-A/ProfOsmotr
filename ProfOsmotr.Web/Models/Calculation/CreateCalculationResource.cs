@@ -9,6 +9,6 @@ namespace ProfOsmotr.Web.Models
         [StringLength(70)]
         public string Name { get; set; }
 
-        public IEnumerable<CreateProfessionResource> Professions { get; set; }
+        public IEnumerable<CreateCalculationSourceQuery> Sources { get; set; }
     }
 }

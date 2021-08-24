@@ -16,6 +16,8 @@ namespace ProfOsmotr.Web.Models
 
         public string HeadPosition { get; set; }
 
+        public IEnumerable<EmployerDepartmentResource> Departments { get; set; }
+
         public IEnumerable<EmployerPeriodicMedicalExaminationResource> PeriodicMedicalExaminations { get; set; }
     }
 }

@@ -30,7 +30,7 @@ namespace ProfOsmotr.DAL
             IOrderRepository orderItems,
             IPatientRepository patients,
             IPreliminaryMedicalExaminationRepository preliminaryMedicalExaminations,
-            IRepository<Profession> professions,
+            IProfessionRepository professions,
             IRepository<Role> roles,
             IRepository<ServiceAvailabilityGroup> serviceAvailabilityGroups,
             IRepository<Service> services,
@@ -89,7 +89,7 @@ namespace ProfOsmotr.DAL
 
         public IPreliminaryMedicalExaminationRepository PreliminaryMedicalExaminations { get; }
 
-        public IRepository<Profession> Professions { get; }
+        public IProfessionRepository Professions { get; }
 
         public IRepository<Role> Roles { get; }
 

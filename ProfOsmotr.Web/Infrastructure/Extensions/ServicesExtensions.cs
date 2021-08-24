@@ -64,6 +64,7 @@ namespace ProfOsmotr.Web.Infrastructure
             services.AddTransient<IPatientRepository, PatientRepository>();
             services.AddTransient<IEmployerRepository, EmployerRepository>();
             services.AddTransient<IPreliminaryMedicalExaminationRepository, PreliminaryMedicalExaminationRepository>();
+            services.AddTransient<IProfessionRepository, ProfessionRepository>();
         }
 
         private static void AddAppServices(IServiceCollection services, bool isAuthorizationEnabled)

@@ -98,14 +98,7 @@ class BaseFormStore {
         return editedPropsArr.reduce((result, propName) => {
             const initialValue = this._initialValues[propName];
             const currentValue = this.model[propName];
-            if (Array.isArray(currentValue)) {
-                // если массив содержит объекты с одинаковыми id, в любом порядке, 
-                // считаем, что он не изменился
-                if (!isArraysOfObjectsWithIdEquals(currentValue, initialValue)) {
-                    result[propName] = toJS(currentValue);
-                }
-            }
-            else if (currentValue !== initialValue) {
+            if (currentValue !== initialValue) {
                 result[propName] = currentValue;
             }
             return result;
@@ -119,17 +112,6 @@ class BaseFormStore {
     get isValid() {
         return Object.entries(this.errors).every(([key, value]) => !value && value !== '');
     }
-}
-
-function isArraysOfObjectsWithIdEquals(array1, array2) {
-    if (array1.length !== array2.length) {
-        return false;
-    }
-
-    const array1IdentifiersSorted = array1.map(obj => obj.id).sort();
-    const array2IdentifiersSorted = array2.map(obj => obj.id).sort();
-
-    return array1IdentifiersSorted.every((value, index) => value === array2IdentifiersSorted[index]);
 }
 
 export default BaseFormStore;

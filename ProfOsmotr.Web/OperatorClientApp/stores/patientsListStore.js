@@ -1,7 +1,7 @@
 import patientApiService from './../services/patientApiService';
-import BaseListStore from './baseListStore';
+import BasePagedListStore from './basePagedListStore';
 
-class PatientsListStore extends BaseListStore {
+class PatientsListStore extends BasePagedListStore {
     constructor() {
         super({
             loader: patientApiService.listEntities,

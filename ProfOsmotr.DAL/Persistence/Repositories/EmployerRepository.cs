@@ -19,6 +19,7 @@ namespace ProfOsmotr.DAL
         public async Task<Employer> FindEmployerAsync(int id)
         {
             return await dbSet.AsNoTracking()
+                .Include(e => e.Departments)
                 .Include(e => e.PeriodicMedicalExaminations)
                 .FirstOrDefaultAsync(employer => employer.Id == id);
         }

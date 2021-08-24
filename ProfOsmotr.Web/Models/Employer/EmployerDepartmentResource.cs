@@ -1,4 +1,4 @@
-﻿namespace ProfOsmotr.Web.Models.MedicalExaminations
+﻿namespace ProfOsmotr.Web.Models
 {
     public class EmployerDepartmentResource
     {

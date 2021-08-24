@@ -12,7 +12,7 @@ namespace ProfOsmotr.Web.Models
 
         public PreliminaryExaminationWorkPlaceResource WorkPlace { get; set; }
 
-        public IEnumerable<CheckupIndexValueResource> CheckupIndexValues { get; set; }
+        public IEnumerable<CheckupExaminationResultIndexResource> CheckupExaminationResultIndexes { get; set; }
 
         public CheckupResultResource Result { get; set; }
 

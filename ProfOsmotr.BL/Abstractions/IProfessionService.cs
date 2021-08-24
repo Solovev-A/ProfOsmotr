@@ -22,5 +22,6 @@ namespace ProfOsmotr.BL.Abstractions
         /// <param name="clinicId">Идентификатор медицинской организации, производящей расчет</param>
         /// <returns></returns>
         Task<ProfessionResponse> CreateProfessionForCalculation(CreateProfessionRequest request, int clinicId);
+        Task<ProfessionSearchResultResponse> FindProfessionWithSuggestions(FindProfessionRequest request);
     }
 }

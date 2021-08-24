@@ -9,11 +9,13 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
     {
         public ResourcesToRequestsProfile()
         {
-            CreateMap<CreateProfessionResource, CreateProfessionRequest>()
+            CreateMap<CreateCalculationSourceQuery, CreateCalculationSourceRequest>();
+
+            CreateMap<CreateProfessonQuery, CreateProfessionRequest>()
                 .ForMember(d => d.OrderItemIdentifiers, conf => conf.MapFrom(s => s.OrderItems));
 
             CreateMap<CreateCalculationResource, CreateCalculationRequest>()
-                .ForMember(d => d.CreateProfessionRequests, conf => conf.MapFrom(s => s.Professions));
+                .ForMember(d => d.CreateCalculationSourceRequests, conf => conf.MapFrom(s => s.Sources));
 
             CreateMap<UpdateCalculationResource, UpdateCalculationRequest>();
 
@@ -59,6 +61,8 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
             CreateMap<CreateEmployerQuery, CreateEmployerRequest>();
 
             CreateMap<PreliminaryExaminationSearchPaginationQuery, ExecutePreliminaryExaminationsQueryRequest>();
+
+            CreateMap<SearchProfessionQuery, FindProfessionRequest>();
         }
     }
 }

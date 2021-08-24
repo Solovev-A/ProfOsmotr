@@ -1,63 +1,52 @@
-import { action, computed, makeObservable, observable, runInAction } from "mobx";
+import { action, makeObservable, observable, runInAction } from "mobx";
 import { errorToast, handleResponseWithToasts } from "../utils/toasts";
 
 class BaseListStore {
-    itemsPerPage = 20;
-
     constructor({
-        loader,
         initialListLoader = null,
+        toastOnNotFound = true,
         notFoundErrorMessage = 'Ничего не найдено',
-        minQueryLength = 3
+        minQueryLength = 3,
+        getItemsFromResponse = (response) => response,
+        ...config
     }) {
-        if (!loader) throw 'Требуется загрузчик результата запроса';
-
-        this._config = { loader, initialListLoader, notFoundErrorMessage, minQueryLength }
+        this._config = {
+            initialListLoader,
+            toastOnNotFound,
+            notFoundErrorMessage,
+            minQueryLength,
+            getItemsFromResponse,
+            ...config
+        }
+        this._initialConfig = Object.assign({}, this._config);
         this.reset();
 
         makeObservable(this, {
             items: observable,
-            page: observable,
-            itemsPerPage: observable,
-            totalCount: observable,
             searchQuery: observable,
             inProgress: observable,
             inSearch: observable,
-            onSearch: action,
-            loadPage: action,
-            loadInitialList: action,
-            _loadSearchResults: action,
-            reset: action,
-            _queryHashCode: computed,
-            totalPages: computed
+            onSearch: action.bound,
+            loadInitialList: action.bound,
+            _loadSearchResults: action.bound,
+            reset: action.bound
         });
     }
 
-    onSearch = (query) => {
+    onSearch(query, config = null) {
         this.inSearch = true;
-
-        // сброс состояния результата
         this.items = [];
-        this.page = 1;
-        this.totalCount = 0;
         this.searchQuery = query;
+
+        if (config && typeof config === 'object') {
+            Object.assign(this._config, config);
+        }
 
         return this._loadSearchResults();
     }
 
-    loadPage = async (page) => {
-        const pageBefore = this.page;
-        this.page = page;
-        const response = await this._loadSearchResults();
-
-        if (response.success === false) {
-            // указатель текущей страницы остается актуальным для уже загруженной страницы, если не получилось загрузить новую
-            this.page = pageBefore;
-        }
-    }
-
-    loadInitialList = async () => {
-        const { initialListLoader } = this._config;
+    async loadInitialList() {
+        const { initialListLoader, getItemsFromResponse } = this._config;
         if (!initialListLoader) return;
 
         this.inProgress = true;
@@ -67,13 +56,14 @@ class BaseListStore {
         if (response.success === false) throw response.message;
 
         runInAction(() => {
-            this.items = response.items;
-            this.totalCount = response.totalCount;
+            this.items = getItemsFromResponse(response);
             this.inProgress = false;
         })
+
+        return response;
     }
 
-    _loadSearchResults = async () => {
+    async _loadSearchResults() {
         if (this.searchQuery.length < this._config.minQueryLength) {
             errorToast('Слишком короткий запрос');
             return;
@@ -81,40 +71,43 @@ class BaseListStore {
 
         this.inProgress = true;
 
-        const { loader, notFoundErrorMessage } = this._config;
+        const { toastOnNotFound, notFoundErrorMessage, getItemsFromResponse } = this._config;
 
-        const queryHashBefore = this._queryHashCode;
-        const response = await loader(this.searchQuery, this.page, this.itemsPerPage);
-        const queryHashAfter = this._queryHashCode;
+        const queryHashBefore = this.getQueryHash();
+        const response = await this._getSearchResultsResponse();
+        const queryHashAfter = this.getQueryHash();
 
         if (queryHashBefore !== queryHashAfter) return; // не обрабатываем ответ, если начат новый поиск
 
         runInAction(() => {
-            this.totalCount = response.totalCount;
-            this.items = response.items;
             this.inProgress = false;
-        })
+        });
 
-        if (this.totalCount === 0) errorToast(notFoundErrorMessage);
+        if (response && response.success !== false) {
+            runInAction(() => {
+                this.items = getItemsFromResponse(response);
+            });
+
+            if (this.items.length === 0 && toastOnNotFound) errorToast(notFoundErrorMessage);
+        }
 
         return handleResponseWithToasts(response);
     }
 
-    reset = () => {
+    async _getSearchResultsResponse() {
+        throw 'Необходимо реализовать в производном классе'
+    }
+
+    getQueryHash() {
+        return this.searchQuery;
+    }
+
+    reset() {
         this.inSearch = false;
         this.inProgress = false;
         this.items = [];
-        this.page = 1;
         this.searchQuery = '';
-        this.totalCount = 0;
-    }
-
-    get _queryHashCode() {
-        return this.searchQuery + String(this.page) + String(this.itemsPerPage);
-    }
-
-    get totalPages() {
-        return Math.ceil(this.totalCount / this.itemsPerPage);
+        this._config = Object.assign({}, this._initialConfig);
     }
 }
 

@@ -1,4 +1,6 @@
-﻿namespace ProfOsmotr.Web.Models
+﻿using System.Collections.Generic;
+
+namespace ProfOsmotr.Web.Models
 {
     public class OrderExaminationDetailedResource : OrderExaminationResource
     {
@@ -7,5 +9,7 @@
         public bool IsMandatory { get; set; }
 
         public ServiceDetailsResource DefaultServiceDetails { get; set; }
+
+        public IEnumerable<ExaminationResultIndexResource> ExaminationResultIndexes { get; set; }
     }
 }

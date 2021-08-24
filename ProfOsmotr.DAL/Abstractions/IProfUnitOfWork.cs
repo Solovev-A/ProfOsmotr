@@ -30,7 +30,7 @@ namespace ProfOsmotr.DAL.Abstractions
 
         IPatientRepository Patients { get; }
 
-        IRepository<Profession> Professions { get; }
+        IProfessionRepository Professions { get; }
 
         IRepository<Role> Roles { get; }
 

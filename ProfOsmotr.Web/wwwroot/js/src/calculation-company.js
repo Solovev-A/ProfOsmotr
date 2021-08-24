@@ -174,10 +174,19 @@ async function initCalculationCompany() {
 
         let calculationSource = {
             name: nameElement.value,
-            professions: professionsList.getData()
+            sources: professionsList.getData().map(source => ({
+                profession: {
+                    name: source.name,
+                    orderItems: source.orderItems
+                },
+                numberOfPersons: source.numberOfPersons,
+                numberOfWomen: source.numberOfWomen,
+                numberOfPersonsOver40: source.numberOfPersonsOver40,
+                numberOfWomenOver40: source.numberOfWomenOver40
+            }))
         };
 
-        if (calculationSource.professions.length === 0) {
+        if (calculationSource.sources.length === 0) {
             alert('Добавьте хотя бы одну профессию');
             return;
         }

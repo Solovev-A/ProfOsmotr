@@ -1,9 +1,9 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 
 import employerApiService from './../services/employerApiService'
-import BaseListStore from './baseListStore';
+import BasePagedListStore from './basePagedListStore';
 
-class EmployersStore extends BaseListStore {
+class EmployersStore extends BasePagedListStore {
     employerSlug = null;
     isEmployerLoading = true;
     employer = null;
@@ -50,6 +50,8 @@ class EmployersStore extends BaseListStore {
 
     resetEmployer = () => {
         this.isEmployerLoading = true;
+        this.employerSlug = null;
+        this.employer = null;
     }
 }
 
