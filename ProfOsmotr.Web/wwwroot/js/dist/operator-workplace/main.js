@@ -12939,6 +12939,57 @@ const App = () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(
 
 /***/ }),
 
+/***/ "./OperatorClientApp/components/buttons.js":
+/*!*************************************************!*
+  !*** ./OperatorClientApp/components/buttons.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "AddBtn": () => /* binding */ AddBtn,
+/* harmony export */   "EditBtn": () => /* binding */ EditBtn
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
+/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.es.js");
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+
+
+
+
+const Button = ({
+  className,
+  children,
+  ...props
+}) => {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", _extends({
+    className: className || "btn btn-secondary"
+  }, props), children);
+};
+
+const AddBtn = props => {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Button, _extends({}, props, {
+    title: "\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__.FontAwesomeIcon, {
+    icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__.faPlus
+  }), props.children);
+};
+
+const EditBtn = props => {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Button, _extends({}, props, {
+    title: "\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__.FontAwesomeIcon, {
+    icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__.faPencilAlt
+  }), props.children);
+};
+
+
+
+/***/ }),
+
 /***/ "./OperatorClientApp/components/card.js":
 /*!**********************************************!*
   !*** ./OperatorClientApp/components/card.js ***!
@@ -12953,7 +13004,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
-/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.es.js");
+/* harmony import */ var _buttons__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./buttons */ "./OperatorClientApp/components/buttons.js");
+
 
 
 
@@ -12984,13 +13036,10 @@ const EditableCard = ({
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Card, {
     title: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
       style: titleStyle
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_buttons__WEBPACK_IMPORTED_MODULE_2__.EditBtn, {
       className: "btn btn-sm btn-secondary",
-      title: "\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C",
       onClick: onEditClick
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__.FontAwesomeIcon, {
-      icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__.faEdit
-    })))
+    }))
   }, children ?? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "text-center font-italic"
   }, "\u041D\u0435 \u0437\u0430\u0434\u0430\u043D\u043E"));
