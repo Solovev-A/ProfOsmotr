@@ -13256,11 +13256,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_bootstrap_Modal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-bootstrap/Modal */ "./node_modules/react-bootstrap/esm/Modal.js");
+/* harmony import */ var react_bootstrap_Modal__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-bootstrap/Modal */ "./node_modules/react-bootstrap/esm/Modal.js");
 /* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/esm/react-router.js");
 /* harmony import */ var _forms_general_submitBtn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./forms/general/submitBtn */ "./OperatorClientApp/components/forms/general/submitBtn.js");
 /* harmony import */ var _spinner__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./spinner */ "./OperatorClientApp/components/spinner.js");
-/* harmony import */ var _hooks_useModalEditor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../hooks/useModalEditor */ "./OperatorClientApp/hooks/useModalEditor.js");
+/* harmony import */ var _hooks_useErrorHandler__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../hooks/useErrorHandler */ "./OperatorClientApp/hooks/useErrorHandler.js");
+
 
 
 
@@ -13274,44 +13276,66 @@ const EditorModal = ({
   children,
   title,
   scrollable = true,
+  reloadOnSubmit = true,
   ...props
 }) => {
-  const {
-    onSubmit,
-    onHide,
-    onEnter,
-    onExited
-  } = (0,_hooks_useModalEditor__WEBPACK_IMPORTED_MODULE_4__.default)(modalStore, editorStore);
-  const body = editorStore.isLoading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_spinner__WEBPACK_IMPORTED_MODULE_3__.default, null) : children;
+  const history = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useHistory)();
+  const errorHandler = (0,_hooks_useErrorHandler__WEBPACK_IMPORTED_MODULE_4__.default)();
+  const [isSubmitted, setIsSubmitted] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
 
-  const handleEnter = () => {
-    onEnter();
+  const onSubmit = async () => {
+    const response = await editorStore.onSubmit();
+
+    if (response && response.success !== false) {
+      setIsSubmitted(true);
+      modalStore.close();
+    }
+  };
+
+  const onHide = () => {
+    modalStore.close();
+  };
+
+  const onEnter = () => {
+    setIsSubmitted(false);
+    editorStore.loadInitialValues().catch(errorHandler);
 
     if (props.onEnter) {
       props.onEnter();
     }
   };
 
-  const handleExited = () => {
-    onExited();
+  const onExited = () => {
+    editorStore.clear();
 
     if (props.onExited) {
       props.onExited();
     }
+
+    if (isSubmitted && reloadOnSubmit) {
+      // перезагрузка страницы
+      // именно в этом обработчике: replace без таймаута не работает
+      setTimeout(() => {
+        const currentPath = history.location.pathname;
+        history.replace('/none');
+        history.replace(currentPath);
+      }, 0);
+    }
   };
 
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap_Modal__WEBPACK_IMPORTED_MODULE_5__.default, {
+  const body = editorStore.isLoading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_spinner__WEBPACK_IMPORTED_MODULE_3__.default, null) : children;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap_Modal__WEBPACK_IMPORTED_MODULE_6__.default, {
     centered: true,
     size: "lg",
     backdrop: "static",
     show: modalStore.isOpen,
     onHide: onHide,
-    onEnter: handleEnter,
-    onExited: handleExited,
+    onEnter: onEnter,
+    onExited: onExited,
     scrollable: scrollable
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap_Modal__WEBPACK_IMPORTED_MODULE_5__.default.Header, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap_Modal__WEBPACK_IMPORTED_MODULE_6__.default.Header, {
     closeButton: true
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap_Modal__WEBPACK_IMPORTED_MODULE_5__.default.Title, null, title)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap_Modal__WEBPACK_IMPORTED_MODULE_5__.default.Body, null, body), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap_Modal__WEBPACK_IMPORTED_MODULE_5__.default.Footer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_forms_general_submitBtn__WEBPACK_IMPORTED_MODULE_2__.default, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap_Modal__WEBPACK_IMPORTED_MODULE_6__.default.Title, null, title)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap_Modal__WEBPACK_IMPORTED_MODULE_6__.default.Body, null, body), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_bootstrap_Modal__WEBPACK_IMPORTED_MODULE_6__.default.Footer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_forms_general_submitBtn__WEBPACK_IMPORTED_MODULE_2__.default, {
     onClick: onSubmit,
     processing: editorStore.isProcessing
   }, "\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C")));
@@ -14594,56 +14618,6 @@ const useListPage = listStore => {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (useListPage);
-
-/***/ }),
-
-/***/ "./OperatorClientApp/hooks/useModalEditor.js":
-/*!***************************************************!*
-  !*** ./OperatorClientApp/hooks/useModalEditor.js ***!
-  \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
-/* harmony export */ });
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/esm/react-router.js");
-
-
-const useModalEditor = (modalStore, editorStore) => {
-  const history = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_0__.useHistory)();
-
-  const onSubmit = async () => {
-    const response = await editorStore.onSubmit();
-
-    if (response && response.success !== false) {
-      modalStore.close();
-      history.go(0);
-    }
-  };
-
-  const onHide = () => {
-    modalStore.close();
-  };
-
-  const onEnter = () => {
-    editorStore.loadInitialValues();
-  };
-
-  const onExited = () => {
-    editorStore.clear();
-  };
-
-  return {
-    onSubmit,
-    onHide,
-    onEnter,
-    onExited
-  };
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (useModalEditor);
 
 /***/ }),
 
@@ -16016,7 +15990,9 @@ const listColumns = [{
   title: 'Место работы',
   width: '30%',
   render: item => {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, item.employerName, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), item.profession, item.profession ? ': ' : '', item.orderItems.join(', '));
+    const employer = item.employerName ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, item.employerName, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null)) : null;
+    const profession = item.profession ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, item.profession, ': ', item.orderItems.join(', ')) : null;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, employer, profession);
   }
 }, {
   title: 'Статус',
@@ -16029,7 +16005,7 @@ const listColumns = [{
   }
 }, {
   title: 'Дата завершения',
-  render: item => item.dateOfComplition ?? '-'
+  render: item => item.dateOfCompletion ?? '-'
 }];
 
 const PreliminaryExaminationsListPage = props => {
@@ -16211,7 +16187,8 @@ const instance = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
 });
 
 const errorHandler = error => {
-  const message = error.response.data ? error.response.data.errors.join('\n') : error.message;
+  const errors = error.response.data.errors;
+  const message = Array.isArray(errors) ? errors.join('\n') : error.message;
   return {
     success: false,
     message
@@ -16896,7 +16873,9 @@ class CheckupIndexValuesEditorStore {
         id,
         value
       }));
-      const response = await this.checkupEditorStore.onUpdate(data);
+      const response = await this.checkupEditorStore.onUpdate({
+        checkupIndexValues: data
+      });
       return (0,_utils_toasts__WEBPACK_IMPORTED_MODULE_0__.handleResponseWithToasts)(response, true);
     });
 
@@ -16917,10 +16896,9 @@ class CheckupIndexValuesEditorStore {
     });
 
     _defineProperty(this, "_getSuggestions", async checkup => {
-      const orderItemsIdentifiers = checkup.workPlace?.profession?.orderItems.map(oi => oi.id);
+      const orderItemsIdentifiers = checkup.workPlace?.profession?.orderItems.map(oi => oi.id) ?? [];
       const order = await this.rootStore.orderStore.getOrder();
-      const mandatoryExaminationsSuggestions = getMandatoryExaminationsSuggestions();
-      if (!orderItemsIdentifiers) return mandatoryExaminationsSuggestions; // id обследований по приказу, которые необходимы для медосмотра, без повторений
+      const mandatoryExaminationsSuggestions = getMandatoryExaminationsSuggestions(); // id обследований по приказу, которые необходимы для медосмотра, без повторений
 
       let examinationsIdentifiers = orderItemsIdentifiers.reduce((set, currentId) => {
         const orderItem = order.orderItems.find(oi => oi.id === currentId);
@@ -16977,16 +16955,7 @@ class CheckupIndexValuesEditorStore {
     this.isLoading = true;
     this.valuesByIndexId = mobx__WEBPACK_IMPORTED_MODULE_1__.observable.map();
     this.suggestionValuesByIndexId = mobx__WEBPACK_IMPORTED_MODULE_1__.observable.map();
-    (0,mobx__WEBPACK_IMPORTED_MODULE_1__.makeObservable)(this, {
-      isLoading: mobx__WEBPACK_IMPORTED_MODULE_1__.observable,
-      checkupExaminationResultIndexes: mobx__WEBPACK_IMPORTED_MODULE_1__.observable,
-      suggestions: mobx__WEBPACK_IMPORTED_MODULE_1__.observable,
-      loadInitialValues: mobx__WEBPACK_IMPORTED_MODULE_1__.action,
-      onSubmit: mobx__WEBPACK_IMPORTED_MODULE_1__.action,
-      clear: mobx__WEBPACK_IMPORTED_MODULE_1__.action,
-      updateIndexValue: mobx__WEBPACK_IMPORTED_MODULE_1__.action,
-      updateSuggestionIndexValue: mobx__WEBPACK_IMPORTED_MODULE_1__.action
-    });
+    (0,mobx__WEBPACK_IMPORTED_MODULE_1__.makeAutoObservable)(this);
   }
 
 }
@@ -17523,6 +17492,7 @@ class PreliminaryExaminationEditorStore {
     });
 
     _defineProperty(this, "onUpdate", data => {
+      if (!Object.entries(data).length) return Promise.resolve(true);
       const examinationId = this.rootStore.preliminaryExaminationsStore.examination.id;
       return _services_preliminaryExaminationsApiService__WEBPACK_IMPORTED_MODULE_3__.default.updateEntity(examinationId, data);
     });
@@ -17895,16 +17865,13 @@ class WorkPlaceEditorStore extends _baseFormStore__WEBPACK_IMPORTED_MODULE_0__.d
         this._loadEmployerDepartmentsList();
 
         this.employerDepartment = checkup.workPlace.employer?.department;
-        const {
-          id,
-          name,
-          orderItems
-        } = checkup.workPlace.profession;
-        this.profession = {
-          id,
-          name,
-          orderItems: orderItems.map(item => item.key)
-        };
+        const professionSource = checkup.workPlace.profession;
+        this.profession = professionSource ? { ...professionSource,
+          orderItems: professionSource.orderItems.map(item => item.key)
+        } : professionSource; // this.profession = checkup.workPlace.profession;
+        // if (this.profession) {
+        //     this.profession.orderItems = this.profession.orderItems.map(item => item.key);
+        // }
       });
       this.setInitialValues({
         employerId: this.employer?.id,
@@ -17914,8 +17881,6 @@ class WorkPlaceEditorStore extends _baseFormStore__WEBPACK_IMPORTED_MODULE_0__.d
     });
 
     _defineProperty(this, "onSubmit", async () => {
-      console.log(this.patchedData);
-
       const handler = () => this.checkupEditorStore.onUpdate(this.patchedData);
 
       const response = await this.onSendingData(handler);
@@ -17925,7 +17890,7 @@ class WorkPlaceEditorStore extends _baseFormStore__WEBPACK_IMPORTED_MODULE_0__.d
 
     _defineProperty(this, "setEmployer", newEmployer => {
       this.employer = newEmployer;
-      this.updateProperty('employerId', newEmployer?.id);
+      this.updateProperty('employerId', newEmployer?.id ?? null);
       this.setEmployerDepartment(null);
       this.employerDepartmentsList.reset();
 
@@ -17934,12 +17899,12 @@ class WorkPlaceEditorStore extends _baseFormStore__WEBPACK_IMPORTED_MODULE_0__.d
 
     _defineProperty(this, "setEmployerDepartment", newEmployerDepartment => {
       this.employerDepartment = newEmployerDepartment;
-      this.updateProperty('employerDepartmentId', newEmployerDepartment?.id);
+      this.updateProperty('employerDepartmentId', newEmployerDepartment?.id ?? null);
     });
 
     _defineProperty(this, "setProfession", newProfession => {
       this.profession = newProfession;
-      this.updateProperty('professionId', newProfession?.id);
+      this.updateProperty('professionId', newProfession?.id ?? null);
     });
 
     _defineProperty(this, "resetEditorView", () => {

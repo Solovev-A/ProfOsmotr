@@ -7,7 +7,7 @@ namespace ProfOsmotr.BL.Abstractions
     {
         Task<PreliminaryMedicalExaminationResponse> CreatePreliminaryMedicalExaminationAsync(CreatePreliminaryMedicalExaminationRequest request);
 
-        Task<PreliminaryMedicalExaminationResponse> DeleteExaminationAsync(int examinationId);
+        Task<PreliminaryMedicalExaminationResponse> DeletePreliminaryExaminationAsync(int examinationId);
 
         Task<PreliminaryMedicalExaminationResponse> GetPreliminaryMedicalExaminationAsync(int id);
 
@@ -16,5 +16,6 @@ namespace ProfOsmotr.BL.Abstractions
         Task<QueryResponse<PreliminaryMedicalExamination>> ListActualPreliminaryMedicalExaminationsAsync(int clinicId);
 
         Task<QueryResponse<PreliminaryMedicalExamination>> ListPreliminaryMedicalExaminationsAsync(ExecutePreliminaryExaminationsQueryRequest request);
+        Task<PreliminaryMedicalExaminationResponse> UpdatePreliminaryExaminationAsync(UpdatePreliminaryExaminationRequest request);
     }
 }

@@ -1,4 +1,4 @@
-import { observable, makeObservable, action, runInAction } from 'mobx';
+import { observable, runInAction, makeAutoObservable } from 'mobx';
 import { handleResponseWithToasts } from '../utils/toasts';
 
 class CheckupIndexValuesEditorStore {
@@ -11,16 +11,7 @@ class CheckupIndexValuesEditorStore {
         this.valuesByIndexId = observable.map();
         this.suggestionValuesByIndexId = observable.map();
 
-        makeObservable(this, {
-            isLoading: observable,
-            checkupExaminationResultIndexes: observable,
-            suggestions: observable,
-            loadInitialValues: action,
-            onSubmit: action,
-            clear: action,
-            updateIndexValue: action,
-            updateSuggestionIndexValue: action
-        })
+        makeAutoObservable(this);
     }
 
     loadInitialValues = async () => {
@@ -65,7 +56,8 @@ class CheckupIndexValuesEditorStore {
             ...suggestionValuesMapEntries
         ]
             .map(([id, value]) => ({ id, value }));
-        const response = await this.checkupEditorStore.onUpdate(data);
+
+        const response = await this.checkupEditorStore.onUpdate({ checkupIndexValues: data });
         return handleResponseWithToasts(response, true);
     }
 
@@ -86,11 +78,9 @@ class CheckupIndexValuesEditorStore {
     }
 
     _getSuggestions = async (checkup) => {
-        const orderItemsIdentifiers = checkup.workPlace?.profession?.orderItems.map(oi => oi.id);
+        const orderItemsIdentifiers = checkup.workPlace?.profession?.orderItems.map(oi => oi.id) ?? [];
         const order = await this.rootStore.orderStore.getOrder();
         const mandatoryExaminationsSuggestions = getMandatoryExaminationsSuggestions();
-
-        if (!orderItemsIdentifiers) return mandatoryExaminationsSuggestions;
 
         // id обследований по приказу, которые необходимы для медосмотра, без повторений
         let examinationsIdentifiers = orderItemsIdentifiers.reduce((set, currentId) => {

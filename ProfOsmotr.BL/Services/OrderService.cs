@@ -204,6 +204,11 @@ namespace ProfOsmotr.BL
             }
         }
 
+        public async Task<ExaminationResultIndex> FindExaminationResultIndexAsync(int id)
+        {
+            return await uow.ExamintaionResultIndexes.FindAsync(id);
+        }
+
         private async Task<OrderExamination> FindExaminationAsync(int id)
         {
             return await uow.OrderExaminations.FindAsync(id);
@@ -220,11 +225,6 @@ namespace ProfOsmotr.BL
             if (Enum.IsDefined(typeof(TargetGroupId), id))
                 return await uow.TargetGroups.FirstOrDefaultAsync(g => g.Id == (TargetGroupId)id);
             return null;
-        }
-
-        private async Task<ExaminationResultIndex> FindExaminationResultIndexAsync(int id)
-        {
-            return await uow.ExamintaionResultIndexes.FindAsync(id);
         }
 
         async Task<OrderItemResponse> IOrderService.FindItemWithActualServicesAsync(int id, int clinicId)

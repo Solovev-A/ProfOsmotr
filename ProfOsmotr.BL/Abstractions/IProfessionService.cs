@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using ProfOsmotr.DAL;
+using System.Threading.Tasks;
 
 namespace ProfOsmotr.BL.Abstractions
 {
@@ -22,6 +23,7 @@ namespace ProfOsmotr.BL.Abstractions
         /// <param name="clinicId">Идентификатор медицинской организации, производящей расчет</param>
         /// <returns></returns>
         Task<ProfessionResponse> CreateProfessionForCalculation(CreateProfessionRequest request, int clinicId);
+        Task<Profession> FindProfessionAsync(int id);
         Task<ProfessionSearchResultResponse> FindProfessionWithSuggestions(FindProfessionRequest request);
     }
 }

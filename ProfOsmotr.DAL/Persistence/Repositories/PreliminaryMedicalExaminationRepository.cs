@@ -16,9 +16,14 @@ namespace ProfOsmotr.DAL
         {
         }
 
-        public async Task<PreliminaryMedicalExamination> FindExaminationAsync(int id)
+        public async Task<PreliminaryMedicalExamination> FindExaminationAsync(int id, bool noTracking = true)
         {
-            return await GetInitialQuery()
+            var query = noTracking ? dbSet.AsNoTracking() : dbSet;
+
+            return await query
+                .Include(ex => ex.Employer)
+                .Include(ex => ex.CheckupStatus.Patient)
+                .Include(ex => ex.CheckupStatus.Profession.OrderItems)
                 .Include(ex => ex.CheckupStatus.EmployerDepartment)
                 .Include(ex => ex.LastEditor.UserProfile)
                 .Include(ex => ex.CheckupStatus.CheckupResult)

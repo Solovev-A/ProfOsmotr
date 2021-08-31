@@ -15,27 +15,27 @@ namespace ProfOsmotr.DAL
 
         #region Constructors
 
-        public ProfEFUnitOfWork(
-            ProfContext context,
-            ICatalogRepository actualClinicServices,
-            ICalculationRepository calculations,
-            IRepository<CheckupResult> checkupResults,
-            IQueryAwareRepository<ClinicRegisterRequest> clinicRegisterRequests,
-            IQueryAwareRepository<Clinic> clinics,
-            IEmployerRepository employers,
-            IRepository<ExaminationResultIndex> examintaionResultIndexes,
-            IRepository<Gender> genders,
-            IRepository<ICD10Chapter> iCD10Chapters,
-            IOrderExaminationRepository orderExaminations,
-            IOrderRepository orderItems,
-            IPatientRepository patients,
-            IPreliminaryMedicalExaminationRepository preliminaryMedicalExaminations,
-            IProfessionRepository professions,
-            IRepository<Role> roles,
-            IRepository<ServiceAvailabilityGroup> serviceAvailabilityGroups,
-            IRepository<Service> services,
-            IRepository<TargetGroup> targetGroups,
-            IQueryAwareRepository<User> users)
+        public ProfEFUnitOfWork(ProfContext context,
+                                ICatalogRepository actualClinicServices,
+                                ICalculationRepository calculations,
+                                IRepository<CheckupResult> checkupResults,
+                                IQueryAwareRepository<ClinicRegisterRequest> clinicRegisterRequests,
+                                IQueryAwareRepository<Clinic> clinics,
+                                IEmployerRepository employers,
+                                IRepository<EmployerDepartment> employerDepartments,
+                                IRepository<ExaminationResultIndex> examintaionResultIndexes,
+                                IRepository<Gender> genders,
+                                IRepository<ICD10Chapter> iCD10Chapters,
+                                IOrderExaminationRepository orderExaminations,
+                                IOrderRepository orderItems,
+                                IPatientRepository patients,
+                                IPreliminaryMedicalExaminationRepository preliminaryMedicalExaminations,
+                                IProfessionRepository professions,
+                                IRepository<Role> roles,
+                                IRepository<ServiceAvailabilityGroup> serviceAvailabilityGroups,
+                                IRepository<Service> services,
+                                IRepository<TargetGroup> targetGroups,
+                                IQueryAwareRepository<User> users)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
             ActualClinicServices = actualClinicServices ?? throw new ArgumentNullException(nameof(actualClinicServices));
@@ -44,6 +44,7 @@ namespace ProfOsmotr.DAL
             ClinicRegisterRequests = clinicRegisterRequests ?? throw new ArgumentNullException(nameof(clinicRegisterRequests));
             Clinics = clinics ?? throw new ArgumentNullException(nameof(clinics));
             Employers = employers ?? throw new ArgumentNullException(nameof(employers));
+            EmployerDepartments = employerDepartments ?? throw new ArgumentNullException(nameof(employerDepartments));
             ExamintaionResultIndexes = examintaionResultIndexes ?? throw new ArgumentNullException(nameof(examintaionResultIndexes));
             Genders = genders ?? throw new ArgumentNullException(nameof(genders));
             ICD10Chapters = iCD10Chapters ?? throw new ArgumentNullException(nameof(iCD10Chapters));
@@ -72,6 +73,8 @@ namespace ProfOsmotr.DAL
         public IQueryAwareRepository<ClinicRegisterRequest> ClinicRegisterRequests { get; }
 
         public IQueryAwareRepository<Clinic> Clinics { get; }
+
+        public IRepository<EmployerDepartment> EmployerDepartments { get; }
 
         public IEmployerRepository Employers { get; }
 

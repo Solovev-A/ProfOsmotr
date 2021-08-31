@@ -10,10 +10,10 @@ namespace ProfOsmotr.Web.Services
     {
         Task<IActionResult> HandleQuery<TServiceResult, TResource>(
             Func<Task<BaseResponse<TServiceResult>>> serviceFunc,
-            Func<Task<AccessResult>> accessCheck = null);
+            params Func<Task<AccessResult>>[] accessChecks);
 
         Task<IActionResult> HandleQuery<TServiceResult>(
             Func<Task<BaseResponse<TServiceResult>>> serviceFunc,
-            Func<Task<AccessResult>> accessCheck = null);
+            params Func<Task<AccessResult>>[] accessChecks);
     }
 }

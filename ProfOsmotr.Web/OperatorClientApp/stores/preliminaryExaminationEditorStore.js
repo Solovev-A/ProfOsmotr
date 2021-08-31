@@ -16,6 +16,8 @@ class PreliminaryExaminationEditorStore {
     }
 
     onUpdate = (data) => {
+        if (!Object.entries(data).length) return Promise.resolve(true);
+
         const examinationId = this.rootStore.preliminaryExaminationsStore.examination.id;
         return preliminaryExaminationsApiService.updateEntity(examinationId, data);
     }

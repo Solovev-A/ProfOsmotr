@@ -18,29 +18,34 @@ namespace ProfOsmotr.Web.Services
 
         public async Task<IActionResult> HandleQuery<TServiceResult, TResource>(
             Func<Task<BaseResponse<TServiceResult>>> serviceFunc,
-            Func<Task<AccessResult>> accessCheck = null)
+            params Func<Task<AccessResult>>[] accessChecks)
         {
-            return await ProcessQuery(serviceFunc, accessCheck, MapServiceResultToResourceAndReturnOk<TServiceResult, TResource>);
+            return await ProcessQuery(serviceFunc, MapServiceResultToResourceAndReturnOk<TServiceResult, TResource>, accessChecks);
         }
 
         public async Task<IActionResult> HandleQuery<TServiceResult>(
             Func<Task<BaseResponse<TServiceResult>>> serviceFunc,
-            Func<Task<AccessResult>> accessCheck = null)
+            params Func<Task<AccessResult>>[] accessChecks)
         {
-            return await ProcessQuery(serviceFunc, accessCheck, (res) => new OkResult());
+            return await ProcessQuery(serviceFunc, (res) => new OkResult(), accessChecks);
         }
 
         protected async Task<IActionResult> ProcessQuery<TServiceResult>(
             Func<Task<BaseResponse<TServiceResult>>> serviceFunc,
-            Func<Task<AccessResult>> accessCheck,
-            Func<TServiceResult, IActionResult> onSuccessResponse)
+            Func<TServiceResult, IActionResult> onSuccessResponse,
+            Func<Task<AccessResult>>[] accessChecks)
         {
-            if (accessCheck != null)
+            if (accessChecks.Length > 0)
             {
-                var accessResult = await accessCheck();
-                if (!accessResult.AccessGranted)
+                foreach (var accessCheck in accessChecks)
                 {
-                    return new ForbidResult();
+                    if (accessCheck is null) continue;
+
+                    var accessResult = await accessCheck();
+                    if (!accessResult.AccessGranted)
+                    {
+                        return new ForbidResult();
+                    }
                 }
             }
 

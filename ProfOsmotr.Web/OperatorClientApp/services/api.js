@@ -6,8 +6,9 @@ const instance = axios.create({
 });
 
 const errorHandler = (error) => {
-    const message = error.response.data
-        ? error.response.data.errors.join('\n')
+    const errors = error.response.data.errors;
+    const message = Array.isArray(errors)
+        ? errors.join('\n')
         : error.message;
 
     return { success: false, message }

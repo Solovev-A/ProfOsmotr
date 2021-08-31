@@ -16,7 +16,6 @@ namespace ProfOsmotr.BL
         #region Fields
 
         private readonly IOrderService orderService;
-        private readonly IEmployerService employerService;
         private readonly IProfUnitOfWork uow;
 
         #endregion Fields
@@ -27,6 +26,12 @@ namespace ProfOsmotr.BL
         {
             this.uow = uow;
             this.orderService = orderService;
+        }
+
+        public ProfessionService(IOrderService orderService, IProfUnitOfWork uow)
+        {
+            this.orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
+            this.uow = uow ?? throw new ArgumentNullException(nameof(uow));
         }
 
         #endregion Constructors
@@ -57,9 +62,9 @@ namespace ProfOsmotr.BL
             return await CreateProfessionResponse(request, clinicId);
         }
 
-        public async Task<IEnumerable<Profession>> GetAllProfessionsAsync()
+        public async Task<Profession> FindProfessionAsync(int id)
         {
-            return await uow.Professions.GetAllAsync();
+            return await uow.Professions.FindAsync(id);
         }
 
         public async Task<ProfessionSearchResultResponse> FindProfessionWithSuggestions(FindProfessionRequest request)
@@ -88,6 +93,11 @@ namespace ProfOsmotr.BL
             {
                 return new ProfessionSearchResultResponse(ex.Message);
             }
+        }
+
+        public async Task<IEnumerable<Profession>> GetAllProfessionsAsync()
+        {
+            return await uow.Professions.GetAllAsync();
         }
 
         public async Task<IEnumerable<Profession>> ListFavoritesAsync()

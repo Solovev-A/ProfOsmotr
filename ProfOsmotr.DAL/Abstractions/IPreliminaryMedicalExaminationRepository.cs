@@ -4,6 +4,6 @@ namespace ProfOsmotr.DAL.Abstractions
 {
     public interface IPreliminaryMedicalExaminationRepository : IQueryAwareRepository<PreliminaryMedicalExamination>
     {
-        Task<PreliminaryMedicalExamination> FindExaminationAsync(int id);
+        Task<PreliminaryMedicalExamination> FindExaminationAsync(int id, bool noTracking = true);
     }
 }

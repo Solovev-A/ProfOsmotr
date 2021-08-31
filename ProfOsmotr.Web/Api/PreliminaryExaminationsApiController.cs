@@ -7,6 +7,7 @@ using ProfOsmotr.Web.Infrastructure;
 using ProfOsmotr.Web.Models;
 using ProfOsmotr.Web.Services;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ProfOsmotr.Web.Api
@@ -90,17 +91,38 @@ namespace ProfOsmotr.Web.Api
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> Patch(int id)
+        [ModelStateValidationFilter]
+        public async Task<IActionResult> Patch(int id, [FromBody] PatchPreliminaryExaminationQuery query)
         {
-            // TODO
-            return StatusCode(405); // 405 Method Not Allowed
+            if (!accessService.TryGetUserId(out int userId))
+                return Forbid();
+
+            var request = new UpdatePreliminaryExaminationRequest()
+            {
+                EditorId = userId,
+                ExaminationId = id,
+                Query = query
+            };
+
+            var accessChecks = new List<Func<Task<AccessResult>>>
+            {
+                async () => await accessService.CanAccessPrealiminaryExaminationAsync(id)
+            };
+            if (query.IsFieldPresent(nameof(query.EmployerId)) && query.EmployerId.HasValue)
+            {
+                accessChecks.Add(async () => await accessService.CanAccessEmployerAsync(query.EmployerId.Value));
+            }
+
+            return await queryHandler.HandleQuery<PreliminaryMedicalExamination>(
+                async () => await examinationsService.UpdatePreliminaryExaminationAsync(request),
+                accessChecks.ToArray());
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             return await queryHandler.HandleQuery<PreliminaryMedicalExamination>(
-                async () => await examinationsService.DeleteExaminationAsync(id),
+                async () => await examinationsService.DeletePreliminaryExaminationAsync(id),
                 async () => await accessService.CanAccessPrealiminaryExaminationAsync(id));
         }
     }

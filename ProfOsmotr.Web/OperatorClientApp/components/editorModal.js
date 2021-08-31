@@ -1,34 +1,61 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { observer } from 'mobx-react-lite';
+import { useHistory } from "react-router-dom";
 
 import SubmitBtn from './forms/general/submitBtn';
 import Spinner from './spinner';
-import useModalEditor from '../hooks/useModalEditor';
+import useErrorHandler from '../hooks/useErrorHandler';
 
+const EditorModal = ({ modalStore, editorStore, children, title, scrollable = true, reloadOnSubmit = true, ...props }) => {
+    const history = useHistory();
+    const errorHandler = useErrorHandler();
 
-const EditorModal = ({ modalStore, editorStore, children, title, scrollable = true, ...props }) => {
-    const { onSubmit, onHide, onEnter, onExited } = useModalEditor(modalStore, editorStore);
+    const [isSubmitted, setIsSubmitted] = useState(false);
 
-    const body = editorStore.isLoading
-        ? <Spinner />
-        : children;
+    const onSubmit = async () => {
+        const response = await editorStore.onSubmit();
+        if (response && response.success !== false) {
+            setIsSubmitted(true);
+            modalStore.close();
+        }
+    }
 
-    const handleEnter = () => {
-        onEnter();
+    const onHide = () => {
+        modalStore.close();
+    }
+
+    const onEnter = () => {
+        setIsSubmitted(false);
+        editorStore.loadInitialValues()
+            .catch(errorHandler);
 
         if (props.onEnter) {
             props.onEnter();
         }
     }
 
-    const handleExited = () => {
-        onExited();
+    const onExited = () => {
+        editorStore.clear();
 
         if (props.onExited) {
             props.onExited();
         }
+
+        if (isSubmitted && reloadOnSubmit) {
+            // перезагрузка страницы
+            // именно в этом обработчике: replace без таймаута не работает
+            setTimeout(() => {
+                const currentPath = history.location.pathname;
+                history.replace('/none');
+                history.replace(currentPath);
+            }, 0)
+        }
     }
+
+    const body = editorStore.isLoading
+        ? <Spinner />
+        : children;
 
     return (
         <Modal
@@ -37,8 +64,8 @@ const EditorModal = ({ modalStore, editorStore, children, title, scrollable = tr
             backdrop='static'
             show={modalStore.isOpen}
             onHide={onHide}
-            onEnter={handleEnter}
-            onExited={handleExited}
+            onEnter={onEnter}
+            onExited={onExited}
             scrollable={scrollable}
         >
             <Modal.Header closeButton>

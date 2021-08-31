@@ -2,10 +2,8 @@
 using ProfOsmotr.DAL.Abstractions;
 using ProfOsmotr.DAL.Infrastructure;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ProfOsmotr.DAL
@@ -22,6 +20,13 @@ namespace ProfOsmotr.DAL
                 .Include(e => e.Departments)
                 .Include(e => e.PeriodicMedicalExaminations)
                 .FirstOrDefaultAsync(employer => employer.Id == id);
+        }
+
+        public async Task<EmployerDepartment> FindEmployerDepartmentAsync(int id, bool noTracking = true)
+        {
+            var set = context.Set<EmployerDepartment>();
+            var query = noTracking ? set.AsNoTracking() : set;
+            return await query.FirstOrDefaultAsync(d => d.Id == id);
         }
 
         protected override IQueryable<Employer> GetInitialQuery()

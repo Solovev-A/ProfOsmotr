@@ -117,5 +117,10 @@ namespace ProfOsmotr.BL
                 return new QueryResponse<Employer>(ex.Message);
             }
         }
+
+        public async Task<EmployerDepartment> FindEmployerDepartmentAsync(int id, bool noTracking = true)
+        {
+            return await uow.Employers.FindEmployerDepartmentAsync(id, noTracking);
+        }
     }
 }

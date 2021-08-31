@@ -27,10 +27,18 @@ const listColumns = [{
     title: 'Место работы',
     width: '30%',
     render: (item) => {
+        const employer = item.employerName
+            ? <>{item.employerName}<br /></>
+            : null;
+
+        const profession = item.profession
+            ? <>{item.profession}{': '}{item.orderItems.join(', ')}</>
+            : null;
+
         return (
             <>
-                {item.employerName}<br />
-                {item.profession}{item.profession ? ': ' : ''}{item.orderItems.join(', ')}
+                {employer}
+                {profession}
             </>
         )
     }
@@ -45,7 +53,7 @@ const listColumns = [{
     }
 }, {
     title: 'Дата завершения',
-    render: (item) => item.dateOfComplition ?? '-'
+    render: (item) => item.dateOfCompletion ?? '-'
 }];
 
 
