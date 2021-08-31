@@ -10,6 +10,7 @@ class CheckupIndexValuesEditorStore {
         this.isLoading = true;
         this.valuesByIndexId = observable.map();
         this.suggestionValuesByIndexId = observable.map();
+        this.initialValuesByIndexId = observable.map();
 
         makeAutoObservable(this);
     }
@@ -27,6 +28,7 @@ class CheckupIndexValuesEditorStore {
             this.suggestions = suggestions;
         });
 
+        setInitialIndexValues(this.checkupExaminationResultIndexes, this.initialValuesByIndexId);
         setInitialIndexValues(this.checkupExaminationResultIndexes, this.valuesByIndexId);
         setInitialIndexValues(this.suggestions, this.suggestionValuesByIndexId);
 
@@ -44,8 +46,11 @@ class CheckupIndexValuesEditorStore {
     }
 
     onSubmit = async () => {
-        const indexValuesMapEntries = this.valuesByIndexId
+        let indexValuesMapEntries = this.valuesByIndexId
             .entries();
+        indexValuesMapEntries = [...indexValuesMapEntries]
+            .filter(([id, value]) => value !== this.initialValuesByIndexId.get(id));
+
         let suggestionValuesMapEntries = this.suggestionValuesByIndexId
             .entries();
         suggestionValuesMapEntries = [...suggestionValuesMapEntries]
@@ -57,7 +62,9 @@ class CheckupIndexValuesEditorStore {
         ]
             .map(([id, value]) => ({ id, value }));
 
-        const response = await this.checkupEditorStore.onUpdate({ checkupIndexValues: data });
+        const response = data.length > 0
+            ? await this.checkupEditorStore.onUpdate({ checkupIndexValues: data })
+            : Promise.resolve(true);
         return handleResponseWithToasts(response, true);
     }
 

@@ -16850,6 +16850,7 @@ class CheckupIndexValuesEditorStore {
       (0,mobx__WEBPACK_IMPORTED_MODULE_1__.runInAction)(() => {
         this.suggestions = suggestions;
       });
+      setInitialIndexValues(this.checkupExaminationResultIndexes, this.initialValuesByIndexId);
       setInitialIndexValues(this.checkupExaminationResultIndexes, this.valuesByIndexId);
       setInitialIndexValues(this.suggestions, this.suggestionValuesByIndexId);
       (0,mobx__WEBPACK_IMPORTED_MODULE_1__.runInAction)(() => {
@@ -16866,16 +16867,17 @@ class CheckupIndexValuesEditorStore {
     });
 
     _defineProperty(this, "onSubmit", async () => {
-      const indexValuesMapEntries = this.valuesByIndexId.entries();
+      let indexValuesMapEntries = this.valuesByIndexId.entries();
+      indexValuesMapEntries = [...indexValuesMapEntries].filter(([id, value]) => value !== this.initialValuesByIndexId.get(id));
       let suggestionValuesMapEntries = this.suggestionValuesByIndexId.entries();
       suggestionValuesMapEntries = [...suggestionValuesMapEntries].filter(([, value]) => value !== '');
       const data = [...indexValuesMapEntries, ...suggestionValuesMapEntries].map(([id, value]) => ({
         id,
         value
       }));
-      const response = await this.checkupEditorStore.onUpdate({
+      const response = data.length > 0 ? await this.checkupEditorStore.onUpdate({
         checkupIndexValues: data
-      });
+      }) : Promise.resolve(true);
       return (0,_utils_toasts__WEBPACK_IMPORTED_MODULE_0__.handleResponseWithToasts)(response, true);
     });
 
@@ -16955,6 +16957,7 @@ class CheckupIndexValuesEditorStore {
     this.isLoading = true;
     this.valuesByIndexId = mobx__WEBPACK_IMPORTED_MODULE_1__.observable.map();
     this.suggestionValuesByIndexId = mobx__WEBPACK_IMPORTED_MODULE_1__.observable.map();
+    this.initialValuesByIndexId = mobx__WEBPACK_IMPORTED_MODULE_1__.observable.map();
     (0,mobx__WEBPACK_IMPORTED_MODULE_1__.makeAutoObservable)(this);
   }
 
