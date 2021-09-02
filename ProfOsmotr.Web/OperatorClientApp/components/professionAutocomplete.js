@@ -30,19 +30,16 @@ const ProfessionAutocomplete = ({ value, onChange, professionListStore, disabled
     }
 
     return (
-        <div className="form-group">
-            <label>Профессия</label>
-            <Autocomplete
-                options={items}
-                value={value}
-                onChange={onChange}
-                onSearchChange={onSearch}
-                isLoading={inProgress}
-                renderOptionText={renderOption}
-                renderValueText={(profession => renderOption(profession, false))}
-                disabled={disabled}
-            />
-        </div>
+        <Autocomplete
+            options={items}
+            value={value}
+            onChange={onChange}
+            onSearchChange={onSearch}
+            isLoading={inProgress}
+            renderOptionText={renderOption}
+            renderValueText={(profession => renderOption(profession, false))}
+            disabled={disabled}
+        />
     );
 }
 

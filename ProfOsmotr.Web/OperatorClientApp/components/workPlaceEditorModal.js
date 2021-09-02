@@ -1,18 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 
-import EmployerAutocomplete from './employerAutocomplete';
-import DepartmentAutocomplete from './departmentAutocomplete';
-import ProfessionAutocomplete from './professionAutocomplete';
 import EditorModal from './editorModal';
-import useStore from '../hooks/useStore';
+import WorkPlaceEditorForm from './workPlaceEditorForm';
 
 
 const WorkPlaceEditorModal = ({ modalStore, editorStore, canChangeEmployer = true }) => {
-    const onEnter = () => {
-
-    }
-
     const onExited = () => {
         editorStore.resetEditorView();
     }
@@ -22,26 +15,10 @@ const WorkPlaceEditorModal = ({ modalStore, editorStore, canChangeEmployer = tru
             title="Место работы"
             editorStore={editorStore}
             modalStore={modalStore}
-            onEnter={onEnter}
             onExited={onExited}
             scrollable={false}
         >
-            <EmployerAutocomplete
-                value={editorStore.employer}
-                onChange={editorStore.setEmployer}
-                disabled={!canChangeEmployer}
-            />
-            <DepartmentAutocomplete
-                value={editorStore.employerDepartment}
-                onChange={editorStore.setEmployerDepartment}
-                hasEmployer={!!editorStore.employer}
-                departmentsListStore={editorStore.employerDepartmentsList}
-            />
-            <ProfessionAutocomplete
-                value={editorStore.profession}
-                onChange={editorStore.setProfession}
-                professionListStore={editorStore.professionList}
-            />
+            <WorkPlaceEditorForm editorStore={editorStore} canChangeEmployer={canChangeEmployer} />
         </EditorModal>
     )
 }

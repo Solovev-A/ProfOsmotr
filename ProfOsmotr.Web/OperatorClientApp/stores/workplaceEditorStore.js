@@ -5,6 +5,7 @@ import { handleResponseWithToasts } from '../utils/toasts';
 import SimpleFilterListStore from './simpleFilterListStore';
 import employerApiService from '../services/employerApiService';
 import ProfessionAutocompleteStore from './professionAutocompleteStore';
+import ModalStore from './modalStore';
 
 const workPlaceTemplate = {
     employerId: null,
@@ -19,6 +20,8 @@ class WorkPlaceEditorStore extends BaseFormStore {
         this.checkupEditorStore = checkupEditorStore;
         this.employerDepartmentsList = new SimpleFilterListStore();
         this.professionList = new ProfessionAutocompleteStore(this);
+        this.employerEditorModalStore = new ModalStore();
+
         this.resetEditorView();
         makeObservable(this, {
             employer: observable,
@@ -48,11 +51,6 @@ class WorkPlaceEditorStore extends BaseFormStore {
                     orderItems: professionSource.orderItems.map(item => item.key)
                 }
                 : professionSource;
-            // this.profession = checkup.workPlace.profession;
-            // if (this.profession) {
-            //     this.profession.orderItems = this.profession.orderItems.map(item => item.key);
-            // }
-
         });
 
         this.setInitialValues({
@@ -99,6 +97,11 @@ class WorkPlaceEditorStore extends BaseFormStore {
 
     _loadEmployerDepartmentsList = async () => {
         if (!this.employer) return;
+
+        if (this.employer.departments) {
+            this.employerDepartmentsList.setOptions(this.employer.departments);
+            return;
+        }
 
         const response = await employerApiService.getEntity(this.employer.id)
         if (response && response.success !== false) {

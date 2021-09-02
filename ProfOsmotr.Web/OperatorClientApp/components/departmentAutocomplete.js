@@ -17,19 +17,16 @@ const DepartmentAutocomplete = ({ value, onChange, hasEmployer, departmentsListS
         : 'Сначала выберите организацию'
 
     return (
-        <div className="form-group">
-            <label>Структурное подразделение</label>
-            <Autocomplete
-                options={searchResults}
-                value={value}
-                onChange={onChange}
-                onSearchChange={onSearch}
-                renderOptionText={(department) => department.name}
-                disabled={hasNoDepartments || !hasEmployer}
-                threshold={-1}
-                placeholder={placeholder}
-            />
-        </div>
+        <Autocomplete
+            options={searchResults}
+            value={value}
+            onChange={onChange}
+            onSearchChange={onSearch}
+            renderOptionText={(department) => department.name}
+            disabled={hasNoDepartments || !hasEmployer}
+            threshold={-1}
+            placeholder={placeholder}
+        />
     );
 }
 

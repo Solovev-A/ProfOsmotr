@@ -15,18 +15,15 @@ const EmployerAutocomplete = ({ value, onChange, disabled = false }) => {
     }, [])
 
     return (
-        <div className="form-group">
-            <label>Организация</label>
-            <Autocomplete
-                options={items}
-                value={value}
-                onChange={onChange}
-                onSearchChange={(search) => onSearch(search, { toastOnNotFound: false })}
-                isLoading={inProgress}
-                renderOptionText={(employer) => employer.name}
-                disabled={disabled}
-            />
-        </div>
+        <Autocomplete
+            options={items}
+            value={value}
+            onChange={onChange}
+            onSearchChange={(search) => onSearch(search, { toastOnNotFound: false })}
+            isLoading={inProgress}
+            renderOptionText={(employer) => employer.name}
+            disabled={disabled}
+        />
     );
 }
 

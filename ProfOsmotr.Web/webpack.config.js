@@ -69,7 +69,12 @@ const reactConfig = {
     devtool: 'source-map',
     plugins: [
         new CleanWebpackPlugin()
-    ]
+    ],
+    resolve: {
+        alias: {
+            "styled-components": path.resolve(__dirname, "node_modules", "styled-components"),
+        }
+    }
 }
 
 

@@ -7,7 +7,7 @@ import SubmitBtn from './forms/general/submitBtn';
 import Spinner from './spinner';
 import useErrorHandler from '../hooks/useErrorHandler';
 
-const EditorModal = ({ modalStore, editorStore, children, title, scrollable = true, reloadOnSubmit = true, ...props }) => {
+const EditorModal = ({ modalStore, editorStore, children, title, scrollable = true, reloadOnSubmit = true, onSubmitted, ...props }) => {
     const history = useHistory();
     const errorHandler = useErrorHandler();
 
@@ -17,6 +17,9 @@ const EditorModal = ({ modalStore, editorStore, children, title, scrollable = tr
         const response = await editorStore.onSubmit();
         if (response && response.success !== false) {
             setIsSubmitted(true);
+            if (onSubmitted) {
+                onSubmitted(response);
+            }
             modalStore.close();
         }
     }

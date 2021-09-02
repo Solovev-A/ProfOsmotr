@@ -45,7 +45,7 @@ class EmployerEditorStore extends BaseFormStore {
         }
         const data = await employerApiService.getEntity(this.employerId);
 
-        if (!cancellationToken.isCancelled) {
+        if (!cancellationToken || !cancellationToken.isCancelled) {
             if (data.success === false) throw data.message
             this.setInitialValues(data);
         }
