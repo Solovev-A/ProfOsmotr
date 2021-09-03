@@ -8,14 +8,24 @@ import ProfessionAutocomplete from './professionAutocomplete';
 import { AddBtn, EditBtn } from './buttons';
 import EmployerEditorModal from './employerEditorModal';
 import useStore from './../hooks/useStore';
+import EmployerDepartmentEditorModal from './employerDepartmentEditorModal';
 
 
 const WorkPlaceEditorForm = observer(({ editorStore, canChangeEmployer = true }) => {
-    const { employerEditorStore } = useStore();
+    const { employerEditorStore, employerDepartmentEditorStore } = useStore();
 
     const openEmployerEditorModal = (employerId) => {
         employerEditorStore.setEmployerId(employerId);
         editorStore.employerEditorModalStore.open();
+    }
+
+    const openEmployerDepartmentEditorModal = (employerDepartment) => {
+        if (!editorStore.employer) throw 'Не задана организация';
+
+        employerDepartmentEditorStore.setEmployerDepartmentId(employerDepartment?.id);
+        employerDepartmentEditorStore.setParentId(editorStore.employer.id);
+        employerDepartmentEditorStore.setInitialValues(employerDepartment);
+        editorStore.employerDepartmentEditorModalStore.open();
     }
 
     return (
@@ -46,8 +56,12 @@ const WorkPlaceEditorForm = observer(({ editorStore, canChangeEmployer = true })
                         departmentsListStore={editorStore.employerDepartmentsList}
                     />
                     <ActionsContainer>
-                        <AddBtn />
-                        <EditBtn />
+                        <AddBtn onClick={() => openEmployerDepartmentEditorModal(null)}
+                            disabled={!editorStore.employer}
+                        />
+                        <EditBtn onClick={() => openEmployerDepartmentEditorModal(editorStore.employerDepartment)}
+                            disabled={!editorStore.employerDepartment}
+                        />
                     </ActionsContainer>
                 </ControlRow>
             </div>
@@ -66,6 +80,7 @@ const WorkPlaceEditorForm = observer(({ editorStore, canChangeEmployer = true })
                 </ControlRow>
             </div>
             <EmployerEditorModal workPlaceEditorStore={editorStore} />
+            <EmployerDepartmentEditorModal workPlaceEditorStore={editorStore} />
         </>
     )
 })

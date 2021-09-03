@@ -265,12 +265,12 @@ namespace ProfOsmotr.BL
                 {
                     return new ServiceActionResult("Невозможно задать структурное подразделение, если не задана организация");
                 }
-                var department = await employerService.FindEmployerDepartmentAsync(newEmployerDepartmentId.Value);
-                if (department is null)
+                var departmentResponse = await employerService.FindEmployerDepartmentAsync(newEmployerDepartmentId.Value);
+                if (!departmentResponse.Succeed)
                 {
-                    return new ServiceActionResult("Структурное подразделение не найдено");
+                    return new ServiceActionResult(departmentResponse.Message);
                 }
-                if (examination.Employer.Id != department.ParentId)
+                if (examination.Employer.Id != departmentResponse.Result.ParentId)
                 {
                     return new ServiceActionResult("Структурное подразделение не принадлежит организации");
                 }

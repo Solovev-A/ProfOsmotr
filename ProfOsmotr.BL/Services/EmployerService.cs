@@ -118,9 +118,61 @@ namespace ProfOsmotr.BL
             }
         }
 
-        public async Task<EmployerDepartment> FindEmployerDepartmentAsync(int id, bool noTracking = true)
+        public async Task<EmployerDepartmentResponse> FindEmployerDepartmentAsync(int id, bool noTracking = true)
         {
-            return await uow.Employers.FindEmployerDepartmentAsync(id, noTracking);
+            var employerDepartment = await uow.Employers.FindEmployerDepartmentAsync(id, noTracking);
+
+            if (employerDepartment is null)
+            {
+                return new EmployerDepartmentResponse("Структурное подразделение не найдено");
+            }
+
+            return new EmployerDepartmentResponse(employerDepartment);
+        }
+
+        public async Task<EmployerDepartmentResponse> CreateEmployerDepartmentAsync(CreateEmployerDepartmentRequest request)
+        {
+            var employerResponse = await GetEmployerAsync(request.ParentId);
+
+            if (!employerResponse.Succeed)
+            {
+                return new EmployerDepartmentResponse(employerResponse.Message);
+            }
+
+            var department = mapper.Map<EmployerDepartment>(request);
+
+            try
+            {
+                await uow.EmployerDepartments.AddAsync(department);
+                await uow.SaveAsync();
+                return new EmployerDepartmentResponse(department);
+            }
+            catch (Exception ex)
+            {
+                return new EmployerDepartmentResponse(ex.Message);
+            }
+        }
+
+        public async Task<EmployerDepartmentResponse> UpdateEmployerDepartmentAsync(UpdateEmployerDepartmentRequest request)
+        {
+            var departmentResponse = await FindEmployerDepartmentAsync(request.EmployerDepartmentId, false);
+
+            if (!departmentResponse.Succeed)
+            {
+                return departmentResponse;
+            }
+
+            mapper.Map(request.Query, departmentResponse.Result);
+
+            try
+            {
+                await uow.SaveAsync();
+                return new EmployerDepartmentResponse(departmentResponse.Result);
+            }
+            catch (Exception ex)
+            {
+                return new EmployerDepartmentResponse(ex.Message);
+            }
         }
     }
 }

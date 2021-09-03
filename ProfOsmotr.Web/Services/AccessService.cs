@@ -63,6 +63,18 @@ namespace ProfOsmotr.Web.Services
             return await GetAccessResultBasedOnClinicId(employerId, CanWorkWithEmployer);
         }
 
+        public async Task<AccessResult> CanAccessEmployerDepartmentAsync(int employerDepartmentId)
+        {
+            var departmentResponse = await employerService.FindEmployerDepartmentAsync(employerDepartmentId);
+
+            if (!departmentResponse.Succeed)
+            {
+                return new AccessDeniedResult(departmentResponse.Message);
+            }
+
+            return await GetAccessResultBasedOnClinicId(departmentResponse.Result.ParentId, CanWorkWithEmployer);
+        }
+
         public async Task<AccessResult> CanAccessPatientAsync(int patientId)
         {
             return await GetAccessResultBasedOnClinicId(patientId, CanWorkWithPatient);

@@ -63,6 +63,8 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
             CreateMap<PreliminaryExaminationSearchPaginationQuery, ExecutePreliminaryExaminationsQueryRequest>();
 
             CreateMap<SearchProfessionQuery, FindProfessionRequest>();
+
+            CreateMap<CreateEmployerDepartmentQuery, CreateEmployerDepartmentRequest>();
         }
     }
 }

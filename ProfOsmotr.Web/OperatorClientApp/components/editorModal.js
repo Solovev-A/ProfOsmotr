@@ -7,11 +7,14 @@ import SubmitBtn from './forms/general/submitBtn';
 import Spinner from './spinner';
 import useErrorHandler from '../hooks/useErrorHandler';
 
-const EditorModal = ({ modalStore, editorStore, children, title, scrollable = true, reloadOnSubmit = true, onSubmitted, ...props }) => {
+const EditorModal = ({ modalStore, editorStore, children, title,
+    reloadOnSubmit = true, onSubmitted, ...props }) => {
     const history = useHistory();
     const errorHandler = useErrorHandler();
 
     const [isSubmitted, setIsSubmitted] = useState(false);
+
+    const { onEnter = null, onExited = null, ...modalProps } = props;
 
     const onSubmit = async () => {
         const response = await editorStore.onSubmit();
@@ -28,21 +31,21 @@ const EditorModal = ({ modalStore, editorStore, children, title, scrollable = tr
         modalStore.close();
     }
 
-    const onEnter = () => {
+    const handleEnter = () => {
         setIsSubmitted(false);
         editorStore.loadInitialValues()
             .catch(errorHandler);
 
-        if (props.onEnter) {
-            props.onEnter();
+        if (onEnter) {
+            onEnter();
         }
     }
 
-    const onExited = () => {
+    const handleExited = () => {
         editorStore.clear();
 
-        if (props.onExited) {
-            props.onExited();
+        if (onExited) {
+            onExited();
         }
 
         if (isSubmitted && reloadOnSubmit) {
@@ -67,9 +70,9 @@ const EditorModal = ({ modalStore, editorStore, children, title, scrollable = tr
             backdrop='static'
             show={modalStore.isOpen}
             onHide={onHide}
-            onEnter={onEnter}
-            onExited={onExited}
-            scrollable={scrollable}
+            onEnter={handleEnter}
+            onExited={handleExited}
+            {...modalProps}
         >
             <Modal.Header closeButton>
                 <Modal.Title>

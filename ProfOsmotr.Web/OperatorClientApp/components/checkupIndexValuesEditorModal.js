@@ -13,6 +13,7 @@ const CheckupIndexValuesEditorModal = ({ modalStore, editorStore }) => {
             title="Результаты обследований"
             editorStore={editorStore}
             modalStore={modalStore}
+            scrollable={true}
         >
             <CheckupExaminationResultIndexesEditor
                 examinationResultIndexes={editorStore.checkupExaminationResultIndexes}

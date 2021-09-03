@@ -87,5 +87,32 @@ namespace ProfOsmotr.Web.Api
                 async () => await employerService.UpdateEmployerAsync(request),
                 async () => await accessService.CanAccessEmployerAsync(id));
         }
+
+        [HttpPost("{employerId}/departments")]
+        [ModelStateValidationFilter]
+        public async Task<IActionResult> CreateDepartment(int employerId, [FromBody] CreateEmployerDepartmentQuery query)
+        {
+            var request = mapper.Map<CreateEmployerDepartmentRequest>(query);
+            request.ParentId = employerId;
+
+            return await queryHandler.HandleQuery<EmployerDepartment, EmployerDepartmentResource>(
+                async () => await employerService.CreateEmployerDepartmentAsync(request),
+                async () => await accessService.CanAccessEmployerAsync(employerId));
+        }
+
+        [HttpPatch("/api/departments/{id}")]
+        [ModelStateValidationFilter]
+        public async Task<IActionResult> UpdateDepartment(int id, [FromBody] PatchEmployerDepartmentQuery query)
+        {
+            var request = new UpdateEmployerDepartmentRequest()
+            {
+                EmployerDepartmentId = id,
+                Query = query
+            };
+
+            return await queryHandler.HandleQuery<EmployerDepartment>(
+                async () => await employerService.UpdateEmployerDepartmentAsync(request),
+                async () => await accessService.CanAccessEmployerDepartmentAsync(id));
+        }
     }
 }

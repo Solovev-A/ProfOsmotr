@@ -7,6 +7,7 @@ import PreliminaryExaminationsStore from './preliminaryExaminationsStore';
 import PreliminaryExaminationEditorStore from './preliminaryExaminationEditorStore';
 import CheckupResultsStore from './checkupResultsStore';
 import OrderStore from './orderStore';
+import EmployerDepartmentEditorStore from './employerDepartmentEditorStore';
 
 class RootStore {
     constructor() {
@@ -19,6 +20,7 @@ class RootStore {
         this.preliminaryExaminationEditorStore = new PreliminaryExaminationEditorStore(this);
         this.checkupResultsStore = new CheckupResultsStore();
         this.orderStore = new OrderStore();
+        this.employerDepartmentEditorStore = new EmployerDepartmentEditorStore();
     }
 }
 

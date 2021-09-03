@@ -21,6 +21,7 @@ class WorkPlaceEditorStore extends BaseFormStore {
         this.employerDepartmentsList = new SimpleFilterListStore();
         this.professionList = new ProfessionAutocompleteStore(this);
         this.employerEditorModalStore = new ModalStore();
+        this.employerDepartmentEditorModalStore = new ModalStore();
 
         this.resetEditorView();
         makeObservable(this, {

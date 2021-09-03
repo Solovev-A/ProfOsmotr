@@ -69,6 +69,11 @@ namespace ProfOsmotr.BL.Infrastructure.Mapping
                 .ForMember(d => d.HeadLastName, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.HeadLastName))))
                 .ForMember(d => d.HeadPatronymicName, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.HeadPatronymicName))))
                 .ForMember(d => d.HeadPosition, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.HeadPosition))));
+
+            CreateMap<CreateEmployerDepartmentRequest, EmployerDepartment>();
+
+            CreateMap<PatchEmployerDepartmentQuery, EmployerDepartment>()
+                .ForMember(d => d.Name, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.Name))));
         }
     }
 }

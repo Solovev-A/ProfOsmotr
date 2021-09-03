@@ -15,6 +15,7 @@ import ErrorBoundary from './components/errorBoundary';
 import routes from './routes';
 
 import 'react-toastify/dist/ReactToastify.min.css';
+import './style.css';
 
 const App = () => (
     <Router>

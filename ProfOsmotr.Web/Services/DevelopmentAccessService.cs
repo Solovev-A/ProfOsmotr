@@ -21,6 +21,11 @@ namespace ProfOsmotr.Web.Services
             return new AccessResult();
         }
 
+        public async Task<AccessResult> CanAccessEmployerDepartmentAsync(int employerDepartmentId)
+        {
+            return new AccessResult();
+        }
+
         public async Task<AccessResult> CanAccessPatientAsync(int patientId)
         {
             return new AccessResult();
