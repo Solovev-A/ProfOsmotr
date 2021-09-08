@@ -85,13 +85,14 @@ class CheckupIndexValuesEditorStore {
     }
 
     _getSuggestions = async (checkup) => {
-        const orderItemsIdentifiers = checkup.workPlace?.profession?.orderItems.map(oi => oi.id) ?? [];
-        const order = await this.rootStore.orderStore.getOrder();
+        const orderItemsKeys = checkup.workPlace?.profession?.orderItems ?? [];
+        const orderStore = this.rootStore.orderStore;
+        const order = await orderStore.getOrder();
         const mandatoryExaminationsSuggestions = getMandatoryExaminationsSuggestions();
 
         // id обследований по приказу, которые необходимы для медосмотра, без повторений
-        let examinationsIdentifiers = orderItemsIdentifiers.reduce((set, currentId) => {
-            const orderItem = order.orderItems.find(oi => oi.id === currentId);
+        let examinationsIdentifiers = orderItemsKeys.reduce((set, currentKey) => {
+            const orderItem = orderStore.getOrderItemByKey(currentKey);
             orderItem.orderExaminations.forEach(id => set.add(id));
             return set;
         }, new Set());

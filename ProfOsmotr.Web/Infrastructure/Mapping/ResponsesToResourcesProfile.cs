@@ -144,10 +144,6 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
                     // чтобы не оставался объект с id: 0
                 });
 
-            CreateMap<Profession, ExaminationProfessionResource>();
-
-            CreateMap<OrderItem, ExaminationOrderItemResource>();
-
             CreateMap<Employer, PreliminaryExaminationEmployerResource>();
 
             CreateMap<EmployerDepartment, EmployerDepartmentResource>();

@@ -22,6 +22,7 @@ class WorkPlaceEditorStore extends BaseFormStore {
         this.professionList = new ProfessionAutocompleteStore(this);
         this.employerEditorModalStore = new ModalStore();
         this.employerDepartmentEditorModalStore = new ModalStore();
+        this.professionEditorModalStore = new ModalStore();
 
         this.resetEditorView();
         makeObservable(this, {
@@ -44,14 +45,7 @@ class WorkPlaceEditorStore extends BaseFormStore {
             this.employer = checkup.workPlace.employer;
             this._loadEmployerDepartmentsList();
             this.employerDepartment = checkup.workPlace.employer?.department;
-
-            const professionSource = checkup.workPlace.profession;
-            this.profession = professionSource
-                ? {
-                    ...professionSource,
-                    orderItems: professionSource.orderItems.map(item => item.key)
-                }
-                : professionSource;
+            this.profession = checkup.workPlace.profession
         });
 
         this.setInitialValues({

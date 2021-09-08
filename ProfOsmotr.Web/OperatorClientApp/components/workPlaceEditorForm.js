@@ -5,14 +5,15 @@ import styled from 'styled-components';
 import EmployerAutocomplete from './employerAutocomplete';
 import DepartmentAutocomplete from './departmentAutocomplete';
 import ProfessionAutocomplete from './professionAutocomplete';
-import { AddBtn, EditBtn } from './buttons';
+import { AddBtn, CloneBtn, EditBtn } from './buttons';
 import EmployerEditorModal from './employerEditorModal';
 import useStore from './../hooks/useStore';
 import EmployerDepartmentEditorModal from './employerDepartmentEditorModal';
+import ProfessionEditorModal from './professionEditorModal';
 
 
 const WorkPlaceEditorForm = observer(({ editorStore, canChangeEmployer = true }) => {
-    const { employerEditorStore, employerDepartmentEditorStore } = useStore();
+    const { employerEditorStore, employerDepartmentEditorStore, professionEditorStore, orderStore } = useStore();
 
     const openEmployerEditorModal = (employerId) => {
         employerEditorStore.setEmployerId(employerId);
@@ -26,6 +27,11 @@ const WorkPlaceEditorForm = observer(({ editorStore, canChangeEmployer = true })
         employerDepartmentEditorStore.setParentId(editorStore.employer.id);
         employerDepartmentEditorStore.setInitialValues(employerDepartment);
         editorStore.employerDepartmentEditorModalStore.open();
+    }
+
+    const openProfessionEditorModal = (profession) => {
+        professionEditorStore.setProfession(profession);
+        editorStore.professionEditorModalStore.open();
     }
 
     return (
@@ -74,13 +80,16 @@ const WorkPlaceEditorForm = observer(({ editorStore, canChangeEmployer = true })
                         professionListStore={editorStore.professionList}
                     />
                     <ActionsContainer>
-                        <AddBtn />
-                        <EditBtn />
+                        <AddBtn onClick={() => openProfessionEditorModal(null)} />
+                        <CloneBtn onClick={() => openProfessionEditorModal(editorStore.profession)}
+                            disabled={!editorStore.profession}
+                        />
                     </ActionsContainer>
                 </ControlRow>
             </div>
             <EmployerEditorModal workPlaceEditorStore={editorStore} />
             <EmployerDepartmentEditorModal workPlaceEditorStore={editorStore} />
+            <ProfessionEditorModal workPlaceEditorStore={editorStore} />
         </>
     )
 })

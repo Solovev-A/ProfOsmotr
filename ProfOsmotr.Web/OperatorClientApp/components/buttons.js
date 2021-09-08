@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faPencilAlt, faClone } from '@fortawesome/free-solid-svg-icons';
 
 const Button = ({ className, children, ...props }) => {
     return (
@@ -30,4 +30,13 @@ const EditBtn = (props) => {
     );
 }
 
-export { AddBtn, EditBtn };
+const CloneBtn = (props) => {
+    return (
+        <Button {...props} title="Клонировать">
+            <FontAwesomeIcon icon={faClone} />
+            {props.children}
+        </Button>
+    );
+}
+
+export { AddBtn, EditBtn, CloneBtn };

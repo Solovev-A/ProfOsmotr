@@ -4,6 +4,6 @@
     {
         public PreliminaryExaminationEmployerResource Employer { get; set; }
 
-        public ExaminationProfessionResource Profession { get; set; }
+        public ProfessionResource Profession { get; set; }
     }
 }

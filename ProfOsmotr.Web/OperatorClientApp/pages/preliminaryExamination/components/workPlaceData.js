@@ -16,7 +16,7 @@ const WorkPlaceData = ({ examination, onEditClick }) => {
                         <b>Название организации:</b> {workPlace.employer?.name}<br />
                         <b>Структурное подразделение:</b> {workPlace.employer?.department?.name}<br />
                         <b>Должность (профессия):</b> {workPlace.profession?.name}<br />
-                        <b>Вредные факторы и (или) виды работ:</b> {workPlace.profession?.orderItems.map(i => i.key).join('; ')}
+                        <b>Вредные факторы и (или) виды работ:</b> {workPlace.profession?.orderItems.join('; ')}
                     </>
             }
         </EditableCard>
