@@ -15,27 +15,29 @@ namespace ProfOsmotr.DAL
 
         #region Constructors
 
-        public ProfEFUnitOfWork(ProfContext context,
-                                ICatalogRepository actualClinicServices,
-                                ICalculationRepository calculations,
-                                IRepository<CheckupResult> checkupResults,
-                                IQueryAwareRepository<ClinicRegisterRequest> clinicRegisterRequests,
-                                IQueryAwareRepository<Clinic> clinics,
-                                IEmployerRepository employers,
-                                IRepository<EmployerDepartment> employerDepartments,
-                                IRepository<ExaminationResultIndex> examintaionResultIndexes,
-                                IRepository<Gender> genders,
-                                IRepository<ICD10Chapter> iCD10Chapters,
-                                IOrderExaminationRepository orderExaminations,
-                                IOrderRepository orderItems,
-                                IPatientRepository patients,
-                                IPreliminaryMedicalExaminationRepository preliminaryMedicalExaminations,
-                                IProfessionRepository professions,
-                                IRepository<Role> roles,
-                                IRepository<ServiceAvailabilityGroup> serviceAvailabilityGroups,
-                                IRepository<Service> services,
-                                IRepository<TargetGroup> targetGroups,
-                                IQueryAwareRepository<User> users)
+        public ProfEFUnitOfWork(
+            ProfContext context,
+            ICatalogRepository actualClinicServices,
+            ICalculationRepository calculations,
+            IRepository<CheckupResult> checkupResults,
+            IQueryAwareRepository<ClinicRegisterRequest> clinicRegisterRequests,
+            IQueryAwareRepository<Clinic> clinics,
+            IRepository<EmployerDepartment> employerDepartments,
+            IEmployerRepository employers,
+            IRepository<ExaminationResultIndex> examintaionResultIndexes,
+            IRepository<Gender> genders,
+            IRepository<ICD10Chapter> iCD10Chapters,
+            IOrderExaminationRepository orderExaminations,
+            IOrderRepository orderItems,
+            IPatientRepository patients,
+            IPeriodicMedicalExaminationRepository periodicMedicalExaminations,
+            IPreliminaryMedicalExaminationRepository preliminaryMedicalExaminations,
+            IProfessionRepository professions,
+            IRepository<Role> roles,
+            IRepository<ServiceAvailabilityGroup> serviceAvailabilityGroups,
+            IRepository<Service> services,
+            IRepository<TargetGroup> targetGroups,
+            IQueryAwareRepository<User> users)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
             ActualClinicServices = actualClinicServices ?? throw new ArgumentNullException(nameof(actualClinicServices));
@@ -43,14 +45,15 @@ namespace ProfOsmotr.DAL
             CheckupResults = checkupResults ?? throw new ArgumentNullException(nameof(checkupResults));
             ClinicRegisterRequests = clinicRegisterRequests ?? throw new ArgumentNullException(nameof(clinicRegisterRequests));
             Clinics = clinics ?? throw new ArgumentNullException(nameof(clinics));
-            Employers = employers ?? throw new ArgumentNullException(nameof(employers));
             EmployerDepartments = employerDepartments ?? throw new ArgumentNullException(nameof(employerDepartments));
+            Employers = employers ?? throw new ArgumentNullException(nameof(employers));
             ExamintaionResultIndexes = examintaionResultIndexes ?? throw new ArgumentNullException(nameof(examintaionResultIndexes));
             Genders = genders ?? throw new ArgumentNullException(nameof(genders));
             ICD10Chapters = iCD10Chapters ?? throw new ArgumentNullException(nameof(iCD10Chapters));
             OrderExaminations = orderExaminations ?? throw new ArgumentNullException(nameof(orderExaminations));
             OrderItems = orderItems ?? throw new ArgumentNullException(nameof(orderItems));
             Patients = patients ?? throw new ArgumentNullException(nameof(patients));
+            PeriodicMedicalExaminations = periodicMedicalExaminations ?? throw new ArgumentNullException(nameof(periodicMedicalExaminations));
             PreliminaryMedicalExaminations = preliminaryMedicalExaminations ?? throw new ArgumentNullException(nameof(preliminaryMedicalExaminations));
             Professions = professions ?? throw new ArgumentNullException(nameof(professions));
             Roles = roles ?? throw new ArgumentNullException(nameof(roles));
@@ -89,6 +92,8 @@ namespace ProfOsmotr.DAL
         public IOrderRepository OrderItems { get; }
 
         public IPatientRepository Patients { get; }
+
+        public IPeriodicMedicalExaminationRepository PeriodicMedicalExaminations { get; }
 
         public IPreliminaryMedicalExaminationRepository PreliminaryMedicalExaminations { get; }
 

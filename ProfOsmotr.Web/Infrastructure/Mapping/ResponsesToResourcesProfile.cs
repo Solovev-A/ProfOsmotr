@@ -112,8 +112,12 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
 
             CreateMap<Employer, EmployerResource>();
 
-            CreateMap<PeriodicMedicalExamination, EmployerPeriodicMedicalExaminationResource>()
+            CreateMap<PeriodicMedicalExamination, BasePeriodicExaminationListItemResource>()
+                .ForMember(d => d.IsCompleted, conf => conf.MapFrom(s => s.Completed))
                 .ForMember(d => d.ReportDate, conf => conf.MapFrom(s => ToString(s.ReportDate)));
+
+            CreateMap<PeriodicMedicalExamination, EmployerPeriodicMedicalExaminationResource>()
+                .IncludeBase<PeriodicMedicalExamination, BasePeriodicExaminationListItemResource>();
 
             CreateMap<PreliminaryMedicalExamination, EmployerPreliminaryMedicalExaminationResource>()
                 .ForMember(d => d.Patient, conf => conf.MapFrom(s => GetFullName(s.CheckupStatus.Patient)))
@@ -167,6 +171,10 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
 
             CreateMap<Profession, ProfessionResource>()
                 .ForMember(d => d.OrderItems, conf => conf.MapFrom(s => s.OrderItems.Select(i => i.Key)));
+
+            CreateMap<PeriodicMedicalExamination, PeriodicMedicalExaminationListItemResource>()
+                .IncludeBase<PeriodicMedicalExamination, BasePeriodicExaminationListItemResource>()
+                .ForMember(d => d.Employer, conf => conf.MapFrom(s => s.Employer.Name));
         }
 
         private string GetFullItemKey(OrderItem item)

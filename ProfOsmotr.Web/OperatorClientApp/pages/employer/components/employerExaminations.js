@@ -8,6 +8,24 @@ import useStore from './../../../hooks/useStore';
 import { observer } from 'mobx-react-lite';
 import Spinner from './../../../components/spinner';
 
+const periodicExaminationsColumns = [{
+    title: 'Год',
+    width: '40%',
+    render: (item) => item.examinationYear
+}, {
+    title: 'Статус',
+    width: '20%',
+    render: (item) => {
+        const className = item.isCompleted ? 'text-success' : 'text-info';
+        return (
+            <span className={className}>{item.isCompleted ? 'Завершен' : 'В работе'}</span>
+        )
+    }
+}, {
+    title: 'Дата акта',
+    render: (item) => item.reportDate ?? '-'
+}];
+
 const preliminaryExaminationsColumns = [{
     title: 'ФИО работника',
     width: '60%',
@@ -24,6 +42,7 @@ const preliminaryExaminationsColumns = [{
 
 const EmployerExamiantions = () => {
     const { preliminaryExaminationsStore, employersStore } = useStore();
+    const periodicMedicalExaminations = employersStore.employer.periodicMedicalExaminations;
 
     useEffect(() => {
         preliminaryExaminationsStore.loadEmployerExaminations(employersStore.employerSlug);
@@ -33,7 +52,7 @@ const EmployerExamiantions = () => {
         }
     }, [])
 
-    if (!preliminaryExaminationsStore.items && !employersStore.employer.periodicMedicalExaminations) {
+    if (!preliminaryExaminationsStore.items && !periodicMedicalExaminations.length) {
         return (
             <div className="text-center font-italic">
                 Нет зарегистрированных медосмотров
@@ -43,6 +62,12 @@ const EmployerExamiantions = () => {
 
     return (
         <>
+            <Card title="Периодические медицинские осмотры">
+                <ItemsList items={periodicMedicalExaminations}
+                    getItemUrl={(item) => routes.periodicExamination.getUrl(item.id)}
+                    columns={periodicExaminationsColumns}
+                />
+            </Card>
             <Card title="Предварительные медицинские осмотры">
                 {preliminaryExaminationsStore.inProgress && !preliminaryExaminationsStore.items
                     ? <Spinner />

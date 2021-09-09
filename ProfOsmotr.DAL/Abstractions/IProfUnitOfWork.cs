@@ -44,6 +44,7 @@ namespace ProfOsmotr.DAL.Abstractions
         IEmployerRepository Employers { get; }
         IPreliminaryMedicalExaminationRepository PreliminaryMedicalExaminations { get; }
         IRepository<EmployerDepartment> EmployerDepartments { get; }
+        IPeriodicMedicalExaminationRepository PeriodicMedicalExaminations { get; }
 
         /// <summary>
         /// Сохраняет изменения, сделанные в хранилищах

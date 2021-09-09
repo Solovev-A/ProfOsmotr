@@ -175,7 +175,7 @@ namespace ProfOsmotr.BL
             }
             if (query.IsFieldPresent(nameof(query.CheckupIndexValues)))
             {
-                UpdateCheckupIndexValues(examination.CheckupStatus.IndividualCheckupIndexValues, query.CheckupIndexValues);
+                await UpdateCheckupIndexValues(examination.CheckupStatus.IndividualCheckupIndexValues, query.CheckupIndexValues);
             }
             if (query.IsFieldPresent(nameof(query.CheckupResultId)))
             {
@@ -223,6 +223,42 @@ namespace ProfOsmotr.BL
             catch (Exception ex)
             {
                 return new PreliminaryMedicalExaminationResponse(ex.Message);
+            }
+        }
+
+        public async Task<QueryResponse<PeriodicMedicalExamination>> ListPeriodicMedicalExaminationsAsync(ExecuteQueryBaseRequest request)
+        {
+            try
+            {
+                var result = await uow.PeriodicMedicalExaminations.ExecuteQuery(
+                    request.Start,
+                    request.ItemsPerPage,
+                    request.Search,
+                    ex => ex.ClinicId == request.ClinicId);
+
+                return new QueryResponse<PeriodicMedicalExamination>(result);
+            }
+            catch (Exception ex)
+            {
+                return new QueryResponse<PeriodicMedicalExamination>(ex.Message);
+            }
+        }
+
+        public async Task<QueryResponse<PeriodicMedicalExamination>> ListActualPeriodicMedicalExaminationsAsync(int clinicId)
+        {
+            try
+            {
+                var result = await uow.PeriodicMedicalExaminations.ExecuteQuery(
+                    orderingSelector: ex => ex.Id,
+                    descending: true,
+                    length: 20,
+                    customFilter: ex => ex.ClinicId == clinicId);
+
+                return new QueryResponse<PeriodicMedicalExamination>(result);
+            }
+            catch (Exception ex)
+            {
+                return new QueryResponse<PeriodicMedicalExamination>(ex.Message);
             }
         }
 
