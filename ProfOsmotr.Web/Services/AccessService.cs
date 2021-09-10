@@ -80,7 +80,12 @@ namespace ProfOsmotr.Web.Services
             return await GetAccessResultBasedOnClinicId(patientId, CanWorkWithPatient);
         }
 
-        public async Task<AccessResult> CanAccessPrealiminaryExaminationAsync(int examinationId)
+        public async Task<AccessResult> CanAccessPeriodicExaminationAsync(int id)
+        {
+            return await GetAccessResultBasedOnClinicId(id, CanWorkWithPeriodicExamination);
+        }
+
+        public async Task<AccessResult> CanAccessPreliminaryExaminationAsync(int examinationId)
         {
             return await GetAccessResultBasedOnClinicId(examinationId, CanWorkWithPreliminaryExamination);
         }
@@ -176,10 +181,18 @@ namespace ProfOsmotr.Web.Services
         private async Task<AccessResult> CanWorkWithPreliminaryExamination(int examinationId, int currentUserClinicId)
         {
             var examinationClinicId = await examinationsService.GetPreliminaryMedicalExaminationClinicIdAsync(examinationId);
-            if (examinationClinicId < 0)
+
+            if (examinationClinicId == currentUserClinicId)
             {
-                return new AccessDeniedResult();
+                return new AccessResult();
             }
+
+            return new AccessDeniedResult();
+        }
+
+        private async Task<AccessResult> CanWorkWithPeriodicExamination(int examinationId, int currentUserClinicId)
+        {
+            var examinationClinicId = await examinationsService.GetPeriodicMedicalExaminationClinicIdAsync(examinationId);
 
             if (examinationClinicId == currentUserClinicId)
             {

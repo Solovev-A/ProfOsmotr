@@ -32,6 +32,14 @@ namespace ProfOsmotr.Web.Api
             this.queryHandler = queryHandler ?? throw new ArgumentNullException(nameof(queryHandler));
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            return await queryHandler.HandleQuery<PeriodicMedicalExamination, PeriodicMedicalExaminationResource>(
+                async () => await examinationsService.GetPeriodicMedicalExaminationAsync(id),
+                async () => await accessService.CanAccessPeriodicExaminationAsync(id));
+        }
+
         [HttpGet]
         [ModelStateValidationFilter]
         public async Task<IActionResult> Get([FromQuery] SearchPaginationQuery query)
@@ -56,6 +64,14 @@ namespace ProfOsmotr.Web.Api
             return await queryHandler.HandleQuery<QueryResult<PeriodicMedicalExamination>,
                 PagedResource<PeriodicMedicalExaminationListItemResource>>(
                 async () => await examinationsService.ListActualPeriodicMedicalExaminationsAsync(clinicId));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            return await queryHandler.HandleQuery<PeriodicMedicalExamination>(
+                async () => await examinationsService.DeletePeriodicExaminationAsync(id),
+                async () => await accessService.CanAccessPeriodicExaminationAsync(id));
         }
     }
 }

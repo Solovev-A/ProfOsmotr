@@ -12853,9 +12853,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/esm/react-router.js");
-/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/dist/react-toastify.esm.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/esm/react-router.js");
+/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/dist/react-toastify.esm.js");
 /* harmony import */ var _components_nav__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/nav */ "./OperatorClientApp/components/nav/index.js");
 /* harmony import */ var _pages_patientList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pages/patientList */ "./OperatorClientApp/pages/patientList/index.js");
 /* harmony import */ var _pages_patientEditor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pages/patientEditor */ "./OperatorClientApp/pages/patientEditor/index.js");
@@ -12870,6 +12870,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./routes */ "./OperatorClientApp/routes.js");
 /* harmony import */ var react_toastify_dist_ReactToastify_min_css__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react-toastify/dist/ReactToastify.min.css */ "./node_modules/react-toastify/dist/ReactToastify.min.css");
 /* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./style.css */ "./OperatorClientApp/style.css");
+/* harmony import */ var _pages_periodicExamination_index__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./pages/periodicExamination/index */ "./OperatorClientApp/pages/periodicExamination/index.js");
 
 
 
@@ -12888,50 +12889,54 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const App = () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_15__.BrowserRouter, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_nav__WEBPACK_IMPORTED_MODULE_1__.NavBar, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_errorBoundary__WEBPACK_IMPORTED_MODULE_11__.default, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_16__.Switch, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_16__.Route, {
+
+const App = () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_16__.BrowserRouter, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_nav__WEBPACK_IMPORTED_MODULE_1__.NavBar, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_errorBoundary__WEBPACK_IMPORTED_MODULE_11__.default, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_17__.Switch, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_17__.Route, {
   path: _routes__WEBPACK_IMPORTED_MODULE_12__.default.patients.path,
   component: _pages_patientList__WEBPACK_IMPORTED_MODULE_2__.default,
   exact: true
-}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_16__.Route, {
+}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_17__.Route, {
   path: _routes__WEBPACK_IMPORTED_MODULE_12__.default.createPatient.path,
   component: _pages_patientEditor__WEBPACK_IMPORTED_MODULE_3__.default,
   exact: true
-}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_16__.Route, {
+}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_17__.Route, {
   path: _routes__WEBPACK_IMPORTED_MODULE_12__.default.patient.path,
   component: _pages_patient__WEBPACK_IMPORTED_MODULE_4__.default,
   exact: true
-}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_16__.Route, {
+}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_17__.Route, {
   path: _routes__WEBPACK_IMPORTED_MODULE_12__.default.editPatient.path,
   component: _pages_patientEditor__WEBPACK_IMPORTED_MODULE_3__.default,
   exact: true
-}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_16__.Route, {
+}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_17__.Route, {
   path: _routes__WEBPACK_IMPORTED_MODULE_12__.default.employers.path,
   component: _pages_employerList__WEBPACK_IMPORTED_MODULE_6__.default,
   exact: true
-}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_16__.Route, {
+}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_17__.Route, {
   path: _routes__WEBPACK_IMPORTED_MODULE_12__.default.createEmployer.path,
   component: _pages_employerEditor__WEBPACK_IMPORTED_MODULE_5__.default,
   exact: true
-}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_16__.Route, {
+}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_17__.Route, {
   path: _routes__WEBPACK_IMPORTED_MODULE_12__.default.employer.path,
   component: _pages_employer__WEBPACK_IMPORTED_MODULE_7__.default,
   exact: true
-}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_16__.Route, {
+}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_17__.Route, {
   path: _routes__WEBPACK_IMPORTED_MODULE_12__.default.editEmployer.path,
   component: _pages_employerEditor__WEBPACK_IMPORTED_MODULE_5__.default,
   exact: true
-}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_16__.Route, {
+}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_17__.Route, {
   path: _routes__WEBPACK_IMPORTED_MODULE_12__.default.preliminaryExaminations.path,
   component: _pages_preliminaryExaminationsList__WEBPACK_IMPORTED_MODULE_8__.default,
   exact: true
-}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_16__.Route, {
+}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_17__.Route, {
   path: _routes__WEBPACK_IMPORTED_MODULE_12__.default.preliminaryExamination.path,
   component: _pages_preliminaryExamination__WEBPACK_IMPORTED_MODULE_9__.default
-}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_16__.Route, {
+}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_17__.Route, {
   path: _routes__WEBPACK_IMPORTED_MODULE_12__.default.periodicExaminations.path,
   component: _pages_periodicExaminationsList_index__WEBPACK_IMPORTED_MODULE_10__.default,
   exact: true
-}))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_toastify__WEBPACK_IMPORTED_MODULE_17__.ToastContainer, {
+}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_17__.Route, {
+  path: _routes__WEBPACK_IMPORTED_MODULE_12__.default.periodicExamination.path,
+  component: _pages_periodicExamination_index__WEBPACK_IMPORTED_MODULE_15__.default
+}))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_toastify__WEBPACK_IMPORTED_MODULE_18__.ToastContainer, {
   position: "bottom-right",
   autoClose: 10000,
   hideProgressBar: false,
@@ -16013,6 +16018,419 @@ const PatientPage = props => {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.observer)(PatientPage));
+
+/***/ }),
+
+/***/ "./OperatorClientApp/pages/periodicExamination/components/contingentList.js":
+/*!**********************************************************************************!*
+  !*** ./OperatorClientApp/pages/periodicExamination/components/contingentList.js ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _components_buttons__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../components/buttons */ "./OperatorClientApp/components/buttons.js");
+/* harmony import */ var _components_itemsList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../components/itemsList */ "./OperatorClientApp/components/itemsList.js");
+/* harmony import */ var _components_card__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../../components/card */ "./OperatorClientApp/components/card.js");
+/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../../../routes */ "./OperatorClientApp/routes.js");
+
+
+
+
+
+const contingentListColumns = [{
+  title: 'Работник',
+  width: '30%',
+  render: item => {
+    const {
+      patient: {
+        lastName,
+        firstName,
+        patronymicName,
+        dateOfBirth
+      }
+    } = item;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, lastName, " ", firstName, " ", patronymicName, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), dateOfBirth);
+  }
+}, {
+  title: 'Профессия',
+  width: '30%',
+  render: item => item.profession ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, item.profession, ': ', item.orderItems.join(', ')) : null
+}, {
+  title: 'Заключение',
+  width: '25%',
+  render: item => item.result.text
+}, {
+  title: 'Дата',
+  render: item => item.dateOfCompletion
+}];
+
+const ContingentList = ({
+  examination,
+  onAddClick
+}) => {
+  const {
+    checkupStatuses
+  } = examination;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_card__WEBPACK_IMPORTED_MODULE_3__.default, {
+    title: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(TitleView, {
+      onAddClick: onAddClick
+    })
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_itemsList__WEBPACK_IMPORTED_MODULE_2__.default, {
+    columns: contingentListColumns,
+    items: checkupStatuses,
+    getItemUrl: item => _routes__WEBPACK_IMPORTED_MODULE_4__.default.contingentCheckupStatus.getUrl(item.id)
+  }));
+};
+
+const TitleView = ({
+  onAddClick
+}) => {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "\u0421\u043F\u0438\u0441\u043E\u043A \u0440\u0430\u0431\u043E\u0442\u043D\u0438\u043A\u043E\u0432"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_buttons__WEBPACK_IMPORTED_MODULE_1__.AddBtn, {
+    className: "btn btn-sm btn-secondary",
+    onClick: onAddClick
+  }));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ContingentList);
+
+/***/ }),
+
+/***/ "./OperatorClientApp/pages/periodicExamination/components/dataRow.js":
+/*!***************************************************************************!*
+  !*** ./OperatorClientApp/pages/periodicExamination/components/dataRow.js ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+
+const DataRow = ({
+  title,
+  value,
+  br = true,
+  required = false
+}) => {
+  if (!value && !required) return null;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, title, ": ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("b", null, value), br && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DataRow);
+
+/***/ }),
+
+/***/ "./OperatorClientApp/pages/periodicExamination/components/employerData.js":
+/*!********************************************************************************!*
+  !*** ./OperatorClientApp/pages/periodicExamination/components/employerData.js ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _components_card__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../components/card */ "./OperatorClientApp/components/card.js");
+/* harmony import */ var _dataRow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dataRow */ "./OperatorClientApp/pages/periodicExamination/components/dataRow.js");
+
+
+
+
+const EmployerData = ({
+  examination,
+  onEditClick
+}) => {
+  const {
+    employerData
+  } = examination;
+  const hasNoData = !employerData;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_card__WEBPACK_IMPORTED_MODULE_1__.EditableCard, {
+    title: "\u0421\u0432\u0435\u0434\u0435\u043D\u0438\u044F \u043E \u0440\u0430\u0431\u043E\u0442\u043E\u0434\u0430\u0442\u0435\u043B\u0435",
+    onEditClick: onEditClick
+  }, hasNoData ? null : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(DataGroup, {
+    title: "\u041E\u0431\u0449\u0430\u044F \u0447\u0438\u0441\u043B\u0435\u043D\u043D\u043E\u0441\u0442\u044C \u0440\u0430\u0431\u043E\u0442\u043D\u0438\u043A\u043E\u0432",
+    total: employerData.employeesTotal,
+    women: employerData.employeesWomen,
+    under18: employerData.employeesUnder18,
+    persistentlyDisabled: employerData.employeesPersistentlyDisabled
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(DataGroup, {
+    title: "\u0427\u0438\u0441\u043B\u0435\u043D\u043D\u043E\u0441\u0442\u044C \u0440\u0430\u0431\u043E\u0442\u043D\u0438\u043A\u043E\u0432, \u0437\u0430\u043D\u044F\u0442\u044B\u0445 \u043D\u0430 \u0440\u0430\u0431\u043E\u0442\u0430\u0445 \u0441 \u0432\u0440\u0435\u0434\u043D\u044B\u043C\u0438 \u0438 (\u0438\u043B\u0438) \u043E\u043F\u0430\u0441\u043D\u044B\u043C\u0438 \u0443\u0441\u043B\u043E\u0432\u0438\u044F\u043C\u0438 \u0442\u0440\u0443\u0434\u0430",
+    total: employerData.workingWithHarmfulFactorsTotal,
+    women: employerData.workingWithHarmfulFactorsWomen,
+    under18: employerData.workingWithHarmfulFactorsUnder18,
+    persistentlyDisabled: employerData.workingWithHarmfulFactorsPersistentlyDisabled
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(DataGroup, {
+    title: "\u0427\u0438\u0441\u043B\u0435\u043D\u043D\u043E\u0441\u0442\u044C \u0440\u0430\u0431\u043E\u0442\u043D\u0438\u043A\u043E\u0432, \u0437\u0430\u043D\u044F\u0442\u044B\u0445 \u043D\u0430 \u0440\u0430\u0431\u043E\u0442\u0430\u0445, \u043F\u0440\u0438 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u0438 \u043A\u043E\u0442\u043E\u0440\u044B\u0445 \u043E\u0431\u044F\u0437\u0430\u0442\u0435\u043B\u044C\u043D\u043E \u043F\u0440\u043E\u0432\u0435\u0434\u0435\u043D\u0438\u0435 \u043F\u0435\u0440\u0438\u043E\u0434\u0438\u0447\u0435\u0441\u043A\u0438\u0445 \u043C\u0435\u0434\u0438\u0446\u0438\u043D\u0441\u043A\u0438\u0445 \u043E\u0441\u043C\u043E\u0442\u0440\u043E\u0432",
+    total: employerData.workingWithJobTypesTotal,
+    women: employerData.workingWithJobTypesWomen,
+    under18: employerData.workingWithJobTypesUnder18,
+    persistentlyDisabled: employerData.workingWithJobTypesPersistentlyDisabled
+  })));
+};
+
+const DataGroup = ({
+  title,
+  total,
+  women,
+  under18,
+  persistentlyDisabled
+}) => {
+  if (!total && !women && !under18 && !persistentlyDisabled) return null;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_dataRow__WEBPACK_IMPORTED_MODULE_2__.default, {
+    title: title,
+    value: total,
+    required: true
+  }), "\u0432 \u0442\u043E\u043C \u0447\u0438\u0441\u043B\u0435", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_dataRow__WEBPACK_IMPORTED_MODULE_2__.default, {
+    title: "\u0436\u0435\u043D\u0449\u0438\u043D",
+    value: women
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_dataRow__WEBPACK_IMPORTED_MODULE_2__.default, {
+    title: "\u0440\u0430\u0431\u043E\u0442\u043D\u0438\u043A\u043E\u0432 \u0432 \u0432\u043E\u0437\u0440\u0430\u0441\u0442\u0435 \u0434\u043E 18 \u043B\u0435\u0442",
+    value: under18
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_dataRow__WEBPACK_IMPORTED_MODULE_2__.default, {
+    title: "\u0440\u0430\u0431\u043E\u0442\u043D\u0438\u043A\u043E\u0432, \u043A\u043E\u0442\u043E\u0440\u044B\u043C \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u0430 \u0441\u0442\u043E\u0439\u043A\u0430\u044F \u0441\u0442\u0435\u043F\u0435\u043D\u044C \u0443\u0442\u0440\u0430\u0442\u044B \u0442\u0440\u0443\u0434\u043E\u0441\u043F\u043E\u0441\u043E\u0431\u043D\u043E\u0441\u0442\u0438",
+    value: persistentlyDisabled,
+    br: false
+  }));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (EmployerData);
+
+/***/ }),
+
+/***/ "./OperatorClientApp/pages/periodicExamination/components/employerInfo.js":
+/*!********************************************************************************!*
+  !*** ./OperatorClientApp/pages/periodicExamination/components/employerInfo.js ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
+/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.es.js");
+/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../routes */ "./OperatorClientApp/routes.js");
+
+
+
+
+
+
+const EmployerInfo = ({
+  employer
+}) => {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
+    className: "h4"
+  }, employer.name, ' ', /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
+    to: _routes__WEBPACK_IMPORTED_MODULE_2__.default.employer.getUrl(employer.id)
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__.FontAwesomeIcon, {
+    icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_4__.faLink
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "\u0420\u0443\u043A\u043E\u0432\u043E\u0434\u0438\u0442\u0435\u043B\u044C: ", employer.headLastName, " ", employer.headFirstName, " ", employer.headPatronymicName, employer.headPosition ? `, ${employer.headPosition}` : null));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (EmployerInfo);
+
+/***/ }),
+
+/***/ "./OperatorClientApp/pages/periodicExamination/components/periodicExaminationActions.js":
+/*!**********************************************************************************************!*
+  !*** ./OperatorClientApp/pages/periodicExamination/components/periodicExaminationActions.js ***!
+  \**********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/esm/react-router.js");
+/* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
+/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.es.js");
+/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../../routes */ "./OperatorClientApp/routes.js");
+/* harmony import */ var _hooks_useStore__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../../hooks/useStore */ "./OperatorClientApp/hooks/useStore.js");
+
+
+
+
+
+
+
+const PeriodicExaminationActions = () => {
+  const actionClassName = "btn btn-secondary";
+  const {
+    periodicExaminationsStore
+  } = (0,_hooks_useStore__WEBPACK_IMPORTED_MODULE_3__.default)();
+  const history = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_4__.useHistory)();
+
+  const onRemoveExamination = async () => {
+    const response = await periodicExaminationsStore.removeExamination();
+
+    if (response && response.success !== false) {
+      history.replace(_routes__WEBPACK_IMPORTED_MODULE_2__.default.periodicExaminations.path);
+    }
+  };
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "mb-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+    type: "button",
+    className: actionClassName
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__.FontAwesomeIcon, {
+    icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__.faFileAlt
+  }), ' ', "\u0417\u0430\u043A\u043B\u044E\u0447\u0438\u0442\u0435\u043B\u044C\u043D\u044B\u0439 \u0430\u043A\u0442"), "\xA0", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+    type: "button",
+    className: actionClassName,
+    onClick: onRemoveExamination
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__.FontAwesomeIcon, {
+    icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__.faTrash
+  }), ' ', "\u0423\u0434\u0430\u043B\u0438\u0442\u044C"));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PeriodicExaminationActions);
+
+/***/ }),
+
+/***/ "./OperatorClientApp/pages/periodicExamination/components/reportData.js":
+/*!******************************************************************************!*
+  !*** ./OperatorClientApp/pages/periodicExamination/components/reportData.js ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _components_card__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../components/card */ "./OperatorClientApp/components/card.js");
+/* harmony import */ var _dataRow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dataRow */ "./OperatorClientApp/pages/periodicExamination/components/dataRow.js");
+
+
+
+
+const ReportData = ({
+  examination,
+  onEditClick
+}) => {
+  const {
+    reportDate,
+    recommendations
+  } = examination;
+  const hasNoData = !reportDate && !recommendations;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_card__WEBPACK_IMPORTED_MODULE_1__.EditableCard, {
+    title: "\u0417\u0430\u043A\u043B\u044E\u0447\u0438\u0442\u0435\u043B\u044C\u043D\u044B\u0439 \u0430\u043A\u0442",
+    onEditClick: onEditClick
+  }, hasNoData ? null : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_dataRow__WEBPACK_IMPORTED_MODULE_2__.default, {
+    title: "\u0414\u0430\u0442\u0430 \u0430\u043A\u0442\u0430",
+    value: reportDate
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_dataRow__WEBPACK_IMPORTED_MODULE_2__.default, {
+    title: "\u0420\u0435\u043A\u043E\u043C\u0435\u043D\u0434\u0430\u0446\u0438\u0438",
+    value: recommendations
+  })));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ReportData);
+
+/***/ }),
+
+/***/ "./OperatorClientApp/pages/periodicExamination/index.js":
+/*!**************************************************************!*
+  !*** ./OperatorClientApp/pages/periodicExamination/index.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
+/* harmony import */ var _hooks_useStore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../hooks/useStore */ "./OperatorClientApp/hooks/useStore.js");
+/* harmony import */ var _hooks_useErrorHandler__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../hooks/useErrorHandler */ "./OperatorClientApp/hooks/useErrorHandler.js");
+/* harmony import */ var _utils_cancellationToken__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../../utils/cancellationToken */ "./OperatorClientApp/utils/cancellationToken.js");
+/* harmony import */ var _components_examinationEditorData__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../../components/examinationEditorData */ "./OperatorClientApp/components/examinationEditorData.js");
+/* harmony import */ var _components_spinner__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../components/spinner */ "./OperatorClientApp/components/spinner.js");
+/* harmony import */ var _components_employerInfo__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/employerInfo */ "./OperatorClientApp/pages/periodicExamination/components/employerInfo.js");
+/* harmony import */ var _components_periodicExaminationActions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/periodicExaminationActions */ "./OperatorClientApp/pages/periodicExamination/components/periodicExaminationActions.js");
+/* harmony import */ var _components_employerData__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/employerData */ "./OperatorClientApp/pages/periodicExamination/components/employerData.js");
+/* harmony import */ var _components_reportData__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/reportData */ "./OperatorClientApp/pages/periodicExamination/components/reportData.js");
+/* harmony import */ var _components_contingentList__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/contingentList */ "./OperatorClientApp/pages/periodicExamination/components/contingentList.js");
+
+
+
+
+
+
+
+
+
+
+
+
+const PeriodicExaminationPage = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.observer)(props => {
+  const examinationId = props.match.params.id;
+  const {
+    periodicExaminationsStore
+  } = (0,_hooks_useStore__WEBPACK_IMPORTED_MODULE_2__.default)();
+  const errorHandler = (0,_hooks_useErrorHandler__WEBPACK_IMPORTED_MODULE_3__.default)();
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    periodicExaminationsStore.setExaminationSlug(examinationId);
+    const cancellationToken = new _utils_cancellationToken__WEBPACK_IMPORTED_MODULE_4__.default();
+    periodicExaminationsStore.loadExamination(cancellationToken).catch(errorHandler);
+    return () => {
+      cancellationToken.cancel();
+      periodicExaminationsStore.resetExamination();
+    };
+  }, [examinationId]);
+  const {
+    isExaminationLoading,
+    examination
+  } = periodicExaminationsStore;
+  if (isExaminationLoading) return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_spinner__WEBPACK_IMPORTED_MODULE_6__.default, null);
+
+  const onAddCheckupStatusClick = () => {};
+
+  const onEmployerDataEditClick = () => {};
+
+  const onReportDataEditClick = () => {};
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "\u041A\u0430\u0440\u0442\u0430 \u043F\u0435\u0440\u0438\u043E\u0434\u0438\u0447\u0435\u0441\u043A\u043E\u0433\u043E \u043E\u0441\u043C\u043E\u0442\u0440\u0430 \u0437\u0430 ", examination.examinationYear, " \u0433\u043E\u0434"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_employerInfo__WEBPACK_IMPORTED_MODULE_7__.default, {
+    employer: examination.employer
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_examinationEditorData__WEBPACK_IMPORTED_MODULE_5__.default, {
+    editor: examination.lastEditor
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_periodicExaminationActions__WEBPACK_IMPORTED_MODULE_8__.default, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_reportData__WEBPACK_IMPORTED_MODULE_10__.default, {
+    examination: examination,
+    onEditClick: onReportDataEditClick
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_employerData__WEBPACK_IMPORTED_MODULE_9__.default, {
+    examination: examination,
+    onEditClick: onEmployerDataEditClick
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_contingentList__WEBPACK_IMPORTED_MODULE_11__.default, {
+    examination: examination,
+    onAddClick: onAddCheckupStatusClick
+  }));
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PeriodicExaminationPage);
 
 /***/ }),
 

@@ -22,5 +22,11 @@ namespace ProfOsmotr.BL.Abstractions
         Task<QueryResponse<PeriodicMedicalExamination>> ListPeriodicMedicalExaminationsAsync(ExecuteQueryBaseRequest request);
 
         Task<QueryResponse<PeriodicMedicalExamination>> ListActualPeriodicMedicalExaminationsAsync(int clinicId);
+
+        Task<PeriodicMedicalExaminationResponse> GetPeriodicMedicalExaminationAsync(int id);
+
+        Task<int> GetPeriodicMedicalExaminationClinicIdAsync(int examinationId);
+
+        Task<PeriodicMedicalExaminationResponse> DeletePeriodicExaminationAsync(int id);
     }
 }

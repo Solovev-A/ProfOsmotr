@@ -37,7 +37,7 @@ namespace ProfOsmotr.Web.Api
         {
             return await queryHandler.HandleQuery<PreliminaryMedicalExamination, PreliminaryMedicalExaminationResource>(
                 async () => await examinationsService.GetPreliminaryMedicalExaminationAsync(id),
-                async () => await accessService.CanAccessPrealiminaryExaminationAsync(id));
+                async () => await accessService.CanAccessPreliminaryExaminationAsync(id));
         }
 
         [HttpGet]
@@ -106,7 +106,7 @@ namespace ProfOsmotr.Web.Api
 
             var accessChecks = new List<Func<Task<AccessResult>>>
             {
-                async () => await accessService.CanAccessPrealiminaryExaminationAsync(id)
+                async () => await accessService.CanAccessPreliminaryExaminationAsync(id)
             };
             if (query.IsFieldPresent(nameof(query.EmployerId)) && query.EmployerId.HasValue)
             {
@@ -123,7 +123,7 @@ namespace ProfOsmotr.Web.Api
         {
             return await queryHandler.HandleQuery<PreliminaryMedicalExamination>(
                 async () => await examinationsService.DeletePreliminaryExaminationAsync(id),
-                async () => await accessService.CanAccessPrealiminaryExaminationAsync(id));
+                async () => await accessService.CanAccessPreliminaryExaminationAsync(id));
         }
     }
 }

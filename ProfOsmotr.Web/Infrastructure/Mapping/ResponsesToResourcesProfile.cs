@@ -175,6 +175,20 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
             CreateMap<PeriodicMedicalExamination, PeriodicMedicalExaminationListItemResource>()
                 .IncludeBase<PeriodicMedicalExamination, BasePeriodicExaminationListItemResource>()
                 .ForMember(d => d.Employer, conf => conf.MapFrom(s => s.Employer.Name));
+
+            CreateMap<PeriodicMedicalExamination, PeriodicMedicalExaminationResource>()
+                .ForMember(d => d.CheckupStatuses, conf => conf.MapFrom(s => s.Statuses))
+                .ForMember(d => d.ReportDate, conf => conf.MapFrom(s => ToString(s.ReportDate)));
+
+            CreateMap<Employer, PeriodicExaminationEmployerResource>();
+
+            CreateMap<EmployerData, EmployerDataResource>();
+
+            CreateMap<ContingentCheckupStatus, ContingentCheckupStatusListItemResource>()
+                .ForMember(d => d.Profession, conf => conf.MapFrom(s => s.Profession.Name))
+                .ForMember(d => d.OrderItems, conf => conf.MapFrom(s => s.Profession.OrderItems.Select(i => i.Key)))
+                .ForMember(d => d.DateOfCompletion, conf => conf.MapFrom(s => ToString(s.DateOfCompletion)))
+                .ForMember(d => d.Result, conf => conf.MapFrom(s => s.CheckupResult));
         }
 
         private string GetFullItemKey(OrderItem item)

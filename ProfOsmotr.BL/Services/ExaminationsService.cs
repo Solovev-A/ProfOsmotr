@@ -226,6 +226,23 @@ namespace ProfOsmotr.BL
             }
         }
 
+        public async Task<PeriodicMedicalExaminationResponse> GetPeriodicMedicalExaminationAsync(int id)
+        {
+            var result = await uow.PeriodicMedicalExaminations.FindExaminationAsync(id);
+
+            if (result is null)
+            {
+                return new PeriodicMedicalExaminationResponse("Медосмотр не найден");
+            }
+            return new PeriodicMedicalExaminationResponse(result);
+        }
+
+        public async Task<int> GetPeriodicMedicalExaminationClinicIdAsync(int examinationId)
+        {
+            var examination = await uow.PeriodicMedicalExaminations.FindAsync(examinationId);
+            return examination?.ClinicId ?? -1;
+        }
+
         public async Task<QueryResponse<PeriodicMedicalExamination>> ListPeriodicMedicalExaminationsAsync(ExecuteQueryBaseRequest request)
         {
             try
@@ -259,6 +276,27 @@ namespace ProfOsmotr.BL
             catch (Exception ex)
             {
                 return new QueryResponse<PeriodicMedicalExamination>(ex.Message);
+            }
+        }
+
+        public async Task<PeriodicMedicalExaminationResponse> DeletePeriodicExaminationAsync(int id)
+        {
+            var examination = await uow.PeriodicMedicalExaminations.FindAsync(id);
+
+            if (examination is null)
+            {
+                return new PeriodicMedicalExaminationResponse("Медосмотр не найен");
+            }
+
+            try
+            {
+                uow.PeriodicMedicalExaminations.Delete(id);
+                await uow.SaveAsync();
+                return new PeriodicMedicalExaminationResponse(examination);
+            }
+            catch (Exception ex)
+            {
+                return new PeriodicMedicalExaminationResponse(ex.Message);
             }
         }
 

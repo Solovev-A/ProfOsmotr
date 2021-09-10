@@ -31,7 +31,12 @@ namespace ProfOsmotr.Web.Services
             return new AccessResult();
         }
 
-        public async Task<AccessResult> CanAccessPrealiminaryExaminationAsync(int examinationId)
+        public async Task<AccessResult> CanAccessPeriodicExaminationAsync(int id)
+        {
+            return new AccessResult();
+        }
+
+        public async Task<AccessResult> CanAccessPreliminaryExaminationAsync(int examinationId)
         {
             return new AccessResult();
         }
