@@ -2,6 +2,7 @@ import { makeObservable, override } from 'mobx';
 
 import BaseExaminationsStore from './baseExaminationsStore';
 import periodicExaminationsApiService from './../services/periodicExaminationsApiService';
+import ModalStore from './modalStore';
 
 
 
@@ -16,6 +17,8 @@ class PeriodicExaminationsStore extends BaseExaminationsStore {
 
     resetExamination() {
         super.resetExamination();
+        this.reportDataModal = new ModalStore();
+        this.employerDataModal = new ModalStore();
     }
 }
 

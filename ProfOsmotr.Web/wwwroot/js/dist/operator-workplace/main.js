@@ -13978,12 +13978,13 @@ const InputField = ({
     onChange(input.name, input.value);
   };
 
+  const containerClassname = label ? 'form-group' : null;
   const inputClassname = classnames__WEBPACK_IMPORTED_MODULE_1___default()('form-control', {
     'is-invalid': isInvalid
   });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "form-group"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+    className: containerClassname
+  }, label && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
     htmlFor: inputProps.id
   }, label), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", _extends({}, inputProps, {
     type: inputProps.type || 'text',
@@ -16147,7 +16148,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _components_card__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../components/card */ "./OperatorClientApp/components/card.js");
-/* harmony import */ var _dataRow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dataRow */ "./OperatorClientApp/pages/periodicExamination/components/dataRow.js");
+/* harmony import */ var _employerDataView__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./employerDataView */ "./OperatorClientApp/pages/periodicExamination/components/employerDataView.js");
 
 
 
@@ -16163,53 +16164,143 @@ const EmployerData = ({
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_card__WEBPACK_IMPORTED_MODULE_1__.EditableCard, {
     title: "\u0421\u0432\u0435\u0434\u0435\u043D\u0438\u044F \u043E \u0440\u0430\u0431\u043E\u0442\u043E\u0434\u0430\u0442\u0435\u043B\u0435",
     onEditClick: onEditClick
-  }, hasNoData ? null : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(DataGroup, {
-    title: "\u041E\u0431\u0449\u0430\u044F \u0447\u0438\u0441\u043B\u0435\u043D\u043D\u043E\u0441\u0442\u044C \u0440\u0430\u0431\u043E\u0442\u043D\u0438\u043A\u043E\u0432",
-    total: employerData.employeesTotal,
-    women: employerData.employeesWomen,
-    under18: employerData.employeesUnder18,
-    persistentlyDisabled: employerData.employeesPersistentlyDisabled
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(DataGroup, {
-    title: "\u0427\u0438\u0441\u043B\u0435\u043D\u043D\u043E\u0441\u0442\u044C \u0440\u0430\u0431\u043E\u0442\u043D\u0438\u043A\u043E\u0432, \u0437\u0430\u043D\u044F\u0442\u044B\u0445 \u043D\u0430 \u0440\u0430\u0431\u043E\u0442\u0430\u0445 \u0441 \u0432\u0440\u0435\u0434\u043D\u044B\u043C\u0438 \u0438 (\u0438\u043B\u0438) \u043E\u043F\u0430\u0441\u043D\u044B\u043C\u0438 \u0443\u0441\u043B\u043E\u0432\u0438\u044F\u043C\u0438 \u0442\u0440\u0443\u0434\u0430",
-    total: employerData.workingWithHarmfulFactorsTotal,
-    women: employerData.workingWithHarmfulFactorsWomen,
-    under18: employerData.workingWithHarmfulFactorsUnder18,
-    persistentlyDisabled: employerData.workingWithHarmfulFactorsPersistentlyDisabled
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(DataGroup, {
-    title: "\u0427\u0438\u0441\u043B\u0435\u043D\u043D\u043E\u0441\u0442\u044C \u0440\u0430\u0431\u043E\u0442\u043D\u0438\u043A\u043E\u0432, \u0437\u0430\u043D\u044F\u0442\u044B\u0445 \u043D\u0430 \u0440\u0430\u0431\u043E\u0442\u0430\u0445, \u043F\u0440\u0438 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u0438 \u043A\u043E\u0442\u043E\u0440\u044B\u0445 \u043E\u0431\u044F\u0437\u0430\u0442\u0435\u043B\u044C\u043D\u043E \u043F\u0440\u043E\u0432\u0435\u0434\u0435\u043D\u0438\u0435 \u043F\u0435\u0440\u0438\u043E\u0434\u0438\u0447\u0435\u0441\u043A\u0438\u0445 \u043C\u0435\u0434\u0438\u0446\u0438\u043D\u0441\u043A\u0438\u0445 \u043E\u0441\u043C\u043E\u0442\u0440\u043E\u0432",
-    total: employerData.workingWithJobTypesTotal,
-    women: employerData.workingWithJobTypesWomen,
-    under18: employerData.workingWithJobTypesUnder18,
-    persistentlyDisabled: employerData.workingWithJobTypesPersistentlyDisabled
-  })));
-};
-
-const DataGroup = ({
-  title,
-  total,
-  women,
-  under18,
-  persistentlyDisabled
-}) => {
-  if (!total && !women && !under18 && !persistentlyDisabled) return null;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_dataRow__WEBPACK_IMPORTED_MODULE_2__.default, {
-    title: title,
-    value: total,
-    required: true
-  }), "\u0432 \u0442\u043E\u043C \u0447\u0438\u0441\u043B\u0435", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_dataRow__WEBPACK_IMPORTED_MODULE_2__.default, {
-    title: "\u0436\u0435\u043D\u0449\u0438\u043D",
-    value: women
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_dataRow__WEBPACK_IMPORTED_MODULE_2__.default, {
-    title: "\u0440\u0430\u0431\u043E\u0442\u043D\u0438\u043A\u043E\u0432 \u0432 \u0432\u043E\u0437\u0440\u0430\u0441\u0442\u0435 \u0434\u043E 18 \u043B\u0435\u0442",
-    value: under18
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_dataRow__WEBPACK_IMPORTED_MODULE_2__.default, {
-    title: "\u0440\u0430\u0431\u043E\u0442\u043D\u0438\u043A\u043E\u0432, \u043A\u043E\u0442\u043E\u0440\u044B\u043C \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u0430 \u0441\u0442\u043E\u0439\u043A\u0430\u044F \u0441\u0442\u0435\u043F\u0435\u043D\u044C \u0443\u0442\u0440\u0430\u0442\u044B \u0442\u0440\u0443\u0434\u043E\u0441\u043F\u043E\u0441\u043E\u0431\u043D\u043E\u0441\u0442\u0438",
-    value: persistentlyDisabled,
-    br: false
+  }, hasNoData ? null : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_employerDataView__WEBPACK_IMPORTED_MODULE_2__.default, {
+    employerData: employerData
   }));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (EmployerData);
+
+/***/ }),
+
+/***/ "./OperatorClientApp/pages/periodicExamination/components/employerDataEditorModal.js":
+/*!*******************************************************************************************!*
+  !*** ./OperatorClientApp/pages/periodicExamination/components/employerDataEditorModal.js ***!
+  \*******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _hooks_useStore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../../hooks/useStore */ "./OperatorClientApp/hooks/useStore.js");
+/* harmony import */ var _components_editorModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../../components/editorModal */ "./OperatorClientApp/components/editorModal.js");
+/* harmony import */ var _employerDataView__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./employerDataView */ "./OperatorClientApp/pages/periodicExamination/components/employerDataView.js");
+
+
+
+
+
+const EmployerDataEditorModal = () => {
+  const {
+    periodicExaminationEditorStore: {
+      employerDataEditorStore
+    },
+    periodicExaminationsStore: {
+      employerDataModal
+    }
+  } = (0,_hooks_useStore__WEBPACK_IMPORTED_MODULE_1__.default)();
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_editorModal__WEBPACK_IMPORTED_MODULE_2__.default, {
+    title: "\u0421\u0432\u0435\u0434\u0435\u043D\u0438\u044F \u043E \u0440\u0430\u0431\u043E\u0442\u043E\u0434\u0430\u0442\u0435\u043B\u0435",
+    editorStore: employerDataEditorStore,
+    modalStore: employerDataModal,
+    size: "xl"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_employerDataView__WEBPACK_IMPORTED_MODULE_3__.default, {
+    formStore: employerDataEditorStore
+  }));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (EmployerDataEditorModal);
+
+/***/ }),
+
+/***/ "./OperatorClientApp/pages/periodicExamination/components/employerDataView.js":
+/*!************************************************************************************!*
+  !*** ./OperatorClientApp/pages/periodicExamination/components/employerDataView.js ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _components_forms_observers_inputField__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../../components/forms/observers/inputField */ "./OperatorClientApp/components/forms/observers/inputField.js");
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+
+
+
+const EmployerDataView = ({
+  employerData = null,
+  formStore = null
+}) => {
+  if (!(!!employerData ^ !!formStore)) throw 'Недопустимые пропсы. Необходимо передать либо employerData, либо formStore';
+  const valueGroupCommonProps = {
+    employerData,
+    formStore
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("table", {
+    className: "table"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "\u0412\u0441\u0435\u0433\u043E")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "\u0416\u0435\u043D\u0449\u0438\u043D")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+    title: "\u0427\u0438\u0441\u043B\u0435\u043D\u043D\u043E\u0441\u0442\u044C \u0440\u0430\u0431\u043E\u0442\u043D\u0438\u043A\u043E\u0432 \u0432 \u0432\u043E\u0437\u0440\u0430\u0441\u0442\u0435 \u0434\u043E 18 \u043B\u0435\u0442"
+  }, "\u0414\u043E 18 \u043B\u0435\u0442")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("th", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+    title: "\u0427\u0438\u0441\u043B\u0435\u043D\u043D\u043E\u0441\u0442\u044C \u0440\u0430\u0431\u043E\u0442\u043D\u0438\u043A\u043E\u0432, \u043A\u043E\u0442\u043E\u0440\u044B\u043C \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u0430 \u0441\u0442\u043E\u0439\u043A\u0430\u044F \u0441\u0442\u0435\u043F\u0435\u043D\u044C \u0443\u0442\u0440\u0430\u0442\u044B \u0442\u0440\u0443\u0434\u043E\u0441\u043F\u043E\u0441\u043E\u0431\u043D\u043E\u0441\u0442\u0438"
+  }, "\u0418\u043D\u0432\u0430\u043B\u0438\u0434\u044B")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tbody", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ValueGroup, _extends({
+    title: "\u041E\u0431\u0449\u0430\u044F \u0447\u0438\u0441\u043B\u0435\u043D\u043D\u043E\u0441\u0442\u044C \u0440\u0430\u0431\u043E\u0442\u043D\u0438\u043A\u043E\u0432",
+    prefix: "employees"
+  }, valueGroupCommonProps)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ValueGroup, _extends({
+    title: "\u0427\u0438\u0441\u043B\u0435\u043D\u043D\u043E\u0441\u0442\u044C \u0440\u0430\u0431\u043E\u0442\u043D\u0438\u043A\u043E\u0432, \u0437\u0430\u043D\u044F\u0442\u044B\u0445 \u043D\u0430 \u0440\u0430\u0431\u043E\u0442\u0430\u0445 \u0441 \u0432\u0440\u0435\u0434\u043D\u044B\u043C\u0438 \u0438 (\u0438\u043B\u0438) \u043E\u043F\u0430\u0441\u043D\u044B\u043C\u0438 \u0443\u0441\u043B\u043E\u0432\u0438\u044F\u043C\u0438 \u0442\u0440\u0443\u0434\u0430",
+    prefix: "workingWithHarmfulFactors"
+  }, valueGroupCommonProps)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ValueGroup, _extends({
+    title: "\u0427\u0438\u0441\u043B\u0435\u043D\u043D\u043E\u0441\u0442\u044C \u0440\u0430\u0431\u043E\u0442\u043D\u0438\u043A\u043E\u0432, \u0437\u0430\u043D\u044F\u0442\u044B\u0445 \u043D\u0430 \u0440\u0430\u0431\u043E\u0442\u0430\u0445, \u043F\u0440\u0438 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u0438 \u043A\u043E\u0442\u043E\u0440\u044B\u0445 \u043E\u0431\u044F\u0437\u0430\u0442\u0435\u043B\u044C\u043D\u043E \u043F\u0440\u043E\u0432\u0435\u0434\u0435\u043D\u0438\u0435 \u043F\u0435\u0440\u0438\u043E\u0434\u0438\u0447\u0435\u0441\u043A\u0438\u0445 \u043C\u0435\u0434\u0438\u0446\u0438\u043D\u0441\u043A\u0438\u0445 \u043E\u0441\u043C\u043E\u0442\u0440\u043E\u0432",
+    prefix: "workingWithJobTypes"
+  }, valueGroupCommonProps))));
+};
+
+const ValueGroup = ({
+  title,
+  prefix,
+  formStore,
+  employerData
+}) => {
+  const ValueView = ({
+    path
+  }) => {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, employerData ? employerData[prefix + path] : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputField__WEBPACK_IMPORTED_MODULE_1__.default, {
+      name: prefix + path,
+      formStore: formStore,
+      type: "number",
+      min: "0"
+    }));
+  };
+
+  const titleColWidthPercent = 50;
+  const valueColWidthPercent = ((100 - titleColWidthPercent) / 4).toFixed(2);
+
+  const ValueCol = ({
+    children
+  }) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
+    width: `${valueColWidthPercent}%`
+  }, children);
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
+    width: `${titleColWidthPercent}%`
+  }, title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ValueCol, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ValueView, {
+    path: "Total"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ValueCol, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ValueView, {
+    path: "Women"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ValueCol, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ValueView, {
+    path: "Under18"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ValueCol, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ValueView, {
+    path: "PersistentlyDisabled"
+  })));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (EmployerDataView);
 
 /***/ }),
 
@@ -16353,6 +16444,59 @@ const ReportData = ({
 
 /***/ }),
 
+/***/ "./OperatorClientApp/pages/periodicExamination/components/reportDataEditorModal.js":
+/*!*****************************************************************************************!*
+  !*** ./OperatorClientApp/pages/periodicExamination/components/reportDataEditorModal.js ***!
+  \*****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _components_forms_observers_inputField__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../../components/forms/observers/inputField */ "./OperatorClientApp/components/forms/observers/inputField.js");
+/* harmony import */ var _hooks_useStore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../../hooks/useStore */ "./OperatorClientApp/hooks/useStore.js");
+/* harmony import */ var _components_editorModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../../components/editorModal */ "./OperatorClientApp/components/editorModal.js");
+
+
+
+
+
+const ReportDataEditorModal = () => {
+  const {
+    periodicExaminationEditorStore: {
+      reportDataEditorStore
+    },
+    periodicExaminationsStore: {
+      reportDataModal
+    }
+  } = (0,_hooks_useStore__WEBPACK_IMPORTED_MODULE_2__.default)();
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_editorModal__WEBPACK_IMPORTED_MODULE_3__.default, {
+    title: "\u0417\u0430\u043A\u043B\u044E\u0447\u0438\u0442\u0435\u043B\u044C\u043D\u044B\u0439 \u0430\u043A\u0442",
+    editorStore: reportDataEditorStore,
+    modalStore: reportDataModal
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputField__WEBPACK_IMPORTED_MODULE_1__.default, {
+    label: "\u0414\u0430\u0442\u0430 \u0430\u043A\u0442\u0430",
+    name: "reportDate",
+    formStore: reportDataEditorStore,
+    type: "date",
+    style: {
+      width: '200px'
+    }
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputField__WEBPACK_IMPORTED_MODULE_1__.default, {
+    label: "\u0420\u0435\u043A\u043E\u043C\u0435\u043D\u0434\u0430\u0446\u0438\u0438",
+    name: "recommendations",
+    formStore: reportDataEditorStore,
+    maxLength: "500"
+  }));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ReportDataEditorModal);
+
+/***/ }),
+
 /***/ "./OperatorClientApp/pages/periodicExamination/index.js":
 /*!**************************************************************!*
   !*** ./OperatorClientApp/pages/periodicExamination/index.js ***!
@@ -16376,6 +16520,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_employerData__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/employerData */ "./OperatorClientApp/pages/periodicExamination/components/employerData.js");
 /* harmony import */ var _components_reportData__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/reportData */ "./OperatorClientApp/pages/periodicExamination/components/reportData.js");
 /* harmony import */ var _components_contingentList__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/contingentList */ "./OperatorClientApp/pages/periodicExamination/components/contingentList.js");
+/* harmony import */ var _components_reportDataEditorModal__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/reportDataEditorModal */ "./OperatorClientApp/pages/periodicExamination/components/reportDataEditorModal.js");
+/* harmony import */ var _components_employerDataEditorModal__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/employerDataEditorModal */ "./OperatorClientApp/pages/periodicExamination/components/employerDataEditorModal.js");
+
+
 
 
 
@@ -16411,9 +16559,13 @@ const PeriodicExaminationPage = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.
 
   const onAddCheckupStatusClick = () => {};
 
-  const onEmployerDataEditClick = () => {};
+  const onEmployerDataEditClick = () => {
+    periodicExaminationsStore.employerDataModal.open();
+  };
 
-  const onReportDataEditClick = () => {};
+  const onReportDataEditClick = () => {
+    periodicExaminationsStore.reportDataModal.open();
+  };
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "\u041A\u0430\u0440\u0442\u0430 \u043F\u0435\u0440\u0438\u043E\u0434\u0438\u0447\u0435\u0441\u043A\u043E\u0433\u043E \u043E\u0441\u043C\u043E\u0442\u0440\u0430 \u0437\u0430 ", examination.examinationYear, " \u0433\u043E\u0434"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_employerInfo__WEBPACK_IMPORTED_MODULE_7__.default, {
     employer: examination.employer
@@ -16428,7 +16580,7 @@ const PeriodicExaminationPage = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_contingentList__WEBPACK_IMPORTED_MODULE_11__.default, {
     examination: examination,
     onAddClick: onAddCheckupStatusClick
-  }));
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_reportDataEditorModal__WEBPACK_IMPORTED_MODULE_12__.default, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_employerDataEditorModal__WEBPACK_IMPORTED_MODULE_13__.default, null));
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PeriodicExaminationPage);
 
@@ -18110,6 +18262,77 @@ class CheckupResultsStore {
 
 /***/ }),
 
+/***/ "./OperatorClientApp/stores/employerDataEditorStore.js":
+/*!*************************************************************!*
+  !*** ./OperatorClientApp/stores/employerDataEditorStore.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var mobx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! mobx */ "./node_modules/mobx/dist/mobx.esm.js");
+/* harmony import */ var _baseFormStore__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./baseFormStore */ "./OperatorClientApp/stores/baseFormStore.js");
+/* harmony import */ var _utils_toasts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/toasts */ "./OperatorClientApp/utils/toasts.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+const employerDataTemplate = {
+  employeesTotal: 0,
+  employeesWomen: 0,
+  employeesUnder18: 0,
+  employeesPersistentlyDisabled: 0,
+  workingWithHarmfulFactorsTotal: 0,
+  workingWithHarmfulFactorsWomen: 0,
+  workingWithHarmfulFactorsUnder18: 0,
+  workingWithHarmfulFactorsPersistentlyDisabled: 0,
+  workingWithJobTypesTotal: 0,
+  workingWithJobTypesWomen: 0,
+  workingWithJobTypesUnder18: 0,
+  workingWithJobTypesPersistentlyDisabled: 0
+};
+
+class EmployerDataEditorStore extends _baseFormStore__WEBPACK_IMPORTED_MODULE_0__.default {
+  constructor(examinationEditorStore) {
+    super(employerDataTemplate);
+
+    _defineProperty(this, "loadInitialValues", async () => {
+      const examination = await this.examinationEditorStore.loadExamination();
+      const employerData = examination.employerData;
+      this.setInitialValues({ ...employerData
+      });
+    });
+
+    _defineProperty(this, "onSubmit", async () => {
+      const hasChanges = !!Object.keys(this.patchedData).length;
+      const data = hasChanges ? {
+        employerData: this.patchedData
+      } : {};
+
+      const handler = () => this.examinationEditorStore.onUpdate(data);
+
+      const response = await this.onSendingData(handler);
+      if (!response) return;
+      return (0,_utils_toasts__WEBPACK_IMPORTED_MODULE_1__.handleResponseWithToasts)(response, true);
+    });
+
+    this.examinationEditorStore = examinationEditorStore;
+    (0,mobx__WEBPACK_IMPORTED_MODULE_2__.makeObservable)(this, {
+      loadInitialValues: mobx__WEBPACK_IMPORTED_MODULE_2__.action,
+      onSubmit: mobx__WEBPACK_IMPORTED_MODULE_2__.action
+    });
+  }
+
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (EmployerDataEditorStore);
+
+/***/ }),
+
 /***/ "./OperatorClientApp/stores/employerDepartmentEditorStore.js":
 /*!*******************************************************************!*
   !*** ./OperatorClientApp/stores/employerDepartmentEditorStore.js ***!
@@ -18667,6 +18890,49 @@ class PatientsListStore extends _basePagedListStore__WEBPACK_IMPORTED_MODULE_1__
 
 /***/ }),
 
+/***/ "./OperatorClientApp/stores/periodicExaminationEditorStore.js":
+/*!********************************************************************!*
+  !*** ./OperatorClientApp/stores/periodicExaminationEditorStore.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var _services_periodicExaminationsApiService__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/periodicExaminationsApiService */ "./OperatorClientApp/services/periodicExaminationsApiService.js");
+/* harmony import */ var _reportDataEditorStore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./reportDataEditorStore */ "./OperatorClientApp/stores/reportDataEditorStore.js");
+/* harmony import */ var _employerDataEditorStore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./employerDataEditorStore */ "./OperatorClientApp/stores/employerDataEditorStore.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+class PeriodicExaminationEditorStore {
+  constructor(rootStore) {
+    _defineProperty(this, "loadExamination", () => {
+      return this.rootStore.periodicExaminationsStore.examination;
+    });
+
+    _defineProperty(this, "onUpdate", data => {
+      if (!Object.entries(data).length) return Promise.resolve(true);
+      const examinationId = this.rootStore.periodicExaminationsStore.examination.id;
+      return _services_periodicExaminationsApiService__WEBPACK_IMPORTED_MODULE_0__.default.updateEntity(examinationId, data);
+    });
+
+    this.rootStore = rootStore;
+    this.reportDataEditorStore = new _reportDataEditorStore__WEBPACK_IMPORTED_MODULE_1__.default(this);
+    this.employerDataEditorStore = new _employerDataEditorStore__WEBPACK_IMPORTED_MODULE_2__.default(this);
+  }
+
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PeriodicExaminationEditorStore);
+
+/***/ }),
+
 /***/ "./OperatorClientApp/stores/periodicExaminationsStore.js":
 /*!***************************************************************!*
   !*** ./OperatorClientApp/stores/periodicExaminationsStore.js ***!
@@ -18678,9 +18944,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
-/* harmony import */ var mobx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! mobx */ "./node_modules/mobx/dist/mobx.esm.js");
+/* harmony import */ var mobx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! mobx */ "./node_modules/mobx/dist/mobx.esm.js");
 /* harmony import */ var _baseExaminationsStore__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./baseExaminationsStore */ "./OperatorClientApp/stores/baseExaminationsStore.js");
 /* harmony import */ var _services_periodicExaminationsApiService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../services/periodicExaminationsApiService */ "./OperatorClientApp/services/periodicExaminationsApiService.js");
+/* harmony import */ var _modalStore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modalStore */ "./OperatorClientApp/stores/modalStore.js");
+
 
 
 
@@ -18688,13 +18956,15 @@ __webpack_require__.r(__webpack_exports__);
 class PeriodicExaminationsStore extends _baseExaminationsStore__WEBPACK_IMPORTED_MODULE_0__.default {
   constructor() {
     super(_services_periodicExaminationsApiService__WEBPACK_IMPORTED_MODULE_1__.default);
-    (0,mobx__WEBPACK_IMPORTED_MODULE_2__.makeObservable)(this, {
-      resetExamination: mobx__WEBPACK_IMPORTED_MODULE_2__.override
+    (0,mobx__WEBPACK_IMPORTED_MODULE_3__.makeObservable)(this, {
+      resetExamination: mobx__WEBPACK_IMPORTED_MODULE_3__.override
     });
   }
 
   resetExamination() {
     super.resetExamination();
+    this.reportDataModal = new _modalStore__WEBPACK_IMPORTED_MODULE_2__.default();
+    this.employerDataModal = new _modalStore__WEBPACK_IMPORTED_MODULE_2__.default();
   }
 
 }
@@ -19027,6 +19297,73 @@ class ProfessionEditorStore extends _baseFormStore__WEBPACK_IMPORTED_MODULE_1__.
 
 /***/ }),
 
+/***/ "./OperatorClientApp/stores/reportDataEditorStore.js":
+/*!***********************************************************!*
+  !*** ./OperatorClientApp/stores/reportDataEditorStore.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var mobx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! mobx */ "./node_modules/mobx/dist/mobx.esm.js");
+/* harmony import */ var _baseFormStore__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./baseFormStore */ "./OperatorClientApp/stores/baseFormStore.js");
+/* harmony import */ var _utils_toasts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/toasts */ "./OperatorClientApp/utils/toasts.js");
+/* harmony import */ var _utils_validation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../utils/validation */ "./OperatorClientApp/utils/validation.js");
+/* harmony import */ var _utils_formatDate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../utils/formatDate */ "./OperatorClientApp/utils/formatDate.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+const reportDataTemplate = {
+  reportDate: '',
+  recommendations: ''
+};
+const validation = {
+  reportDate: {
+    isValid: _utils_validation__WEBPACK_IMPORTED_MODULE_2__.requiredString,
+    errorMessage: 'Укажите дату заключительного акта'
+  }
+};
+
+class ReportDataEditorStore extends _baseFormStore__WEBPACK_IMPORTED_MODULE_0__.default {
+  constructor(examinationEditorStore) {
+    super(reportDataTemplate, validation);
+
+    _defineProperty(this, "loadInitialValues", async () => {
+      const examination = await this.examinationEditorStore.loadExamination();
+      this.setInitialValues({
+        reportDate: (0,_utils_formatDate__WEBPACK_IMPORTED_MODULE_3__.formatDateStringForDateInput)(examination.reportDate),
+        recommendations: examination.recommendations ?? ''
+      });
+    });
+
+    _defineProperty(this, "onSubmit", async () => {
+      const handler = () => this.examinationEditorStore.onUpdate(this.patchedData);
+
+      const response = await this.onSendingData(handler);
+      if (!response) return;
+      return (0,_utils_toasts__WEBPACK_IMPORTED_MODULE_1__.handleResponseWithToasts)(response, true);
+    });
+
+    this.examinationEditorStore = examinationEditorStore;
+    (0,mobx__WEBPACK_IMPORTED_MODULE_4__.makeObservable)(this, {
+      loadInitialValues: mobx__WEBPACK_IMPORTED_MODULE_4__.action,
+      onSubmit: mobx__WEBPACK_IMPORTED_MODULE_4__.action
+    });
+  }
+
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ReportDataEditorStore);
+
+/***/ }),
+
 /***/ "./OperatorClientApp/stores/rootStore.js":
 /*!***********************************************!*
   !*** ./OperatorClientApp/stores/rootStore.js ***!
@@ -19050,6 +19387,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _employerDepartmentEditorStore__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./employerDepartmentEditorStore */ "./OperatorClientApp/stores/employerDepartmentEditorStore.js");
 /* harmony import */ var _professionEditorStore__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./professionEditorStore */ "./OperatorClientApp/stores/professionEditorStore.js");
 /* harmony import */ var _periodicExaminationsStore__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./periodicExaminationsStore */ "./OperatorClientApp/stores/periodicExaminationsStore.js");
+/* harmony import */ var _periodicExaminationEditorStore__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./periodicExaminationEditorStore */ "./OperatorClientApp/stores/periodicExaminationEditorStore.js");
+
 
 
 
@@ -19077,6 +19416,7 @@ class RootStore {
     this.employerDepartmentEditorStore = new _employerDepartmentEditorStore__WEBPACK_IMPORTED_MODULE_9__.default();
     this.professionEditorStore = new _professionEditorStore__WEBPACK_IMPORTED_MODULE_10__.default(this);
     this.periodicExaminationsStore = new _periodicExaminationsStore__WEBPACK_IMPORTED_MODULE_11__.default();
+    this.periodicExaminationEditorStore = new _periodicExaminationEditorStore__WEBPACK_IMPORTED_MODULE_12__.default(this);
   }
 
 }

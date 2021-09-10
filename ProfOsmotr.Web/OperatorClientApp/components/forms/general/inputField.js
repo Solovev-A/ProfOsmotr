@@ -7,11 +7,12 @@ const InputField = ({ label, onChange, isInvalid, errorMessage, ...inputProps })
         onChange(input.name, input.value);
     }
 
+    const containerClassname = label ? 'form-group' : null;
     const inputClassname = classNames('form-control', { 'is-invalid': isInvalid });
 
     return (
-        <div className="form-group">
-            <label htmlFor={inputProps.id}>{label}</label>
+        <div className={containerClassname}>
+            {label && <label htmlFor={inputProps.id}>{label}</label>}
             <input {...inputProps}
                 type={inputProps.type || 'text'}
                 onChange={changeHandler}

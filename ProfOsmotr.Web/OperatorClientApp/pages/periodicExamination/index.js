@@ -11,6 +11,8 @@ import PeriodicExaminationActions from './components/periodicExaminationActions'
 import EmployerData from './components/employerData';
 import ReportData from './components/reportData';
 import ContingentList from './components/contingentList';
+import ReportDataEditorModal from './components/reportDataEditorModal';
+import EmployerDataEditorModal from './components/employerDataEditorModal';
 
 
 const PeriodicExaminationPage = observer((props) => {
@@ -41,11 +43,11 @@ const PeriodicExaminationPage = observer((props) => {
     }
 
     const onEmployerDataEditClick = () => {
-
+        periodicExaminationsStore.employerDataModal.open();
     }
 
     const onReportDataEditClick = () => {
-
+        periodicExaminationsStore.reportDataModal.open();
     }
 
     return (
@@ -57,6 +59,8 @@ const PeriodicExaminationPage = observer((props) => {
             <ReportData examination={examination} onEditClick={onReportDataEditClick} />
             <EmployerData examination={examination} onEditClick={onEmployerDataEditClick} />
             <ContingentList examination={examination} onAddClick={onAddCheckupStatusClick} />
+            <ReportDataEditorModal />
+            <EmployerDataEditorModal />
         </>
     )
 })
