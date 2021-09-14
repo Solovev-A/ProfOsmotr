@@ -28,7 +28,7 @@ class Api {
     post = async (url, data, config = {}) => {
         try {
             const response = await instance.post(url, data, config);
-            return response.data;
+            return response.data ? response.data : { success: true };
         }
         catch (error) {
             return errorHandler(error);

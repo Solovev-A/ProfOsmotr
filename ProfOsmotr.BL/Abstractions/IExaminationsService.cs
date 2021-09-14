@@ -28,5 +28,7 @@ namespace ProfOsmotr.BL.Abstractions
         Task<int> GetPeriodicMedicalExaminationClinicIdAsync(int examinationId);
 
         Task<PeriodicMedicalExaminationResponse> DeletePeriodicExaminationAsync(int id);
+
+        Task<ContingentCheckupStatusResponse> CreateContingentCheckupStatus(CreateContingentCheckupStatusRequest request);
     }
 }

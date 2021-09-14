@@ -25,7 +25,7 @@ const contingentListColumns = [{
 }, {
     title: 'Заключение',
     width: '25%',
-    render: (item) => item.result.text
+    render: (item) => item.result?.text
 }, {
     title: 'Дата',
     render: (item) => item.dateOfCompletion

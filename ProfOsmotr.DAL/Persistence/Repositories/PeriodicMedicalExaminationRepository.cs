@@ -27,6 +27,8 @@ namespace ProfOsmotr.DAL
                     .ThenInclude(s => s.Patient)
                 .Include(ex => ex.Statuses)
                     .ThenInclude(s => s.Profession.OrderItems.Where(oi => !oi.IsDeleted))
+                .Include(ex => ex.Statuses)
+                    .ThenInclude(s => s.CheckupResult)
                 .Include(ex => ex.LastEditor.UserProfile)
                 .FirstOrDefaultAsync(ex => ex.Id == id);
         }

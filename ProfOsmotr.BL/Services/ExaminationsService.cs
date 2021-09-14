@@ -300,6 +300,57 @@ namespace ProfOsmotr.BL
             }
         }
 
+        public async Task<ContingentCheckupStatusResponse> CreateContingentCheckupStatus(CreateContingentCheckupStatusRequest request)
+        {
+            var examination = await uow.PeriodicMedicalExaminations.FindAsync(request.ExaminationId);
+            if (examination is null)
+            {
+                return new ContingentCheckupStatusResponse("Медосмотр не найден");
+            }
+
+            var patientResponse = await patientService.CheckPatientAsync(request.PatientId);
+            if (!patientResponse.Succeed)
+            {
+                return new ContingentCheckupStatusResponse(patientResponse.Message);
+            }
+
+            var creatorResponse = await userService.GetUser(request.CreatorId);
+            if (!creatorResponse.Succeed)
+            {
+                return new ContingentCheckupStatusResponse(creatorResponse.Message);
+            }
+
+            var checkupStatus = new ContingentCheckupStatus()
+            {
+                PeriodicMedicalExaminationId = request.ExaminationId,
+                PatientId = request.PatientId,
+                LastEditorId = request.CreatorId
+            };
+
+            var updateDepartmentResult = await UpdateEmployerDepartment(examination, checkupStatus, request.EmployerDepartmentId);
+            if (!updateDepartmentResult.Succeed)
+            {
+                return new ContingentCheckupStatusResponse(updateDepartmentResult.ErrorMessage);
+            }
+
+            var updateProfessionResult = await UpdateProfession(checkupStatus, request.ProfessionId);
+            if (!updateProfessionResult.Succeed)
+            {
+                return new ContingentCheckupStatusResponse(updateProfessionResult.ErrorMessage);
+            }
+
+            try
+            {
+                examination.Statuses.Add(checkupStatus);
+                await uow.SaveAsync();
+                return new ContingentCheckupStatusResponse(checkupStatus);
+            }
+            catch (Exception ex)
+            {
+                return new ContingentCheckupStatusResponse(ex.Message);
+            }
+        }
+
         protected async Task<ServiceActionResult> UpdateLastEditor(MedicalExamination examination, int editorId)
         {
             var editorResponse = await userService.GetUser(editorId);

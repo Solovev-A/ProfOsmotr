@@ -73,5 +73,32 @@ namespace ProfOsmotr.Web.Api
                 async () => await examinationsService.DeletePeriodicExaminationAsync(id),
                 async () => await accessService.CanAccessPeriodicExaminationAsync(id));
         }
+
+        [HttpPost("{examinationId}/checkup-statuses")]
+        [ModelStateValidationFilter]
+        public async Task<IActionResult> CreateCheckupStatus(int examinationId, [FromBody] CreateContingentCheckupStatusQuery query)
+        {
+            if (!accessService.TryGetUserClinicId(out int clinicId))
+                return Forbid();
+
+            if (!accessService.TryGetUserId(out int userId))
+                return Forbid();
+
+            var request = mapper.Map<CreateContingentCheckupStatusRequest>(query);
+            request.ClinicId = clinicId;
+            request.ExaminationId = examinationId;
+            request.CreatorId = userId;
+
+            var accessChecks = new List<Func<Task<AccessResult>>>();
+            accessChecks.Add(async () => await accessService.CanAccessPeriodicExaminationAsync(examinationId));
+            accessChecks.Add(async () => await accessService.CanAccessPatientAsync(query.PatientId));
+
+            if (query.EmployerDepartmentId.HasValue)
+                accessChecks.Add(async () => await accessService.CanAccessEmployerDepartmentAsync(query.EmployerDepartmentId.Value));
+
+            return await queryHandler.HandleQuery<ContingentCheckupStatus>(
+                async () => await examinationsService.CreateContingentCheckupStatus(request),
+                accessChecks.ToArray());
+        }
     }
 }

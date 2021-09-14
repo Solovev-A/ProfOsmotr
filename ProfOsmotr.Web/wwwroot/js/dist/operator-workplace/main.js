@@ -13350,6 +13350,7 @@ const EditorModal = ({
   reloadOnSubmit = true,
   reloadOnExited = false,
   onSubmitted,
+  closeOnSubmit = true,
   ...props
 }) => {
   const history = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useHistory)();
@@ -13371,7 +13372,9 @@ const EditorModal = ({
         onSubmitted(response);
       }
 
-      modalStore.close();
+      if (closeOnSubmit) {
+        modalStore.close();
+      }
     }
   };
 
@@ -16197,7 +16200,7 @@ const contingentListColumns = [{
 }, {
   title: 'Заключение',
   width: '25%',
-  render: item => item.result.text
+  render: item => item.result?.text
 }, {
   title: 'Дата',
   render: item => item.dateOfCompletion
@@ -16292,7 +16295,9 @@ const CreateContingentCheckupStatusModal = (0,mobx_react_lite__WEBPACK_IMPORTED_
     title: "\u0414\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u0438\u0435 \u0440\u0430\u0431\u043E\u0442\u043D\u0438\u043A\u0430 \u0432 \u0441\u043F\u0438\u0441\u043E\u043A",
     editorStore: contingentCheckupStatusCreatorStore,
     modalStore: periodicExaminationsStore.createContingentCheckupStatusModal,
-    scrollable: false
+    scrollable: false,
+    closeOnSubmit: false,
+    reloadOnExited: true
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "form-group"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "\u0420\u0430\u0431\u043E\u0442\u043D\u0438\u043A"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_general_grid__WEBPACK_IMPORTED_MODULE_7__.ControlRow, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_patientAutocomplete__WEBPACK_IMPORTED_MODULE_4__.default, {
@@ -17549,7 +17554,9 @@ class Api {
     _defineProperty(this, "post", async (url, data, config = {}) => {
       try {
         const response = await instance.post(url, data, config);
-        return response.data;
+        return response.data ? response.data : {
+          success: true
+        };
       } catch (error) {
         return errorHandler(error);
       }
@@ -18554,16 +18561,22 @@ class ContingentCheckupStatusCreatorStore {
         data.professionId = this.workPlace.profession.id;
       }
 
-      const handler = () => _services_periodicExaminationsApiService__WEBPACK_IMPORTED_MODULE_3__.default.createCheckupStatus(examinationId, data);
+      const handler = () => _services_periodicExaminationsApiService__WEBPACK_IMPORTED_MODULE_3__.default.createCheckupStatus(examinationId, data); // позаимствуем обработку отправления запроса
+
 
       const response = await this.workPlace.onSendingData(handler);
 
       if (response.success !== false) {
         (0,mobx__WEBPACK_IMPORTED_MODULE_5__.runInAction)(() => {
+          // очистка формы
           this.patient = null;
-          this.workPlace.clear();
           this.workPlace.employerDepartment = null;
-          this.workPlace.profession = null;
+          this.workPlace.profession = null; // == костыль для очистки полей автокомплитов в форме
+
+          this.workPlace.isLoading = true;
+          setTimeout(() => this.workPlace.isLoading = false, 10); // == удалить после исправления автокомплита
+
+          this.workPlace.isProcessing = false;
         });
       }
 

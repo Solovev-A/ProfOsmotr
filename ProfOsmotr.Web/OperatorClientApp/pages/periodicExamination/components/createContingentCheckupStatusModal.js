@@ -25,6 +25,8 @@ const CreateContingentCheckupStatusModal = observer((props) => {
             editorStore={contingentCheckupStatusCreatorStore}
             modalStore={periodicExaminationsStore.createContingentCheckupStatusModal}
             scrollable={false}
+            closeOnSubmit={false}
+            reloadOnExited={true}
         >
             <div className="form-group">
                 <label>Работник</label>

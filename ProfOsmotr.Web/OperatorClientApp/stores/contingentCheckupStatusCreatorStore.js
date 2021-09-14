@@ -61,15 +61,22 @@ class ContingentCheckupStatusCreatorStore {
         }
 
         const handler = () => periodicExaminationsApiService.createCheckupStatus(examinationId, data);
-
+        // позаимствуем обработку отправления запроса
         const response = await this.workPlace.onSendingData(handler);
 
         if (response.success !== false) {
             runInAction(() => {
+                // очистка формы
                 this.patient = null;
-                this.workPlace.clear();
                 this.workPlace.employerDepartment = null;
                 this.workPlace.profession = null;
+
+                // == костыль для очистки полей автокомплитов в форме
+                this.workPlace.isLoading = true;
+                setTimeout(() => this.workPlace.isLoading = false, 10);
+                // == удалить после исправления автокомплита
+
+                this.workPlace.isProcessing = false;
             })
         }
 

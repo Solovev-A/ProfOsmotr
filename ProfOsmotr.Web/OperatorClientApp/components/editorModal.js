@@ -8,7 +8,8 @@ import Spinner from './spinner';
 import useErrorHandler from '../hooks/useErrorHandler';
 
 const EditorModal = ({ modalStore, editorStore, children, title,
-    reloadOnSubmit = true, reloadOnExited = false, onSubmitted, ...props }) => {
+    reloadOnSubmit = true, reloadOnExited = false, onSubmitted,
+    closeOnSubmit = true, ...props }) => {
     const history = useHistory();
     const errorHandler = useErrorHandler();
 
@@ -23,7 +24,9 @@ const EditorModal = ({ modalStore, editorStore, children, title,
             if (onSubmitted) {
                 onSubmitted(response);
             }
-            modalStore.close();
+            if (closeOnSubmit) {
+                modalStore.close();
+            }
         }
     }
 
