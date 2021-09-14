@@ -18,13 +18,15 @@ namespace ProfOsmotr.BL
         private readonly IEmployerService employerService;
         private readonly IProfessionService professionService;
         private readonly IOrderService orderService;
+        private readonly IMapper mapper;
 
         public ExaminationsService(IProfUnitOfWork uow,
                                    IPatientService patientService,
                                    IUserService userService,
                                    IEmployerService employerService,
                                    IProfessionService professionService,
-                                   IOrderService orderService)
+                                   IOrderService orderService,
+                                   IMapper mapper)
         {
             this.uow = uow ?? throw new ArgumentNullException(nameof(uow));
             this.patientService = patientService ?? throw new ArgumentNullException(nameof(patientService));
@@ -32,6 +34,7 @@ namespace ProfOsmotr.BL
             this.employerService = employerService ?? throw new ArgumentNullException(nameof(employerService));
             this.professionService = professionService ?? throw new ArgumentNullException(nameof(professionService));
             this.orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<PreliminaryMedicalExaminationResponse> GetPreliminaryMedicalExaminationAsync(int id)
@@ -228,7 +231,7 @@ namespace ProfOsmotr.BL
 
         public async Task<PeriodicMedicalExaminationResponse> GetPeriodicMedicalExaminationAsync(int id)
         {
-            var result = await uow.PeriodicMedicalExaminations.FindExaminationAsync(id);
+            var result = await uow.PeriodicMedicalExaminations.FindExaminationAsync(id, true);
 
             if (result is null)
             {
@@ -348,6 +351,27 @@ namespace ProfOsmotr.BL
             catch (Exception ex)
             {
                 return new ContingentCheckupStatusResponse(ex.Message);
+            }
+        }
+
+        public async Task<PeriodicMedicalExaminationResponse> UpdatePeriodicExaminationAsync(UpdatePeriodicExaminationRequest request)
+        {
+            var examination = await uow.PeriodicMedicalExaminations.FindExaminationAsync(request.ExaminationId);
+            if (examination is null)
+            {
+                return new PeriodicMedicalExaminationResponse("Медосмотр не найден");
+            }
+
+            mapper.Map(request.Query, examination);
+
+            try
+            {
+                await uow.SaveAsync();
+                return new PeriodicMedicalExaminationResponse(examination);
+            }
+            catch (Exception ex)
+            {
+                return new PeriodicMedicalExaminationResponse(ex.Message);
             }
         }
 
