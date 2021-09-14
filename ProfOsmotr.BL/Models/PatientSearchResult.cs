@@ -2,7 +2,7 @@
 
 namespace ProfOsmotr.BL.Models
 {
-    public class ProfessionSearchResult : SmartSearchResult<Profession>
+    public class PatientSearchResult : SmartSearchResult<Patient>
     {
     }
 }

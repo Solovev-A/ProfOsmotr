@@ -1,11 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace ProfOsmotr.Web.Models
+﻿namespace ProfOsmotr.Web.Models
 {
-    public class ProfessionSearchResultResource
+    public class ProfessionSearchResultResource : SmartSearchResultResource<ProfessionResource>
     {
-        public IEnumerable<ProfessionResource> Items { get; set; }
-
-        public IEnumerable<ProfessionResource> Suggestions { get; set; }
     }
 }

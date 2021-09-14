@@ -12,6 +12,7 @@ namespace ProfOsmotr.BL.Abstractions
         Task<PatientResponse> CheckPatientAsync(int id);
         Task<PatientResponse> CreatePatient(CreatePatientRequest request);
         Task<PatientResponse> DeletePatientAsync(int id);
+        Task<PatientSearchResultResponse> FindPatientWithSuggestions(FindPatientWithSuggestionsRequest request);
         Task<PatientResponse> GetPatientAsync(int id);
         Task<QueryResponse<Patient>> ListActualPatientsAsync(int clinicId);
         Task<QueryResponse<Patient>> ListPatientsAsync(ListPatientsRequest request);

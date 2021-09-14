@@ -54,7 +54,7 @@ class PatientEditorStore extends BaseFormStore {
             return;
         }
         const data = await patientApiService.getEntity(this.patientId);
-        if (!cancellationToken.isCancelled) {
+        if (!cancellationToken || !cancellationToken.isCancelled) {
             if (data.success === false) throw data.message
 
             data.dateOfBirth = formatDateStringForDateInput(data.dateOfBirth);

@@ -10,6 +10,7 @@ import EmployerEditorModal from './employerEditorModal';
 import useStore from './../hooks/useStore';
 import EmployerDepartmentEditorModal from './employerDepartmentEditorModal';
 import ProfessionEditorModal from './professionEditorModal';
+import { ControlRow, ActionsContainer } from './forms/general/grid';
 
 
 const WorkPlaceEditorForm = observer(({ editorStore, canChangeEmployer = true }) => {
@@ -45,9 +46,11 @@ const WorkPlaceEditorForm = observer(({ editorStore, canChangeEmployer = true })
                         disabled={!canChangeEmployer}
                     />
                     <ActionsContainer>
-                        <AddBtn onClick={() => openEmployerEditorModal(null)} />
+                        <AddBtn onClick={() => openEmployerEditorModal(null)}
+                            disabled={!canChangeEmployer}
+                        />
                         <EditBtn onClick={() => openEmployerEditorModal(editorStore.employer.id)}
-                            disabled={!editorStore.employer}
+                            disabled={!editorStore.employer || !canChangeEmployer}
                         />
                     </ActionsContainer>
                 </ControlRow>
@@ -93,18 +96,5 @@ const WorkPlaceEditorForm = observer(({ editorStore, canChangeEmployer = true })
         </>
     )
 })
-
-const ControlRow = styled.div`
-display: flex;
-`
-
-const ActionsContainer = styled.div`
-margin-left: 3px;
-display: grid;
-grid-template-columns: repeat(2, 1fr);
-grid-column-gap: 2px;
-max-height: calc(1.5em + .75rem + 2px);
-align-self: center;
-`
 
 export default WorkPlaceEditorForm;

@@ -13,6 +13,7 @@ import ReportData from './components/reportData';
 import ContingentList from './components/contingentList';
 import ReportDataEditorModal from './components/reportDataEditorModal';
 import EmployerDataEditorModal from './components/employerDataEditorModal';
+import CreateContingentCheckupStatusModal from './components/createContingentCheckupStatusModal';
 
 
 const PeriodicExaminationPage = observer((props) => {
@@ -39,7 +40,7 @@ const PeriodicExaminationPage = observer((props) => {
 
 
     const onAddCheckupStatusClick = () => {
-
+        periodicExaminationsStore.createContingentCheckupStatusModal.open();
     }
 
     const onEmployerDataEditClick = () => {
@@ -61,6 +62,7 @@ const PeriodicExaminationPage = observer((props) => {
             <ContingentList examination={examination} onAddClick={onAddCheckupStatusClick} />
             <ReportDataEditorModal />
             <EmployerDataEditorModal />
+            <CreateContingentCheckupStatusModal />
         </>
     )
 })

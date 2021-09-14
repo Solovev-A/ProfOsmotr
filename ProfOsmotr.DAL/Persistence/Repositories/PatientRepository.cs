@@ -29,6 +29,16 @@ namespace ProfOsmotr.DAL
                 .FirstOrDefaultAsync(patient => patient.Id == id);
         }
 
+        public async Task<IEnumerable<Patient>> GetSuggestedPatients(string search, int clinicId, int employerId)
+        {
+            return await GetInitialQuery()
+                .Where(patient => patient.ClinicId == clinicId)
+                .Where(GetSearchFilterCondition(search))
+                .Where(patient => patient.ContingentCheckupStatuses
+                                    .Any(status => status.PeriodicMedicalExamination.EmployerId == employerId))
+                .ToListAsync();
+        }
+
         protected override IQueryable<Patient> GetInitialQuery()
         {
             return dbSet.AsNoTracking();

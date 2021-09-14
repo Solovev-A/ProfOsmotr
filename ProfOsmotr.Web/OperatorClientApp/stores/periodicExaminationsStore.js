@@ -19,6 +19,7 @@ class PeriodicExaminationsStore extends BaseExaminationsStore {
         super.resetExamination();
         this.reportDataModal = new ModalStore();
         this.employerDataModal = new ModalStore();
+        this.createContingentCheckupStatusModal = new ModalStore();
     }
 }
 

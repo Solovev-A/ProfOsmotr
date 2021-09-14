@@ -8,6 +8,6 @@ namespace ProfOsmotr.Web.Models
         public int Page { get; set; } = 1;
 
         [Range(1, 100)]
-        public int ItemsPerPage { get; set; } = 10;
+        public int ItemsPerPage { get; set; } = 20;
     }
 }

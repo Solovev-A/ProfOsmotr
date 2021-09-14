@@ -8,7 +8,7 @@ import Spinner from './spinner';
 import useErrorHandler from '../hooks/useErrorHandler';
 
 const EditorModal = ({ modalStore, editorStore, children, title,
-    reloadOnSubmit = true, onSubmitted, ...props }) => {
+    reloadOnSubmit = true, reloadOnExited = false, onSubmitted, ...props }) => {
     const history = useHistory();
     const errorHandler = useErrorHandler();
 
@@ -48,7 +48,7 @@ const EditorModal = ({ modalStore, editorStore, children, title,
             onExited();
         }
 
-        if (isSubmitted && reloadOnSubmit) {
+        if (isSubmitted && reloadOnSubmit || reloadOnExited) {
             // перезагрузка страницы
             // именно в этом обработчике: replace без таймаута не работает
             setTimeout(() => {

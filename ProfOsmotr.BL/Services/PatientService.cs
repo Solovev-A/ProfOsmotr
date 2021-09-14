@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using ProfOsmotr.BL.Abstractions;
+using ProfOsmotr.BL.Infrastructure;
+using ProfOsmotr.BL.Models;
 using ProfOsmotr.DAL;
 using ProfOsmotr.DAL.Abstractions;
 using System;
@@ -149,6 +151,31 @@ namespace ProfOsmotr.BL
             catch (Exception ex)
             {
                 return new PatientResponse(ex.Message);
+            }
+        }
+
+        public async Task<PatientSearchResultResponse> FindPatientWithSuggestions(FindPatientWithSuggestionsRequest request)
+        {
+            try
+            {
+                var itemsResult = await uow.Patients.ExecuteQuery(search: request.Search,
+                                                                  length: 20,
+                                                                  customFilter: patient => patient.ClinicId == request.ClinicId);
+
+                var suggestions = await uow.Patients.GetSuggestedPatients(request.Search, request.ClinicId, request.EmployerId);
+                var items = itemsResult.Items.Except(suggestions, new PatientByIdEqualityComparer());
+
+                var result = new PatientSearchResult()
+                {
+                    Items = items,
+                    Suggestions = suggestions
+                };
+
+                return new PatientSearchResultResponse(result);
+            }
+            catch (Exception ex)
+            {
+                return new PatientSearchResultResponse(ex.Message);
             }
         }
     }

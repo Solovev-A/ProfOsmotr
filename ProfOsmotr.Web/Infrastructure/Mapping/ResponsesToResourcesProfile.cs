@@ -189,6 +189,8 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
                 .ForMember(d => d.OrderItems, conf => conf.MapFrom(s => s.Profession.OrderItems.Select(i => i.Key)))
                 .ForMember(d => d.DateOfCompletion, conf => conf.MapFrom(s => ToString(s.DateOfCompletion)))
                 .ForMember(d => d.Result, conf => conf.MapFrom(s => s.CheckupResult));
+
+            CreateMap<PatientSearchResult, PatientSmartSearchResultResource>();
         }
 
         private string GetFullItemKey(OrderItem item)

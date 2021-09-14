@@ -13348,6 +13348,7 @@ const EditorModal = ({
   children,
   title,
   reloadOnSubmit = true,
+  reloadOnExited = false,
   onSubmitted,
   ...props
 }) => {
@@ -13394,7 +13395,7 @@ const EditorModal = ({
       onExited();
     }
 
-    if (isSubmitted && reloadOnSubmit) {
+    if (isSubmitted && reloadOnSubmit || reloadOnExited) {
       // перезагрузка страницы
       // именно в этом обработчике: replace без таймаута не работает
       setTimeout(() => {
@@ -13881,6 +13882,34 @@ const DropdownSelect = ({
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DropdownSelect);
+
+/***/ }),
+
+/***/ "./OperatorClientApp/components/forms/general/grid.js":
+/*!************************************************************!*
+  !*** ./OperatorClientApp/components/forms/general/grid.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ControlRow": () => /* binding */ ControlRow,
+/* harmony export */   "ActionsContainer": () => /* binding */ ActionsContainer
+/* harmony export */ });
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+
+const ControlRow = styled_components__WEBPACK_IMPORTED_MODULE_0__.default.div`
+display: flex;
+`;
+const ActionsContainer = styled_components__WEBPACK_IMPORTED_MODULE_0__.default.div`
+margin-left: 3px;
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+grid-column-gap: 2px;
+max-height: calc(1.5em + .75rem + 2px);
+align-self: center;
+`;
 
 /***/ }),
 
@@ -14456,6 +14485,69 @@ const Pagination = ({
 
 /***/ }),
 
+/***/ "./OperatorClientApp/components/patientAutocomplete.js":
+/*!*************************************************************!*
+  !*** ./OperatorClientApp/components/patientAutocomplete.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
+/* harmony import */ var react_dropdown_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dropdown-components */ "./node_modules/react-dropdown-components/dist/components/index.js");
+/* harmony import */ var _components_suggestionsMark__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../components/suggestionsMark */ "./OperatorClientApp/components/suggestionsMark.js");
+
+
+
+
+const PatientAutocomplete = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.observer)(({
+  value,
+  onChange,
+  patientListStore,
+  disabled = false
+}) => {
+  const {
+    items,
+    onSearch,
+    inProgress,
+    reset
+  } = patientListStore;
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    return () => {
+      reset();
+    };
+  }, []);
+
+  const renderOption = (patient, showMark = true) => {
+    const mark = patient.isSuggested && showMark ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_suggestionsMark__WEBPACK_IMPORTED_MODULE_3__.default, null) : null;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      style: {
+        display: 'flex',
+        alignItems: 'center'
+      }
+    }, mark, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, patient.lastName, " ", patient.firstName, " ", patient.patronymicName, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), patient.dateOfBirth));
+  };
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_dropdown_components__WEBPACK_IMPORTED_MODULE_2__.Autocomplete, {
+    options: items,
+    value: value,
+    onChange: onChange,
+    onSearchChange: onSearch,
+    isLoading: inProgress,
+    renderOptionText: renderOption,
+    renderValueText: patient => renderOption(patient, false),
+    disabled: disabled,
+    placeholder: "\u041F\u043E\u0438\u0441\u043A \u043F\u043E \u0444\u0438\u043E"
+  });
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PatientAutocomplete);
+
+/***/ }),
+
 /***/ "./OperatorClientApp/components/patientEditor.js":
 /*!*******************************************************!*
   !*** ./OperatorClientApp/components/patientEditor.js ***!
@@ -14545,6 +14637,56 @@ const PatientEditor = props => {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_4__.observer)(PatientEditor));
+
+/***/ }),
+
+/***/ "./OperatorClientApp/components/patientEditorModal.js":
+/*!************************************************************!*
+  !*** ./OperatorClientApp/components/patientEditorModal.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _hooks_useStore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../hooks/useStore */ "./OperatorClientApp/hooks/useStore.js");
+/* harmony import */ var _editorModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./editorModal */ "./OperatorClientApp/components/editorModal.js");
+/* harmony import */ var _patientEditor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./patientEditor */ "./OperatorClientApp/components/patientEditor.js");
+
+
+
+
+
+const PatientEditorModal = props => {
+  const {
+    patientEditorStore,
+    contingentCheckupStatusCreatorStore
+  } = (0,_hooks_useStore__WEBPACK_IMPORTED_MODULE_1__.default)();
+
+  const onSubmitted = response => {
+    const patient = response.success === true // для реузультата редактирования
+    ? { ...patientEditorStore.data,
+      id: patientEditorStore.patientId
+    } // для результата создания
+    : response;
+    contingentCheckupStatusCreatorStore.setPatient(patient);
+  };
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_editorModal__WEBPACK_IMPORTED_MODULE_2__.default, {
+    title: "\u041F\u0430\u0446\u0438\u0435\u043D\u0442",
+    modalStore: contingentCheckupStatusCreatorStore.patientEditorModal,
+    editorStore: patientEditorStore,
+    onSubmitted: onSubmitted,
+    reloadOnSubmit: false,
+    backdropClassName: "z-index-1050",
+    size: "xl"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_patientEditor__WEBPACK_IMPORTED_MODULE_3__.default, null));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PatientEditorModal);
 
 /***/ }),
 
@@ -14846,7 +14988,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
-/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 /* harmony import */ var _employerAutocomplete__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./employerAutocomplete */ "./OperatorClientApp/components/employerAutocomplete.js");
 /* harmony import */ var _departmentAutocomplete__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./departmentAutocomplete */ "./OperatorClientApp/components/departmentAutocomplete.js");
 /* harmony import */ var _professionAutocomplete__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./professionAutocomplete */ "./OperatorClientApp/components/professionAutocomplete.js");
@@ -14855,6 +14996,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _hooks_useStore__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./../hooks/useStore */ "./OperatorClientApp/hooks/useStore.js");
 /* harmony import */ var _employerDepartmentEditorModal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./employerDepartmentEditorModal */ "./OperatorClientApp/components/employerDepartmentEditorModal.js");
 /* harmony import */ var _professionEditorModal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./professionEditorModal */ "./OperatorClientApp/components/professionEditorModal.js");
+/* harmony import */ var _forms_general_grid__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./forms/general/grid */ "./OperatorClientApp/components/forms/general/grid.js");
+
 
 
 
@@ -14897,23 +15040,24 @@ const WorkPlaceEditorForm = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.obse
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "form-group"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "\u041E\u0440\u0433\u0430\u043D\u0438\u0437\u0430\u0446\u0438\u044F"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ControlRow, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_employerAutocomplete__WEBPACK_IMPORTED_MODULE_2__.default, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "\u041E\u0440\u0433\u0430\u043D\u0438\u0437\u0430\u0446\u0438\u044F"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_forms_general_grid__WEBPACK_IMPORTED_MODULE_10__.ControlRow, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_employerAutocomplete__WEBPACK_IMPORTED_MODULE_2__.default, {
     value: editorStore.employer,
     onChange: editorStore.setEmployer,
     disabled: !canChangeEmployer
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ActionsContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_buttons__WEBPACK_IMPORTED_MODULE_5__.AddBtn, {
-    onClick: () => openEmployerEditorModal(null)
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_forms_general_grid__WEBPACK_IMPORTED_MODULE_10__.ActionsContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_buttons__WEBPACK_IMPORTED_MODULE_5__.AddBtn, {
+    onClick: () => openEmployerEditorModal(null),
+    disabled: !canChangeEmployer
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_buttons__WEBPACK_IMPORTED_MODULE_5__.EditBtn, {
     onClick: () => openEmployerEditorModal(editorStore.employer.id),
-    disabled: !editorStore.employer
+    disabled: !editorStore.employer || !canChangeEmployer
   })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "form-group"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "\u0421\u0442\u0440\u0443\u043A\u0442\u0443\u0440\u043D\u043E\u0435 \u043F\u043E\u0434\u0440\u0430\u0437\u0434\u0435\u043B\u0435\u043D\u0438\u0435"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ControlRow, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_departmentAutocomplete__WEBPACK_IMPORTED_MODULE_3__.default, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "\u0421\u0442\u0440\u0443\u043A\u0442\u0443\u0440\u043D\u043E\u0435 \u043F\u043E\u0434\u0440\u0430\u0437\u0434\u0435\u043B\u0435\u043D\u0438\u0435"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_forms_general_grid__WEBPACK_IMPORTED_MODULE_10__.ControlRow, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_departmentAutocomplete__WEBPACK_IMPORTED_MODULE_3__.default, {
     value: editorStore.employerDepartment,
     onChange: editorStore.setEmployerDepartment,
     hasEmployer: !!editorStore.employer,
     departmentsListStore: editorStore.employerDepartmentsList
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ActionsContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_buttons__WEBPACK_IMPORTED_MODULE_5__.AddBtn, {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_forms_general_grid__WEBPACK_IMPORTED_MODULE_10__.ActionsContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_buttons__WEBPACK_IMPORTED_MODULE_5__.AddBtn, {
     onClick: () => openEmployerDepartmentEditorModal(null),
     disabled: !editorStore.employer
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_buttons__WEBPACK_IMPORTED_MODULE_5__.EditBtn, {
@@ -14921,11 +15065,11 @@ const WorkPlaceEditorForm = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.obse
     disabled: !editorStore.employerDepartment
   })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "form-group"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "\u041F\u0440\u043E\u0444\u0435\u0441\u0441\u0438\u044F"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ControlRow, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_professionAutocomplete__WEBPACK_IMPORTED_MODULE_4__.default, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "\u041F\u0440\u043E\u0444\u0435\u0441\u0441\u0438\u044F"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_forms_general_grid__WEBPACK_IMPORTED_MODULE_10__.ControlRow, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_professionAutocomplete__WEBPACK_IMPORTED_MODULE_4__.default, {
     value: editorStore.profession,
     onChange: editorStore.setProfession,
     professionListStore: editorStore.professionList
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ActionsContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_buttons__WEBPACK_IMPORTED_MODULE_5__.AddBtn, {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_forms_general_grid__WEBPACK_IMPORTED_MODULE_10__.ActionsContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_buttons__WEBPACK_IMPORTED_MODULE_5__.AddBtn, {
     onClick: () => openProfessionEditorModal(null)
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_buttons__WEBPACK_IMPORTED_MODULE_5__.CloneBtn, {
     onClick: () => openProfessionEditorModal(editorStore.profession),
@@ -14938,17 +15082,6 @@ const WorkPlaceEditorForm = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.obse
     workPlaceEditorStore: editorStore
   }));
 });
-const ControlRow = styled_components__WEBPACK_IMPORTED_MODULE_10__.default.div`
-display: flex;
-`;
-const ActionsContainer = styled_components__WEBPACK_IMPORTED_MODULE_10__.default.div`
-margin-left: 3px;
-display: grid;
-grid-template-columns: repeat(2, 1fr);
-grid-column-gap: 2px;
-max-height: calc(1.5em + .75rem + 2px);
-align-self: center;
-`;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (WorkPlaceEditorForm);
 
 /***/ }),
@@ -16107,6 +16240,79 @@ const TitleView = ({
 
 /***/ }),
 
+/***/ "./OperatorClientApp/pages/periodicExamination/components/createContingentCheckupStatusModal.js":
+/*!******************************************************************************************************!*
+  !*** ./OperatorClientApp/pages/periodicExamination/components/createContingentCheckupStatusModal.js ***!
+  \******************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
+/* harmony import */ var _components_editorModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../components/editorModal */ "./OperatorClientApp/components/editorModal.js");
+/* harmony import */ var _components_workPlaceEditorForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../components/workPlaceEditorForm */ "./OperatorClientApp/components/workPlaceEditorForm.js");
+/* harmony import */ var _components_patientAutocomplete__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../components/patientAutocomplete */ "./OperatorClientApp/components/patientAutocomplete.js");
+/* harmony import */ var _hooks_useStore__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../hooks/useStore */ "./OperatorClientApp/hooks/useStore.js");
+/* harmony import */ var _components_buttons__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../components/buttons */ "./OperatorClientApp/components/buttons.js");
+/* harmony import */ var _components_forms_general_grid__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../components/forms/general/grid */ "./OperatorClientApp/components/forms/general/grid.js");
+/* harmony import */ var _components_patientEditorModal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../components/patientEditorModal */ "./OperatorClientApp/components/patientEditorModal.js");
+
+
+
+
+
+
+
+
+
+const CreateContingentCheckupStatusModal = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.observer)(props => {
+  const {
+    contingentCheckupStatusCreatorStore,
+    periodicExaminationsStore,
+    patientEditorStore
+  } = (0,_hooks_useStore__WEBPACK_IMPORTED_MODULE_5__.default)();
+  const {
+    patient,
+    patientAutocompleteStore,
+    setPatient,
+    workPlace,
+    patientEditorModal
+  } = contingentCheckupStatusCreatorStore;
+
+  const openPatientEditorModal = patientId => {
+    patientEditorStore.setPatientId(patientId);
+    patientEditorModal.open();
+  };
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_editorModal__WEBPACK_IMPORTED_MODULE_2__.default, {
+    title: "\u0414\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u0438\u0435 \u0440\u0430\u0431\u043E\u0442\u043D\u0438\u043A\u0430 \u0432 \u0441\u043F\u0438\u0441\u043E\u043A",
+    editorStore: contingentCheckupStatusCreatorStore,
+    modalStore: periodicExaminationsStore.createContingentCheckupStatusModal,
+    scrollable: false
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "\u0420\u0430\u0431\u043E\u0442\u043D\u0438\u043A"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_general_grid__WEBPACK_IMPORTED_MODULE_7__.ControlRow, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_patientAutocomplete__WEBPACK_IMPORTED_MODULE_4__.default, {
+    value: patient,
+    onChange: setPatient,
+    patientListStore: patientAutocompleteStore
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_general_grid__WEBPACK_IMPORTED_MODULE_7__.ActionsContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_buttons__WEBPACK_IMPORTED_MODULE_6__.AddBtn, {
+    onClick: () => openPatientEditorModal(null)
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_buttons__WEBPACK_IMPORTED_MODULE_6__.EditBtn, {
+    onClick: () => openPatientEditorModal(patient.id),
+    disabled: !patient
+  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_workPlaceEditorForm__WEBPACK_IMPORTED_MODULE_3__.default, {
+    editorStore: workPlace,
+    canChangeEmployer: false
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_patientEditorModal__WEBPACK_IMPORTED_MODULE_8__.default, null));
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CreateContingentCheckupStatusModal);
+
+/***/ }),
+
 /***/ "./OperatorClientApp/pages/periodicExamination/components/dataRow.js":
 /*!***************************************************************************!*
   !*** ./OperatorClientApp/pages/periodicExamination/components/dataRow.js ***!
@@ -16522,6 +16728,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_contingentList__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/contingentList */ "./OperatorClientApp/pages/periodicExamination/components/contingentList.js");
 /* harmony import */ var _components_reportDataEditorModal__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/reportDataEditorModal */ "./OperatorClientApp/pages/periodicExamination/components/reportDataEditorModal.js");
 /* harmony import */ var _components_employerDataEditorModal__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/employerDataEditorModal */ "./OperatorClientApp/pages/periodicExamination/components/employerDataEditorModal.js");
+/* harmony import */ var _components_createContingentCheckupStatusModal__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/createContingentCheckupStatusModal */ "./OperatorClientApp/pages/periodicExamination/components/createContingentCheckupStatusModal.js");
+
 
 
 
@@ -16557,7 +16765,9 @@ const PeriodicExaminationPage = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.
   } = periodicExaminationsStore;
   if (isExaminationLoading) return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_spinner__WEBPACK_IMPORTED_MODULE_6__.default, null);
 
-  const onAddCheckupStatusClick = () => {};
+  const onAddCheckupStatusClick = () => {
+    periodicExaminationsStore.createContingentCheckupStatusModal.open();
+  };
 
   const onEmployerDataEditClick = () => {
     periodicExaminationsStore.employerDataModal.open();
@@ -16580,7 +16790,7 @@ const PeriodicExaminationPage = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_contingentList__WEBPACK_IMPORTED_MODULE_11__.default, {
     examination: examination,
     onAddClick: onAddCheckupStatusClick
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_reportDataEditorModal__WEBPACK_IMPORTED_MODULE_12__.default, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_employerDataEditorModal__WEBPACK_IMPORTED_MODULE_13__.default, null));
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_reportDataEditorModal__WEBPACK_IMPORTED_MODULE_12__.default, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_employerDataEditorModal__WEBPACK_IMPORTED_MODULE_13__.default, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_createContingentCheckupStatusModal__WEBPACK_IMPORTED_MODULE_14__.default, null));
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PeriodicExaminationPage);
 
@@ -17495,6 +17705,15 @@ class PatientApiService extends _apiServiceBase__WEBPACK_IMPORTED_MODULE_1__.def
     _defineProperty(this, "listActualPatients", () => {
       return _api__WEBPACK_IMPORTED_MODULE_0__.default.get(`${this.baseUrl}/actual`);
     });
+
+    _defineProperty(this, "findWithSuggestions", (search, employerId) => {
+      return _api__WEBPACK_IMPORTED_MODULE_0__.default.get(`${this.baseUrl}`, {
+        params: {
+          search,
+          employerId
+        }
+      });
+    });
   }
 
 }
@@ -17527,6 +17746,10 @@ class PeriodicExaminationsApiService extends _apiServiceBase__WEBPACK_IMPORTED_M
 
     _defineProperty(this, "listActualExaminations", () => {
       return _api__WEBPACK_IMPORTED_MODULE_0__.default.get(`${this.baseUrl}/actual`);
+    });
+
+    _defineProperty(this, "createCheckupStatus", (examinationId, data) => {
+      return _api__WEBPACK_IMPORTED_MODULE_0__.default.post(`${this.baseUrl}/${examinationId}/checkup-statuses`, data);
     });
   }
 
@@ -18262,6 +18485,120 @@ class CheckupResultsStore {
 
 /***/ }),
 
+/***/ "./OperatorClientApp/stores/contingentCheckupStatusCreatorStore.js":
+/*!*************************************************************************!*
+  !*** ./OperatorClientApp/stores/contingentCheckupStatusCreatorStore.js ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var mobx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! mobx */ "./node_modules/mobx/dist/mobx.esm.js");
+/* harmony import */ var _workplaceEditorStore__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./workplaceEditorStore */ "./OperatorClientApp/stores/workplaceEditorStore.js");
+/* harmony import */ var _patientAutocompleteStore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./patientAutocompleteStore */ "./OperatorClientApp/stores/patientAutocompleteStore.js");
+/* harmony import */ var _utils_toasts__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/toasts */ "./OperatorClientApp/utils/toasts.js");
+/* harmony import */ var _services_periodicExaminationsApiService__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/periodicExaminationsApiService */ "./OperatorClientApp/services/periodicExaminationsApiService.js");
+/* harmony import */ var _modalStore__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modalStore */ "./OperatorClientApp/stores/modalStore.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+
+ // для createContingentCheckupStatusModal
+
+class ContingentCheckupStatusCreatorStore {
+  constructor(rootStore) {
+    _defineProperty(this, "patient", null);
+
+    _defineProperty(this, "setPatient", newPatient => {
+      this.patient = newPatient;
+    });
+
+    _defineProperty(this, "loadInitialValues", async () => {
+      const employer = this.rootStore.periodicExaminationsStore.examination.employer;
+      this.workPlace.setEmployer(employer);
+      this.workPlace.isLoading = false;
+    });
+
+    _defineProperty(this, "clear", () => {
+      this.patient = null;
+      this.workPlace.clear();
+      this.workPlace.resetEditorView();
+      this.patientEditorModal = new _modalStore__WEBPACK_IMPORTED_MODULE_4__.default();
+    });
+
+    _defineProperty(this, "onSubmit", async () => {
+      if (!this.patient) {
+        (0,_utils_toasts__WEBPACK_IMPORTED_MODULE_2__.errorToast)('Выберите работника');
+        return {
+          success: false
+        };
+      }
+
+      const examinationId = this.rootStore.periodicExaminationsStore.examinationSlug;
+      const data = {
+        patientId: this.patient.id
+      };
+
+      if (this.workPlace.employerDepartment) {
+        data.employerDepartmentId = this.workPlace.employerDepartment.id;
+      }
+
+      if (this.workPlace.profession) {
+        data.professionId = this.workPlace.profession.id;
+      }
+
+      const handler = () => _services_periodicExaminationsApiService__WEBPACK_IMPORTED_MODULE_3__.default.createCheckupStatus(examinationId, data);
+
+      const response = await this.workPlace.onSendingData(handler);
+
+      if (response.success !== false) {
+        (0,mobx__WEBPACK_IMPORTED_MODULE_5__.runInAction)(() => {
+          this.patient = null;
+          this.workPlace.clear();
+          this.workPlace.employerDepartment = null;
+          this.workPlace.profession = null;
+        });
+      }
+
+      if (!response) return;
+      return (0,_utils_toasts__WEBPACK_IMPORTED_MODULE_2__.handleResponseWithToasts)(response, true);
+    });
+
+    this.rootStore = rootStore;
+
+    const getEmployerId = () => {
+      return this.rootStore.periodicExaminationsStore.examination.employer.id;
+    };
+
+    this.workPlace = new _workplaceEditorStore__WEBPACK_IMPORTED_MODULE_0__.default();
+    this.patientAutocompleteStore = new _patientAutocompleteStore__WEBPACK_IMPORTED_MODULE_1__.default({
+      getEmployerId
+    });
+    this.patientEditorModal = new _modalStore__WEBPACK_IMPORTED_MODULE_4__.default();
+    (0,mobx__WEBPACK_IMPORTED_MODULE_5__.makeAutoObservable)(this);
+  }
+
+  get isProcessing() {
+    return this.workPlace.isProcessing;
+  }
+
+  get isLoading() {
+    return this.workPlace.isLoading;
+  }
+
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ContingentCheckupStatusCreatorStore);
+
+/***/ }),
+
 /***/ "./OperatorClientApp/stores/employerDataEditorStore.js":
 /*!*************************************************************!*
   !*** ./OperatorClientApp/stores/employerDataEditorStore.js ***!
@@ -18673,6 +19010,53 @@ class OrderStore {
 
 /***/ }),
 
+/***/ "./OperatorClientApp/stores/patientAutocompleteStore.js":
+/*!**************************************************************!*
+  !*** ./OperatorClientApp/stores/patientAutocompleteStore.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var _baseListStore__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./baseListStore */ "./OperatorClientApp/stores/baseListStore.js");
+/* harmony import */ var _services_patientApiService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../services/patientApiService */ "./OperatorClientApp/services/patientApiService.js");
+
+
+/*
+config:
+    getEmployerId : function 
+*/
+
+class PatientAutocompleteStore extends _baseListStore__WEBPACK_IMPORTED_MODULE_0__.default {
+  constructor(config) {
+    super({
+      toastOnNotFound: false
+    });
+    this.config = config;
+  }
+
+  async _getSearchResultsResponse() {
+    const employerId = this.config?.getEmployerId ? this.config.getEmployerId() : null;
+    let response = await _services_patientApiService__WEBPACK_IMPORTED_MODULE_1__.default.findWithSuggestions(this.searchQuery, employerId);
+
+    if (response && response.success !== false) {
+      return [...response.suggestions.map(item => ({ ...item,
+        isSuggested: true
+      })), ...response.items];
+    }
+
+    return response;
+  }
+
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PatientAutocompleteStore);
+
+/***/ }),
+
 /***/ "./OperatorClientApp/stores/patientEditorStore.js":
 /*!********************************************************!*
   !*** ./OperatorClientApp/stores/patientEditorStore.js ***!
@@ -18739,7 +19123,7 @@ class PatientEditorStore extends _baseFormStore__WEBPACK_IMPORTED_MODULE_0__.def
 
       const data = await _services_patientApiService__WEBPACK_IMPORTED_MODULE_2__.default.getEntity(this.patientId);
 
-      if (!cancellationToken.isCancelled) {
+      if (!cancellationToken || !cancellationToken.isCancelled) {
         if (data.success === false) throw data.message;
         data.dateOfBirth = (0,_utils_formatDate__WEBPACK_IMPORTED_MODULE_4__.formatDateStringForDateInput)(data.dateOfBirth);
         this.setInitialValues(data);
@@ -18965,6 +19349,7 @@ class PeriodicExaminationsStore extends _baseExaminationsStore__WEBPACK_IMPORTED
     super.resetExamination();
     this.reportDataModal = new _modalStore__WEBPACK_IMPORTED_MODULE_2__.default();
     this.employerDataModal = new _modalStore__WEBPACK_IMPORTED_MODULE_2__.default();
+    this.createContingentCheckupStatusModal = new _modalStore__WEBPACK_IMPORTED_MODULE_2__.default();
   }
 
 }
@@ -19388,6 +19773,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _professionEditorStore__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./professionEditorStore */ "./OperatorClientApp/stores/professionEditorStore.js");
 /* harmony import */ var _periodicExaminationsStore__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./periodicExaminationsStore */ "./OperatorClientApp/stores/periodicExaminationsStore.js");
 /* harmony import */ var _periodicExaminationEditorStore__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./periodicExaminationEditorStore */ "./OperatorClientApp/stores/periodicExaminationEditorStore.js");
+/* harmony import */ var _contingentCheckupStatusCreatorStore__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./contingentCheckupStatusCreatorStore */ "./OperatorClientApp/stores/contingentCheckupStatusCreatorStore.js");
+
 
 
 
@@ -19417,6 +19804,7 @@ class RootStore {
     this.professionEditorStore = new _professionEditorStore__WEBPACK_IMPORTED_MODULE_10__.default(this);
     this.periodicExaminationsStore = new _periodicExaminationsStore__WEBPACK_IMPORTED_MODULE_11__.default();
     this.periodicExaminationEditorStore = new _periodicExaminationEditorStore__WEBPACK_IMPORTED_MODULE_12__.default(this);
+    this.contingentCheckupStatusCreatorStore = new _contingentCheckupStatusCreatorStore__WEBPACK_IMPORTED_MODULE_13__.default(this);
   }
 
 }

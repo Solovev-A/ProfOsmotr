@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProfOsmotr.BL;
 using ProfOsmotr.BL.Abstractions;
+using ProfOsmotr.BL.Models;
 using ProfOsmotr.DAL;
 using ProfOsmotr.Web.Infrastructure;
 using ProfOsmotr.Web.Models;
@@ -30,16 +31,28 @@ namespace ProfOsmotr.Web.Api
 
         [HttpGet]
         [ModelStateValidationFilter]
-        public async Task<IActionResult> Get([FromQuery] SearchPaginationQuery query)
+        public async Task<IActionResult> Get([FromQuery] SearchPatientQuery query)
         {
             if (!accessService.TryGetUserClinicId(out int clinicId))
                 return Forbid();
 
-            var request = mapper.Map<ListPatientsRequest>(query);
-            request.ClinicId = clinicId;
+            if (query.EmployerId.HasValue)
+            {
+                var request = mapper.Map<FindPatientWithSuggestionsRequest>(query);
+                request.ClinicId = clinicId;
 
-            return await queryHandler.HandleQuery<QueryResult<Patient>, PagedResource<PatientsListItemResource>>(
-                async () => await patientService.ListPatientsAsync(request));
+                return await queryHandler.HandleQuery<PatientSearchResult, PatientSmartSearchResultResource>(
+                    async () => await patientService.FindPatientWithSuggestions(request),
+                    async () => await accessService.CanAccessEmployerAsync(request.EmployerId));
+            }
+            else
+            {
+                var request = mapper.Map<ListPatientsRequest>(query);
+                request.ClinicId = clinicId;
+
+                return await queryHandler.HandleQuery<QueryResult<Patient>, PagedResource<PatientsListItemResource>>(
+                    async () => await patientService.ListPatientsAsync(request));
+            }
         }
 
         [HttpGet("actual")]

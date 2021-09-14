@@ -11,6 +11,7 @@ import EmployerDepartmentEditorStore from './employerDepartmentEditorStore';
 import ProfessionEditorStore from './professionEditorStore';
 import PeriodicExaminationsStore from './periodicExaminationsStore';
 import PeriodicExaminationEditorStore from './periodicExaminationEditorStore';
+import ContingentCheckupStatusCreatorStore from './contingentCheckupStatusCreatorStore';
 
 class RootStore {
     constructor() {
@@ -27,6 +28,7 @@ class RootStore {
         this.professionEditorStore = new ProfessionEditorStore(this);
         this.periodicExaminationsStore = new PeriodicExaminationsStore();
         this.periodicExaminationEditorStore = new PeriodicExaminationEditorStore(this);
+        this.contingentCheckupStatusCreatorStore = new ContingentCheckupStatusCreatorStore(this);
     }
 }
 

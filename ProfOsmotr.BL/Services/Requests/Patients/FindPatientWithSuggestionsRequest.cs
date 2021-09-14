@@ -1,13 +1,11 @@
 ﻿namespace ProfOsmotr.BL
 {
-    public class ListPatientsRequest
+    public class FindPatientWithSuggestionsRequest
     {
         public int ClinicId { get; set; }
 
-        public int Page { get; set; }
-
-        public int ItemsPerPage { get; set; }
-
         public string Search { get; set; }
+
+        public int EmployerId { get; set; }
     }
 }

@@ -9,6 +9,10 @@ class PeriodicExaminationsApiService extends ApiServiceBase {
     listActualExaminations = () => {
         return api.get(`${this.baseUrl}/actual`);
     }
+
+    createCheckupStatus = (examinationId, data) => {
+        return api.post(`${this.baseUrl}/${examinationId}/checkup-statuses`, data);
+    }
 }
 
 export default new PeriodicExaminationsApiService();
