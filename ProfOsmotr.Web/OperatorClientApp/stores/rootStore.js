@@ -12,6 +12,9 @@ import ProfessionEditorStore from './professionEditorStore';
 import PeriodicExaminationsStore from './periodicExaminationsStore';
 import PeriodicExaminationEditorStore from './periodicExaminationEditorStore';
 import ContingentCheckupStatusCreatorStore from './contingentCheckupStatusCreatorStore';
+import ContingentCheckupStatusStore from './contingentCheckupStatusStore';
+import ContingentCheckupStatusEditorStore from './contingentCheckupStatusEditorStore';
+import ICD10Store from './icd10Store';
 
 class RootStore {
     constructor() {
@@ -29,6 +32,9 @@ class RootStore {
         this.periodicExaminationsStore = new PeriodicExaminationsStore();
         this.periodicExaminationEditorStore = new PeriodicExaminationEditorStore(this);
         this.contingentCheckupStatusCreatorStore = new ContingentCheckupStatusCreatorStore(this);
+        this.contingentCheckupStatusStore = new ContingentCheckupStatusStore();
+        this.contingentCheckupStatusEditorStore = new ContingentCheckupStatusEditorStore(this);
+        this.icd10Store = new ICD10Store();
     }
 }
 

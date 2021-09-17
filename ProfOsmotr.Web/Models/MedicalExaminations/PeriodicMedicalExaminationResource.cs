@@ -18,6 +18,6 @@ namespace ProfOsmotr.Web.Models
 
         public string Recommendations { get; set; }
 
-        public ExaminationEditorResource LastEditor { get; set; }
+        public EditorResource LastEditor { get; set; }
     }
 }

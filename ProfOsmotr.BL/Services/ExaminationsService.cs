@@ -375,6 +375,27 @@ namespace ProfOsmotr.BL
             }
         }
 
+        public async Task<ContingentCheckupStatusResponse> GetContingentCheckupStatus(int id)
+        {
+            var checkupStatus = await uow.PeriodicMedicalExaminations.FindCheckupStatus(id, true);
+
+            if (checkupStatus is null)
+            {
+                return new ContingentCheckupStatusResponse("Запись медосмотра не найдена");
+            }
+
+            return new ContingentCheckupStatusResponse(checkupStatus);
+        }
+
+        public async Task<int> GetContingentCheckupStatusClinicIdAsync(int checkupStatusId)
+        {
+            var clinicId = await uow.PeriodicMedicalExaminations.GetCheckupStatusClinicIdAsync(checkupStatusId);
+
+            return clinicId;
+        }
+
+        #region Protected methods
+
         protected async Task<ServiceActionResult> UpdateLastEditor(MedicalExamination examination, int editorId)
         {
             var editorResponse = await userService.GetUser(editorId);
@@ -492,5 +513,7 @@ namespace ProfOsmotr.BL
             }
             return new ServiceActionResult();
         }
+
+        #endregion
     }
 }

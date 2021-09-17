@@ -2,8 +2,8 @@ import { makeObservable, action } from 'mobx';
 
 import BaseFormStore from './baseFormStore';
 import { handleResponseWithToasts } from '../utils/toasts';
-import { requiredString } from './../utils/validation';
-import { formatDateStringForDateInput } from './../utils/formatDate';
+import { requiredString } from '../utils/validation';
+import { formatDateStringForDateInput } from '../utils/formatDate';
 
 
 const medicalReportTemplate = {
@@ -24,10 +24,10 @@ const validation = {
     }
 }
 
-class PreliminaryExaminationMedicalReportEditorStore extends BaseFormStore {
-    constructor(examinationEditorStore) {
+class CheckupStatusMedicalReportEditorStore extends BaseFormStore {
+    constructor(checkupStatusEditorStore) {
         super(medicalReportTemplate, validation);
-        this.examinationEditorStore = examinationEditorStore;
+        this.checkupStatusEditorStore = checkupStatusEditorStore;
 
         makeObservable(this, {
             loadInitialValues: action,
@@ -36,18 +36,18 @@ class PreliminaryExaminationMedicalReportEditorStore extends BaseFormStore {
     }
 
     loadInitialValues = async () => {
-        const examination = await this.examinationEditorStore.loadExamination();
+        const checkup = await this.checkupStatusEditorStore.loadCheckupStatus();
 
         this.setInitialValues({
-            checkupResultId: examination.result?.id ?? 'empty',
-            medicalReport: examination.medicalReport ?? '',
-            dateOfComplition: formatDateStringForDateInput(examination.dateOfComplition),
-            registrationJournalEntryNumber: examination.registrationJournalEntryNumber ?? ''
+            checkupResultId: checkup.result?.id ?? 'empty',
+            medicalReport: checkup.medicalReport ?? '',
+            dateOfComplition: formatDateStringForDateInput(checkup.dateOfComplition),
+            registrationJournalEntryNumber: checkup.registrationJournalEntryNumber ?? ''
         })
     }
 
     onSubmit = async () => {
-        const handler = () => this.examinationEditorStore.onUpdate(this.patchedData);
+        const handler = () => this.checkupStatusEditorStore.onUpdate(this.patchedData);
         const response = await this.onSendingData(handler);
 
         if (!response) return;
@@ -56,4 +56,4 @@ class PreliminaryExaminationMedicalReportEditorStore extends BaseFormStore {
     }
 }
 
-export default PreliminaryExaminationMedicalReportEditorStore;
+export default CheckupStatusMedicalReportEditorStore;

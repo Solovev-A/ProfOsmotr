@@ -1,6 +1,6 @@
 ﻿namespace ProfOsmotr.Web.Models
 {
-    public class ExaminationPatientResource
+    public class CheckupStatusPatientResource
     {
         public int Id { get; private set; }
 

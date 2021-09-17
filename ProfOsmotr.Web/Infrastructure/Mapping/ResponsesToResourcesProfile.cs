@@ -131,16 +131,24 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
                 .ForMember(d => d.IsCompleted, conf => conf.MapFrom(s => s.Completed))
                 .ForMember(d => d.Patient, conf => conf.MapFrom(s => s.CheckupStatus.Patient));
 
+            CreateMap<CheckupStatus, CheckupStatusResource>()
+                .Include<IndividualCheckupStatus, PreliminaryMedicalExaminationResource>()
+                .Include<ContingentCheckupStatus, ContingentCheckupStatusResource>()
+                .ForMember(d => d.DateOfComplition, conf => conf.MapFrom(s => ToString(s.DateOfCompletion)))
+                .ForMember(d => d.MedicalReport, conf => conf.MapFrom(s => s.MedicalReport))
+                .ForMember(d => d.Patient, conf => conf.MapFrom(s => s.Patient))
+                .ForMember(d => d.RegistrationJournalEntryNumber, conf => conf.MapFrom(s => s.RegistrationJournalEntryNumber))
+                .ForMember(d => d.Result, conf => conf.MapFrom(s => s.CheckupResult))
+                .ForPath(d => d.WorkPlace.Profession, conf => conf.MapFrom(s => s.Profession))
+                .ForPath(d => d.WorkPlace.Employer.Department, conf => conf.MapFrom(s => s.EmployerDepartment));
+
+            CreateMap<IndividualCheckupStatus, PreliminaryMedicalExaminationResource>()
+                .ForMember(d => d.Id, conf => conf.Ignore());
+
             CreateMap<PreliminaryMedicalExamination, PreliminaryMedicalExaminationResource>()
+                .IncludeMembers(s => s.CheckupStatus)
                 .ForMember(d => d.CheckupExaminationResultIndexes, conf => conf.MapFrom(s => MapToCheckupExaminationResultIndexResources(s.CheckupStatus.IndividualCheckupIndexValues)))
-                .ForMember(d => d.DateOfComplition, conf => conf.MapFrom(s => ToString(s.CheckupStatus.DateOfCompletion)))
-                .ForMember(d => d.MedicalReport, conf => conf.MapFrom(s => s.CheckupStatus.MedicalReport))
-                .ForMember(d => d.Patient, conf => conf.MapFrom(s => s.CheckupStatus.Patient))
-                .ForMember(d => d.RegistrationJournalEntryNumber, conf => conf.MapFrom(s => s.CheckupStatus.RegistrationJournalEntryNumber))
-                .ForMember(d => d.Result, conf => conf.MapFrom(s => s.CheckupStatus.CheckupResult))
-                .ForPath(d => d.WorkPlace.Profession, conf => conf.MapFrom(s => s.CheckupStatus.Profession))
                 .ForPath(d => d.WorkPlace.Employer, conf => conf.MapFrom(s => s.Employer))
-                .ForPath(d => d.WorkPlace.Employer.Department, conf => conf.MapFrom(s => s.CheckupStatus.EmployerDepartment))
                 .AfterMap((s, d) =>
                 {
                     if (s.Employer is null)
@@ -155,10 +163,10 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
             CreateMap<IndividualCheckupIndexValue, CheckupIndexValueResource>()
                 .ForMember(d => d.Index, conf => conf.MapFrom(s => s.ExaminationResultIndex));
 
-            CreateMap<Patient, ExaminationPatientResource>()
+            CreateMap<Patient, CheckupStatusPatientResource>()
                 .ForMember(d => d.DateOfBirth, conf => conf.MapFrom(s => s.DateOfBirth.ToString(DATE_FORMAT_FOR_DISPLAY)));
 
-            CreateMap<User, ExaminationEditorResource>()
+            CreateMap<User, EditorResource>()
                 .ForMember(d => d.FullName, conf => conf.MapFrom(s => s.UserProfile.Name))
                 .ForMember(d => d.Position, conf => conf.MapFrom(s => s.UserProfile.Position));
 
@@ -191,6 +199,27 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
                 .ForMember(d => d.Result, conf => conf.MapFrom(s => s.CheckupResult));
 
             CreateMap<PatientSearchResult, PatientSmartSearchResultResource>();
+
+            CreateMap<ContingentCheckupStatus, ContingentCheckupStatusResource>()
+                .ForMember(d => d.Examination, conf => conf.MapFrom(d => d.PeriodicMedicalExamination))
+                .ForMember(d => d.CheckupExaminationResultIndexes, conf => conf.MapFrom(s => MapToCheckupExaminationResultIndexResources(s.ContingentCheckupIndexValues)))
+                .ForPath(d => d.WorkPlace.Employer, conf => conf.MapFrom(s => s.PeriodicMedicalExamination.Employer))
+                .AfterMap((s, d) =>
+                {
+                    if (s.PeriodicMedicalExamination.Employer is null)
+                        d.WorkPlace.Employer = null;
+                    // чтобы не оставался объект с id: 0
+                });
+
+            CreateMap<PeriodicMedicalExamination, ContingentCheckupStatusExaminationResource>();
+
+            CreateMap<NewlyDiagnosedChronicSomaticDisease, NewlyDiagnosedDiseaseResource>()
+                .ForMember(d => d.ChapterId, conf => conf.MapFrom(s => s.ICD10ChapterId));
+
+            CreateMap<NewlyDiagnosedOccupationalDisease, NewlyDiagnosedDiseaseResource>()
+                .ForMember(d => d.ChapterId, conf => conf.MapFrom(s => s.ICD10ChapterId));
+
+            CreateMap<ICD10Chapter, ICD10ChapterResource>();
         }
 
         private string GetFullItemKey(OrderItem item)
@@ -204,7 +233,7 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
         }
 
         private IEnumerable<CheckupExaminationResultIndexResource> MapToCheckupExaminationResultIndexResources(
-            IEnumerable<IndividualCheckupIndexValue> values)
+            IEnumerable<CheckupIndexValue> values)
         {
             return values
                 .GroupBy(iv => iv.ExaminationResultIndex.OrderExamination.Name)

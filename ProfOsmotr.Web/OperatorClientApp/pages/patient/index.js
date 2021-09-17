@@ -1,33 +1,24 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 
 import useStore from './../../hooks/useStore';
-import CancellationToken from './../../utils/cancellationToken';
 import Spinner from '../../components/spinner';
 import routes from './../../routes';
 import PatientInfo from './components/patientInfo';
 import PatientActions from './components/patientActions';
 import PatientExamiantions from './components/patientExaminations';
-import useErrorHandler from './../../hooks/useErrorHandler';
 import preliminaryExaminationsApiService from './../../services/preliminaryExaminationsApiService';
+import usePageId from './../../hooks/usePageId';
 
 const PatientPage = (props) => {
     const patientId = props.match.params.id;
     const { patientStore } = useStore();
-    const errorHandler = useErrorHandler();
 
-    useEffect(() => {
-        patientStore.setPatientId(patientId);
-
-        const cancellationToken = new CancellationToken();
-        patientStore.loadPatient(cancellationToken)
-            .catch(errorHandler);
-
-        return () => {
-            cancellationToken.cancel();
-            patientStore.reset();
-        }
-    }, [patientId]);
+    usePageId({
+        slugSetter: patientStore.setPatientId,
+        loader: patientStore.loadPatient,
+        onReset: patientStore.reset
+    });
 
     const onAddPreliminaryExamination = async () => {
         const response = await preliminaryExaminationsApiService.createEntity({ patientId });

@@ -6,7 +6,7 @@ namespace ProfOsmotr.Web.Models
     {
         public int Id { get; set; }
 
-        public ExaminationPatientResource Patient { get; set; }
+        public CheckupStatusPatientResource Patient { get; set; }
 
         public string Profession { get; set; }
 

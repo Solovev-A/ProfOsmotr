@@ -39,9 +39,15 @@ namespace ProfOsmotr.Web.Services
         Task<AccessResult> CanManageUserAsync(int userId);
 
         Task<AccessResult> CanAccessPatientAsync(int patientId);
+
         Task<AccessResult> CanAccessPeriodicExaminationAsync(int id);
+
         Task<AccessResult> CanAccessEmployerAsync(int employerId);
+
         Task<AccessResult> CanAccessPreliminaryExaminationAsync(int examinationId);
+
         Task<AccessResult> CanAccessEmployerDepartmentAsync(int employerDepartmentId);
+
+        Task<AccessResult> CanAccessContingentCheckupStatus(int id);
     }
 }

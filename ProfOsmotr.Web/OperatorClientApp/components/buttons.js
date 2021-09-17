@@ -39,4 +39,4 @@ const CloneBtn = (props) => {
     );
 }
 
-export { AddBtn, EditBtn, CloneBtn };
+export { AddBtn, EditBtn, CloneBtn, Button };

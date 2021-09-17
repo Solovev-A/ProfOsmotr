@@ -1,38 +1,30 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 
 import useStore from './../../hooks/useStore';
-import useErrorHandler from './../../hooks/useErrorHandler';
-import CancellationToken from './../../utils/cancellationToken';
 import CheckupIndexValuesData from './../../components/checkupIndexValuesData';
 import ExaminationEditorData from './../../components/examinationEditorData';
 import Spinner from '../../components/spinner';
 import WorkPlaceEditorModal from '../../components/workPlaceEditorModal';
 import CheckupIndexValuesEditorModal from '../../components/checkupIndexValuesEditorModal';
+import PatientData from '../../components/patientData';
 import PreliminaryExaminationActions from './components/preliminaryExaminationActions';
-import WorkPlaceData from './components/workPlaceData';
+import WorkPlaceData from '../../components/workPlaceData';
 import MedicalReportData from './components/medicalReportData';
-import PatientData from './components/patientData';
 import MedicalReportModal from './components/medicalReportModal';
+import usePageId from './../../hooks/usePageId';
 
 
 const PreliminaryExaminationPage = (props) => {
     const examinationId = props.match.params.id;
+
     const { preliminaryExaminationsStore, preliminaryExaminationEditorStore } = useStore();
-    const errorHandler = useErrorHandler();
 
-    useEffect(() => {
-        preliminaryExaminationsStore.setExaminationSlug(examinationId);
-
-        const cancellationToken = new CancellationToken();
-        preliminaryExaminationsStore.loadExamination(cancellationToken)
-            .catch(errorHandler);
-
-        return () => {
-            cancellationToken.cancel();
-            preliminaryExaminationsStore.resetExamination();
-        }
-    }, [examinationId]);
+    usePageId({
+        slugSetter: preliminaryExaminationsStore.setExaminationSlug,
+        loader: preliminaryExaminationsStore.loadExamination,
+        onReset: preliminaryExaminationsStore.resetExamination
+    });
 
     const { isExaminationLoading, examination } = preliminaryExaminationsStore;
 
@@ -65,7 +57,7 @@ const PreliminaryExaminationPage = (props) => {
             <ExaminationEditorData editor={examination.lastEditor} />
             <PreliminaryExaminationActions />
             <WorkPlaceData
-                examination={examination}
+                workPlace={examination.workPlace}
                 onEditClick={onWorkPlaceEditClick}
             />
             <CheckupIndexValuesData

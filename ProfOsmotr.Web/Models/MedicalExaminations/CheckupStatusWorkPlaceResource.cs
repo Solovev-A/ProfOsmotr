@@ -1,6 +1,6 @@
 ﻿namespace ProfOsmotr.Web.Models
 {
-    public class PreliminaryExaminationWorkPlaceResource
+    public class CheckupStatusWorkPlaceResource
     {
         public PreliminaryExaminationEmployerResource Employer { get; set; }
 

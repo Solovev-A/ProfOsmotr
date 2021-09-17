@@ -15,7 +15,7 @@ namespace ProfOsmotr.Web.Models
 
         public bool IsCompleted { get; set; }
 
-        public ExaminationPatientResource Patient { get; set; }
+        public CheckupStatusPatientResource Patient { get; set; }
 
         public string EmployerName { get; set; }
     }

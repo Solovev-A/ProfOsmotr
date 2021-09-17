@@ -1,9 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 
 import useStore from './../../hooks/useStore';
-import useErrorHandler from './../../hooks/useErrorHandler';
-import CancellationToken from './../../utils/cancellationToken';
 import ExaminationEditorData from './../../components/examinationEditorData';
 import Spinner from '../../components/spinner';
 import EmployerInfo from './components/employerInfo';
@@ -14,25 +12,17 @@ import ContingentList from './components/contingentList';
 import ReportDataEditorModal from './components/reportDataEditorModal';
 import EmployerDataEditorModal from './components/employerDataEditorModal';
 import CreateContingentCheckupStatusModal from './components/createContingentCheckupStatusModal';
+import usePageId from './../../hooks/usePageId';
 
 
 const PeriodicExaminationPage = observer((props) => {
-    const examinationId = props.match.params.id;
     const { periodicExaminationsStore } = useStore();
-    const errorHandler = useErrorHandler();
 
-    useEffect(() => {
-        periodicExaminationsStore.setExaminationSlug(examinationId);
-
-        const cancellationToken = new CancellationToken();
-        periodicExaminationsStore.loadExamination(cancellationToken)
-            .catch(errorHandler);
-
-        return () => {
-            cancellationToken.cancel();
-            periodicExaminationsStore.resetExamination();
-        }
-    }, [examinationId]);
+    usePageId({
+        loader: periodicExaminationsStore.loadExamination,
+        slugSetter: periodicExaminationsStore.setExaminationSlug,
+        onReset: periodicExaminationsStore.resetExamination
+    });
 
     const { isExaminationLoading, examination } = periodicExaminationsStore;
 
@@ -53,7 +43,7 @@ const PeriodicExaminationPage = observer((props) => {
 
     return (
         <>
-            <h2>Карта периодического осмотра за {examination.examinationYear} год</h2>
+            <h2>Периодический осмотр за {examination.examinationYear} год</h2>
             <EmployerInfo employer={examination.employer} />
             <ExaminationEditorData editor={examination.lastEditor} />
             <PeriodicExaminationActions />

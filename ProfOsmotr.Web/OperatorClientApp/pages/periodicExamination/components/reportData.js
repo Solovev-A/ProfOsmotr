@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { EditableCard } from '../../../components/card';
-import DataRow from './dataRow';
+import DataRow from './../../../components/dataRow';
 
 const ReportData = ({ examination, onEditClick }) => {
     const { reportDate, recommendations } = examination;

@@ -90,6 +90,12 @@ namespace ProfOsmotr.Web.Services
             return await GetAccessResultBasedOnClinicId(examinationId, CanWorkWithPreliminaryExamination);
         }
 
+        public async Task<AccessResult> CanAccessContingentCheckupStatus(int id)
+        {
+            return await GetAccessResultBasedOnClinicId(id, CanWorkWithContingentCheckupStatus);
+        }
+
+
         public async Task<AccessResult> CanManageUserAsync(int userId)
         {
             if (User.IsInRole(RoleId.Administrator.ToClaimValue()))
@@ -195,6 +201,18 @@ namespace ProfOsmotr.Web.Services
             var examinationClinicId = await examinationsService.GetPeriodicMedicalExaminationClinicIdAsync(examinationId);
 
             if (examinationClinicId == currentUserClinicId)
+            {
+                return new AccessResult();
+            }
+
+            return new AccessDeniedResult();
+        }
+
+        private async Task<AccessResult> CanWorkWithContingentCheckupStatus(int checkupStatusId, int currentUserClinicId)
+        {
+            var checkupStatusClinicId = await examinationsService.GetContingentCheckupStatusClinicIdAsync(checkupStatusId);
+
+            if (checkupStatusClinicId == currentUserClinicId)
             {
                 return new AccessResult();
             }

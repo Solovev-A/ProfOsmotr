@@ -119,5 +119,13 @@ namespace ProfOsmotr.Web.Api
                 async () => await examinationsService.CreateContingentCheckupStatus(request),
                 accessChecks.ToArray());
         }
+
+        [HttpGet("checkup-statuses/{id}")]
+        public async Task<IActionResult> GetCheckupStatus(int id)
+        {
+            return await queryHandler.HandleQuery<ContingentCheckupStatus, ContingentCheckupStatusResource>(
+                async () => await examinationsService.GetContingentCheckupStatus(id),
+                async () => await accessService.CanAccessContingentCheckupStatus(id));
+        }
     }
 }

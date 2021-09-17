@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { EditableCard } from '../../../components/card';
+import CheckupStatusMedicalReportGeneralData from './../../../components/checkupStatusMedicalReportGeneralData';
 
 const MedicalReportData = ({ examination, onEditClick }) => {
     const { result, medicalReport, dateOfComplition, registrationJournalEntryNumber } = examination;
@@ -11,13 +12,7 @@ const MedicalReportData = ({ examination, onEditClick }) => {
             {
                 hasNoData
                     ? null
-                    :
-                    <>
-                        <b>Результат:</b> {result?.text}<br />
-                        <b>Медицинское заключение:</b> {medicalReport}<br />
-                        <b>Дата заключения:</b> {dateOfComplition}<br />
-                        <b>Номер:</b> {registrationJournalEntryNumber}<br />
-                    </>
+                    : <CheckupStatusMedicalReportGeneralData checkup={examination} />
             }
         </EditableCard>
     )

@@ -18,7 +18,7 @@ class CheckupIndexValuesEditorStore {
     loadInitialValues = async () => {
         this.isLoading = true;
 
-        const checkup = await this.checkupEditorStore.loadExamination();
+        const checkup = await this.checkupEditorStore.loadCheckupStatus();
         runInAction(() => {
             this.checkupExaminationResultIndexes = checkup.checkupExaminationResultIndexes;
         });

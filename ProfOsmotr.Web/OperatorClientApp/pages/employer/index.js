@@ -1,32 +1,23 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 
 import useStore from './../../hooks/useStore';
-import CancellationToken from './../../utils/cancellationToken';
 import Spinner from '../../components/spinner';
 import routes from './../../routes';
-import useErrorHandler from './../../hooks/useErrorHandler';
 import EmployerActions from './components/employerActions';
 import EmployerInfo from './components/employerInfo';
 import EmployerExamiantions from './components/employerExaminations';
+import usePageId from './../../hooks/usePageId';
 
 const EmployerPage = (props) => {
     const employerId = props.match.params.id;
     const { employersStore } = useStore();
-    const errorHandler = useErrorHandler();
 
-    useEffect(() => {
-        employersStore.setEmployerSlug(employerId);
-
-        const cancellationToken = new CancellationToken();
-        employersStore.loadEmployer(cancellationToken)
-            .catch(errorHandler);
-
-        return () => {
-            cancellationToken.cancel();
-            employersStore.resetEmployer();
-        }
-    }, [employerId]);
+    usePageId({
+        slugSetter: employersStore.setEmployerSlug,
+        loader: employersStore.loadEmployer,
+        onReset: employersStore.resetEmployer
+    });
 
     const onAddPeriodicExamination = () => {
         // ... вызов api для создания медосмотра

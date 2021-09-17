@@ -11,7 +11,7 @@ const MedicalReportModal = (props) => {
     const {
         preliminaryExaminationsStore: { medicalReportModal },
         checkupResultsStore,
-        preliminaryExaminationEditorStore: { preliminaryExaminationMedicalReportEditorStore }
+        preliminaryExaminationEditorStore: { checkupStatusMedicalReportEditorStore }
     } = useStore();
 
     useEffect(() => {
@@ -21,17 +21,17 @@ const MedicalReportModal = (props) => {
     return (
         <EditorModal
             title="Медицинское заключение"
-            editorStore={preliminaryExaminationMedicalReportEditorStore}
+            editorStore={checkupStatusMedicalReportEditorStore}
             modalStore={medicalReportModal}
         >
             <DropdownSelect
                 label='Результат медицинского осмотра'
                 name='checkupResultId'
                 id='checkupResultId'
-                value={preliminaryExaminationMedicalReportEditorStore.model.checkupResultId}
-                onChange={preliminaryExaminationMedicalReportEditorStore.updateProperty}
-                isInvalid={preliminaryExaminationMedicalReportEditorStore.errors['checkupResultId']}
-                errorMessage={preliminaryExaminationMedicalReportEditorStore.errors['checkupResultId']}
+                value={checkupStatusMedicalReportEditorStore.model.checkupResultId}
+                onChange={checkupStatusMedicalReportEditorStore.updateProperty}
+                isInvalid={checkupStatusMedicalReportEditorStore.errors['checkupResultId']}
+                errorMessage={checkupStatusMedicalReportEditorStore.errors['checkupResultId']}
             >
                 <option value='empty'></option>
                 {
@@ -48,20 +48,20 @@ const MedicalReportModal = (props) => {
             </DropdownSelect>
             <InputField label='Медицинское заключение'
                 name='medicalReport'
-                formStore={preliminaryExaminationMedicalReportEditorStore}
+                formStore={checkupStatusMedicalReportEditorStore}
             />
             <div className='row'>
                 <div className='col'>
                     <InputField label='Дата завершения'
                         name='dateOfComplition'
-                        formStore={preliminaryExaminationMedicalReportEditorStore}
+                        formStore={checkupStatusMedicalReportEditorStore}
                         type='date'
                     />
                 </div>
                 <div className='col'>
                     <InputField label='Номер в журнале'
                         name='registrationJournalEntryNumber'
-                        formStore={preliminaryExaminationMedicalReportEditorStore}
+                        formStore={checkupStatusMedicalReportEditorStore}
                         type='number'
                     />
                 </div>

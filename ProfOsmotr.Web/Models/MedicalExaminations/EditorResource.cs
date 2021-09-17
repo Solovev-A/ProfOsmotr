@@ -1,6 +1,6 @@
 ﻿namespace ProfOsmotr.Web.Models
 {
-    public class ExaminationEditorResource
+    public class EditorResource
     {
         public int Id { get; set; }
 

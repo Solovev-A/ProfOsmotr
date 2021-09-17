@@ -16,6 +16,25 @@ namespace ProfOsmotr.DAL
         {
         }
 
+        public async Task<ContingentCheckupStatus> FindCheckupStatus(int id, bool noTracking = false)
+        {
+            var set = context.Set<ContingentCheckupStatus>();
+            var query = noTracking ? set.AsNoTracking() : set;
+
+            return await query
+                .Include(s => s.CheckupResult)
+                .Include(s => s.ContingentCheckupIndexValues)
+                    .ThenInclude(i => i.ExaminationResultIndex.OrderExamination)
+                .Include(s => s.EmployerDepartment)
+                .Include(s => s.LastEditor.UserProfile)
+                .Include(s => s.Patient)
+                .Include(s => s.PeriodicMedicalExamination.Employer)
+                .Include(s => s.Profession.OrderItems)
+                .Include(s => s.NewlyDiagnosedChronicSomaticDiseases)
+                .Include(s => s.NewlyDiagnosedOccupationalDiseases)
+                .FirstOrDefaultAsync(s => s.Id == id);
+        }
+
         public async Task<PeriodicMedicalExamination> FindExaminationAsync(int id, bool noTracking = false)
         {
             var query = noTracking ? dbSet.AsNoTracking() : dbSet;
@@ -31,6 +50,16 @@ namespace ProfOsmotr.DAL
                     .ThenInclude(s => s.CheckupResult)
                 .Include(ex => ex.LastEditor.UserProfile)
                 .FirstOrDefaultAsync(ex => ex.Id == id);
+        }
+
+        public async Task<int> GetCheckupStatusClinicIdAsync(int checkupStatusId)
+        {
+            var checkupStatus = await context
+                .Set<ContingentCheckupStatus>()
+                .Include(s => s.PeriodicMedicalExamination)
+                .FirstOrDefaultAsync(s => s.Id == checkupStatusId);
+
+            return checkupStatus?.PeriodicMedicalExamination.ClinicId ?? -1;
         }
 
         protected override IQueryable<PeriodicMedicalExamination> GetInitialQuery()

@@ -39,7 +39,7 @@ class WorkPlaceEditorStore extends BaseFormStore {
     }
 
     loadInitialValues = async () => {
-        const checkup = await this.checkupEditorStore.loadExamination();
+        const checkup = await this.checkupEditorStore.loadCheckupStatus();
 
         runInAction(() => {
             this.employer = checkup.workPlace.employer;
