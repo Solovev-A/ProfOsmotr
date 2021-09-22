@@ -18,6 +18,7 @@ namespace ProfOsmotr.BL
         private readonly IEmployerService employerService;
         private readonly IProfessionService professionService;
         private readonly IOrderService orderService;
+        private readonly IICD10Service icd10Service;
         private readonly IMapper mapper;
 
         public ExaminationsService(IProfUnitOfWork uow,
@@ -26,6 +27,7 @@ namespace ProfOsmotr.BL
                                    IEmployerService employerService,
                                    IProfessionService professionService,
                                    IOrderService orderService,
+                                   IICD10Service icd10Service,
                                    IMapper mapper)
         {
             this.uow = uow ?? throw new ArgumentNullException(nameof(uow));
@@ -34,6 +36,7 @@ namespace ProfOsmotr.BL
             this.employerService = employerService ?? throw new ArgumentNullException(nameof(employerService));
             this.professionService = professionService ?? throw new ArgumentNullException(nameof(professionService));
             this.orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
+            this.icd10Service = icd10Service ?? throw new ArgumentNullException(nameof(icd10Service));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
@@ -178,7 +181,11 @@ namespace ProfOsmotr.BL
             }
             if (query.IsFieldPresent(nameof(query.CheckupIndexValues)))
             {
-                await UpdateCheckupIndexValues(examination.CheckupStatus.IndividualCheckupIndexValues, query.CheckupIndexValues);
+                var result = await UpdateCheckupIndexValues(examination.CheckupStatus.IndividualCheckupIndexValues, query.CheckupIndexValues);
+                if (!result.Succeed)
+                {
+                    return new PreliminaryMedicalExaminationResponse(result.ErrorMessage);
+                }
             }
             if (query.IsFieldPresent(nameof(query.CheckupResultId)))
             {
@@ -394,6 +401,123 @@ namespace ProfOsmotr.BL
             return clinicId;
         }
 
+        public async Task<ContingentCheckupStatusResponse> UpdateContingentCheckupStatusAsync(UpdateContingentCheckupStatusRequest request)
+        {
+            var checkupStatus = await uow.PeriodicMedicalExaminations.FindCheckupStatus(request.CheckupStatusId);
+            if (checkupStatus is null)
+            {
+                return new ContingentCheckupStatusResponse("Запись медосмотра не найдена");
+            }
+
+            var editorResponse = await userService.GetUser(request.EditorId);
+            if (!editorResponse.Succeed)
+            {
+                return new ContingentCheckupStatusResponse(editorResponse.Message);
+            }
+            checkupStatus.LastEditorId = request.EditorId;
+
+            var query = request.Query;
+
+            if (query.IsFieldPresent(nameof(query.EmployerDepartmentId)))
+            {
+                var result = await UpdateEmployerDepartment(checkupStatus.PeriodicMedicalExamination, checkupStatus, query.EmployerDepartmentId);
+                if (!result.Succeed)
+                {
+                    return new ContingentCheckupStatusResponse(result.ErrorMessage);
+                }
+
+            }
+            if (query.IsFieldPresent(nameof(query.ProfessionId)))
+            {
+                var result = await UpdateProfession(checkupStatus, query.ProfessionId);
+                if (!result.Succeed)
+                {
+                    return new ContingentCheckupStatusResponse(result.ErrorMessage);
+                }
+            }
+            if (query.IsFieldPresent(nameof(query.CheckupIndexValues)))
+            {
+                var result = await UpdateCheckupIndexValues(checkupStatus.ContingentCheckupIndexValues, query.CheckupIndexValues);
+                if (!result.Succeed)
+                {
+                    return new ContingentCheckupStatusResponse(result.ErrorMessage);
+                }
+            }
+            if (query.IsFieldPresent(nameof(query.CheckupStarted)))
+            {
+                checkupStatus.CheckupStarted = query.CheckupStarted;
+            }
+            if (query.IsFieldPresent(nameof(query.CheckupResultId)))
+            {
+                checkupStatus.CheckupResultId = query.CheckupResultId;
+            }
+            if (query.IsFieldPresent(nameof(query.DateOfComplition)))
+            {
+                checkupStatus.DateOfCompletion = query.DateOfComplition;
+                checkupStatus.CheckupStarted = true;
+            }
+            if (query.IsFieldPresent(nameof(query.MedicalReport)))
+            {
+                checkupStatus.MedicalReport = query.MedicalReport;
+            }
+            if (query.IsFieldPresent(nameof(query.RegistrationJournalEntryNumber)))
+            {
+                checkupStatus.RegistrationJournalEntryNumber = query.RegistrationJournalEntryNumber;
+            }
+            if (query.IsFieldPresent(nameof(query.IsDisabled)))
+            {
+                checkupStatus.IsDisabled = query.IsDisabled;
+            }
+            if (query.IsFieldPresent(nameof(query.NeedExaminationAtOccupationalPathologyCenter)))
+            {
+                checkupStatus.NeedExaminationAtOccupationalPathologyCenter = query.NeedExaminationAtOccupationalPathologyCenter;
+            }
+            if (query.IsFieldPresent(nameof(query.NeedOutpatientExamunationAndTreatment)))
+            {
+                checkupStatus.NeedOutpatientExamunationAndTreatment = query.NeedOutpatientExamunationAndTreatment;
+            }
+            if (query.IsFieldPresent(nameof(query.NeedInpatientExamunationAndTreatment)))
+            {
+                checkupStatus.NeedInpatientExamunationAndTreatment = query.NeedInpatientExamunationAndTreatment;
+            }
+            if (query.IsFieldPresent(nameof(query.NeedSpaTreatment)))
+            {
+                checkupStatus.NeedSpaTreatment = query.NeedSpaTreatment;
+            }
+            if (query.IsFieldPresent(nameof(query.NeedDispensaryObservation)))
+            {
+                checkupStatus.NeedDispensaryObservation = query.NeedDispensaryObservation;
+            }
+            if (query.IsFieldPresent(nameof(query.NewlyDiagnosedChronicSomaticDiseases)))
+            {
+                var result = await UpdateNewlyDiagnosedDiseases(checkupStatus.NewlyDiagnosedChronicSomaticDiseases,
+                                                                query.NewlyDiagnosedChronicSomaticDiseases);
+                if (!result.Succeed)
+                {
+                    return new ContingentCheckupStatusResponse(result.ErrorMessage);
+                }
+            }
+            if (query.IsFieldPresent(nameof(query.NewlyDiagnosedOccupationalDiseases)))
+            {
+                var result = await UpdateNewlyDiagnosedDiseases(checkupStatus.NewlyDiagnosedOccupationalDiseases,
+                                                                query.NewlyDiagnosedOccupationalDiseases);
+                if (!result.Succeed)
+                {
+                    return new ContingentCheckupStatusResponse(result.ErrorMessage);
+                }
+            }
+
+            try
+            {
+                await uow.SaveAsync();
+                return new ContingentCheckupStatusResponse(checkupStatus);
+            }
+            catch (Exception ex)
+            {
+                return new ContingentCheckupStatusResponse(ex.Message);
+            }
+        }
+
         #region Protected methods
 
         protected async Task<ServiceActionResult> UpdateLastEditor(MedicalExamination examination, int editorId)
@@ -431,7 +555,7 @@ namespace ProfOsmotr.BL
         {
             if (newEmployerDepartmentId.HasValue)
             {
-                if (examination.Employer is null)
+                if (!examination.EmployerId.HasValue)
                 {
                     return new ServiceActionResult("Невозможно задать структурное подразделение, если не задана организация");
                 }
@@ -440,7 +564,7 @@ namespace ProfOsmotr.BL
                 {
                     return new ServiceActionResult(departmentResponse.Message);
                 }
-                if (examination.Employer.Id != departmentResponse.Result.ParentId)
+                if (examination.EmployerId.Value != departmentResponse.Result.ParentId)
                 {
                     return new ServiceActionResult("Структурное подразделение не принадлежит организации");
                 }
@@ -478,7 +602,8 @@ namespace ProfOsmotr.BL
             }
         }
 
-        protected async Task<ServiceActionResult> UpdateCheckupIndexValues<T>(ICollection<T> data, IEnumerable<UpdateCheckupIndexValueRequest> requests)
+        protected async Task<ServiceActionResult> UpdateCheckupIndexValues<T>(ICollection<T> data,
+                                                                              IEnumerable<UpdateCheckupIndexValueRequest> requests)
             where T : CheckupIndexValue, new()
         {
             foreach (var request in requests)
@@ -509,6 +634,42 @@ namespace ProfOsmotr.BL
                         Value = request.Value
                     };
                     data.Add(newCheckupIndexValue);
+                }
+            }
+            return new ServiceActionResult();
+        }
+
+        protected async Task<ServiceActionResult> UpdateNewlyDiagnosedDiseases<T>(ICollection<T> data,
+                                                                                  IEnumerable<UpdateNewlyDiagnosedDiseaseRequest> requests)
+        where T : NewlyDiagnosedDisease, new()
+        {
+            foreach (var request in requests)
+            {
+                T disease = data.FirstOrDefault(d => request.ChapterId == d.ICD10ChapterId);
+                if (disease != null)
+                {
+                    if (request.Cases == 0)
+                    {
+                        data.Remove(disease);
+                    }
+                    else
+                    {
+                        disease.Cases = request.Cases;
+                    }
+                }
+                else
+                {
+                    ICD10Chapter chapter = await icd10Service.FindChapterAsync(request.ChapterId);
+                    if (chapter is null)
+                    {
+                        return new ServiceActionResult($"Класс заболеваний с id {request.ChapterId} не найден");
+                    }
+                    T newDisease = new T()
+                    {
+                        Cases = request.Cases,
+                        ICD10ChapterId = request.ChapterId
+                    };
+                    data.Add(newDisease);
                 }
             }
             return new ServiceActionResult();

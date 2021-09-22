@@ -1,4 +1,5 @@
 ﻿using ProfOsmotr.BL.Abstractions;
+using ProfOsmotr.DAL;
 using ProfOsmotr.DAL.Abstractions;
 using System;
 using System.Linq;
@@ -27,6 +28,11 @@ namespace ProfOsmotr.BL
             {
                 return new ICD10ChaptersResponse(ex.Message);
             }
+        }
+
+        async Task<ICD10Chapter> IICD10Service.FindChapterAsync(int id)
+        {
+            return await uow.ICD10Chapters.FindAsync(id);
         }
     }
 }

@@ -36,5 +36,7 @@ namespace ProfOsmotr.BL.Abstractions
         Task<ContingentCheckupStatusResponse> GetContingentCheckupStatus(int id);
 
         Task<int> GetContingentCheckupStatusClinicIdAsync(int checkupStatusId);
+
+        Task<ContingentCheckupStatusResponse> UpdateContingentCheckupStatusAsync(UpdateContingentCheckupStatusRequest request);
     }
 }
