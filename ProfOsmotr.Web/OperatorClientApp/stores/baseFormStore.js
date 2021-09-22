@@ -16,7 +16,7 @@ class BaseFormStore {
             isLoading: observable,
             isProcessing: observable,
             updateProperty: action,
-            clear: action,
+            clear: action.bound,
             setInitialValues: action,
             validate: action,
             validateAll: action,
@@ -46,7 +46,7 @@ class BaseFormStore {
         Object.assign(this.model, values);
     }
 
-    clear = () => {
+    clear() {
         this.setInitialValues(this._template);
         this.isLoading = true;
     }

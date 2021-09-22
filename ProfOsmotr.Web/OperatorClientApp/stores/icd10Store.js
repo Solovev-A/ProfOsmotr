@@ -21,6 +21,15 @@ class ICD10Store {
         }
     }
 
+    getChapterById = (id) => {
+        if (!this.isLoaded) throw 'Невозможно найти главу до загрузки';
+
+        const result = this.chapters.find(chapter => chapter.id === id);
+        if (!result) throw `Глава МКБ-10 c id {${id}} не найдена`;
+
+        return result;
+    }
+
     get isLoaded() {
         return !!this.chapters.length;
     }

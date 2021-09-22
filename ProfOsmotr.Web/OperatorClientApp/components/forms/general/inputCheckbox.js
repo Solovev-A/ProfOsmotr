@@ -7,9 +7,13 @@ const InputCheckbox = (props) => {
         props.onChange(input.name, input.checked);
     }
 
-    return <CheckInput {...props}
-        type='checkbox'
-        onChange={changeHandler} />
+    return (
+        <div className="form-group">
+            <CheckInput {...props}
+                type='checkbox'
+                onChange={changeHandler} />
+        </div>
+    )
 }
 
 export default InputCheckbox;

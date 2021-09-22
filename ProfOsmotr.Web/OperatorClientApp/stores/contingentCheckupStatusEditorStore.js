@@ -8,7 +8,7 @@ class ContingentCheckupStatusEditorStore {
         this.rootStore = rootStore;
         this.workPlaceEditorStore = new WorkPlaceEditorStore(this);
         this.checkupIndexValuesEditorStore = new CheckupIndexValuesEditorStore(rootStore, this);
-
+        this.checkupStatusMedicalReportEditorStore = new CheckupStatusMedicalReportEditorStore(this);
     }
 
     loadCheckupStatus = () => {

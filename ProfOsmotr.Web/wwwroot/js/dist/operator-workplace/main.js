@@ -12957,6 +12957,79 @@ const App = () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(
 
 /***/ }),
 
+/***/ "./OperatorClientApp/components/baseMedicalReportEditorForm.js":
+/*!*********************************************************************!*
+  !*** ./OperatorClientApp/components/baseMedicalReportEditorForm.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
+/* harmony import */ var _hooks_useStore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../hooks/useStore */ "./OperatorClientApp/hooks/useStore.js");
+/* harmony import */ var _forms_general_dropdownSelect__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./forms/general/dropdownSelect */ "./OperatorClientApp/components/forms/general/dropdownSelect.js");
+/* harmony import */ var _forms_observers_inputField__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./forms/observers/inputField */ "./OperatorClientApp/components/forms/observers/inputField.js");
+
+
+
+
+
+
+const BaseMedicalReportEditorForm = ({
+  formStore
+}) => {
+  const {
+    checkupResultsStore
+  } = (0,_hooks_useStore__WEBPACK_IMPORTED_MODULE_2__.default)();
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    checkupResultsStore.loadCheckupResults();
+  }, []);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_forms_general_dropdownSelect__WEBPACK_IMPORTED_MODULE_3__.default, {
+    label: "\u0420\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442 \u043C\u0435\u0434\u0438\u0446\u0438\u043D\u0441\u043A\u043E\u0433\u043E \u043E\u0441\u043C\u043E\u0442\u0440\u0430",
+    name: "checkupResultId",
+    id: "checkupResultId",
+    value: formStore.model.checkupResultId,
+    onChange: formStore.updateProperty,
+    isInvalid: formStore.errors['checkupResultId'],
+    errorMessage: formStore.errors['checkupResultId']
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
+    value: "empty"
+  }), checkupResultsStore.checkupResults.map(result => {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
+      value: result.id,
+      key: result.id
+    }, result.text);
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_forms_observers_inputField__WEBPACK_IMPORTED_MODULE_4__.default, {
+    label: "\u041C\u0435\u0434\u0438\u0446\u0438\u043D\u0441\u043A\u043E\u0435 \u0437\u0430\u043A\u043B\u044E\u0447\u0435\u043D\u0438\u0435",
+    name: "medicalReport",
+    formStore: formStore
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "col"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_forms_observers_inputField__WEBPACK_IMPORTED_MODULE_4__.default, {
+    label: "\u0414\u0430\u0442\u0430 \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043D\u0438\u044F",
+    name: "dateOfComplition",
+    formStore: formStore,
+    type: "date"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "col"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_forms_observers_inputField__WEBPACK_IMPORTED_MODULE_4__.default, {
+    label: "\u041D\u043E\u043C\u0435\u0440 \u0432 \u0436\u0443\u0440\u043D\u0430\u043B\u0435",
+    name: "registrationJournalEntryNumber",
+    formStore: formStore,
+    type: "number"
+  }))));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.observer)(BaseMedicalReportEditorForm));
+
+/***/ }),
+
 /***/ "./OperatorClientApp/components/buttons.js":
 /*!*************************************************!*
   !*** ./OperatorClientApp/components/buttons.js ***!
@@ -14049,10 +14122,12 @@ const InputCheckbox = props => {
     props.onChange(input.name, input.checked);
   };
 
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_checkInput__WEBPACK_IMPORTED_MODULE_1__.default, _extends({}, props, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_checkInput__WEBPACK_IMPORTED_MODULE_1__.default, _extends({}, props, {
     type: "checkbox",
     onChange: changeHandler
-  }));
+  })));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (InputCheckbox);
@@ -14203,6 +14278,45 @@ const SubmitBtn = ({
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SubmitBtn);
+
+/***/ }),
+
+/***/ "./OperatorClientApp/components/forms/observers/inputCheckbox.js":
+/*!***********************************************************************!*
+  !*** ./OperatorClientApp/components/forms/observers/inputCheckbox.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
+/* harmony import */ var _general_inputCheckbox__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../general/inputCheckbox */ "./OperatorClientApp/components/forms/general/inputCheckbox.js");
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+
+
+
+
+const InputCheckboxWithObserver = ({
+  label,
+  name,
+  formStore,
+  ...inputProps
+}) => {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_general_inputCheckbox__WEBPACK_IMPORTED_MODULE_2__.default, _extends({}, inputProps, {
+    label: label,
+    name: name,
+    id: name,
+    checked: formStore.model[name],
+    onChange: formStore.updateProperty
+  }));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.observer)(InputCheckboxWithObserver));
 
 /***/ }),
 
@@ -15715,6 +15829,241 @@ const DiseasesList = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_6__.observer)((
 
 /***/ }),
 
+/***/ "./OperatorClientApp/pages/contingentCheckupStatus/components/medicalReportEditorForm.js":
+/*!***********************************************************************************************!*
+  !*** ./OperatorClientApp/pages/contingentCheckupStatus/components/medicalReportEditorForm.js ***!
+  \***********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../../components/forms/observers/inputCheckbox */ "./OperatorClientApp/components/forms/observers/inputCheckbox.js");
+/* harmony import */ var _newlyDiagnosedDiseasesEditor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./newlyDiagnosedDiseasesEditor */ "./OperatorClientApp/pages/contingentCheckupStatus/components/newlyDiagnosedDiseasesEditor.js");
+
+
+
+
+const MedicalReportEditorForm = ({
+  formStore
+}) => {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_1__.default, {
+    label: "\u041C\u0435\u0434\u043E\u0441\u043C\u043E\u0442\u0440 \u043D\u0430\u0447\u0430\u0442",
+    name: "checkupStarted",
+    formStore: formStore,
+    inline: true
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_1__.default, {
+    label: "\u0418\u043C\u0435\u0435\u0442 \u0441\u0442\u043E\u0439\u043A\u0443\u044E \u0441\u0442\u0435\u043F\u0435\u043D\u044C \u0443\u0442\u0440\u0430\u0442\u044B \u0442\u0440\u0443\u0434\u043E\u0441\u043F\u043E\u0441\u043E\u0431\u043D\u043E\u0441\u0442\u0438",
+    name: "isDisabled",
+    formStore: formStore,
+    inline: true
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_1__.default, {
+    label: "\u041D\u0443\u0436\u0434\u0430\u0435\u0442\u0441\u044F \u0432 \u0434\u043E\u043E\u0431\u0441\u043B\u0435\u0434\u043E\u0432\u0430\u043D\u0438\u0438 \u0432 \u0446\u0435\u043D\u0442\u0440\u0435 \u043F\u0440\u043E\u0444\u043F\u0430\u0442\u0430\u043B\u043E\u0433\u0438\u0438",
+    name: "needExaminationAtOccupationalPathologyCenter",
+    formStore: formStore,
+    inline: true
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_1__.default, {
+    label: "\u041D\u0443\u0436\u0434\u0430\u0435\u0442\u0441\u044F \u0432 \u0430\u043C\u0431\u0443\u043B\u0430\u0442\u043E\u0440\u043D\u043E\u043C \u043E\u0431\u0441\u043B\u0435\u0434\u043E\u0432\u0430\u043D\u0438\u0438 \u0438 \u043B\u0435\u0447\u0435\u043D\u0438\u0438",
+    name: "needOutpatientExamunationAndTreatment",
+    formStore: formStore,
+    inline: true
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_1__.default, {
+    label: "\u041D\u0443\u0436\u0434\u0430\u0435\u0442\u0441\u044F \u0432 \u0441\u0442\u0430\u0446\u0438\u043E\u043D\u0430\u0440\u043D\u043E\u043C \u043E\u0431\u0441\u043B\u0435\u0434\u043E\u0432\u0430\u043D\u0438\u0438 \u0438 \u043B\u0435\u0447\u0435\u043D\u0438\u0438",
+    name: "needInpatientExamunationAndTreatment",
+    formStore: formStore,
+    inline: true
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_1__.default, {
+    label: "\u041D\u0443\u0436\u0434\u0430\u0435\u0442\u0441\u044F \u0432 \u0441\u0430\u043D\u0430\u0442\u043E\u0440\u043D\u043E-\u043A\u0443\u0440\u043E\u0440\u0442\u043D\u043E\u043C \u043B\u0435\u0447\u0435\u043D\u0438\u0438",
+    name: "needSpaTreatment",
+    formStore: formStore,
+    inline: true
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_1__.default, {
+    label: "\u041D\u0443\u0436\u0434\u0430\u0435\u0442\u0441\u044F \u0432 \u0434\u0438\u0441\u043F\u0430\u043D\u0441\u0435\u0440\u043D\u043E\u043C \u043D\u0430\u0431\u043B\u044E\u0434\u0435\u043D\u0438\u0438",
+    name: "needDispensaryObservation",
+    formStore: formStore,
+    inline: true
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("hr", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_newlyDiagnosedDiseasesEditor__WEBPACK_IMPORTED_MODULE_2__.default, {
+    title: "\u0412\u043F\u0435\u0440\u0432\u044B\u0435 \u0432\u044B\u044F\u0432\u043B\u0435\u043D\u043D\u044B\u0435 \u0445\u0440\u043E\u043D\u0438\u0447\u0435\u0441\u043A\u0438\u0435 \u0441\u043E\u043C\u0430\u0442\u0438\u0447\u0435\u0441\u043A\u0438\u0435 \u0437\u0430\u0431\u043E\u043B\u0435\u0432\u0430\u043D\u0438\u044F (\u0441\u043B\u0443\u0447\u0430\u0435\u0432)",
+    store: formStore.chronicSomaticDiseasesEditorStore
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("hr", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_newlyDiagnosedDiseasesEditor__WEBPACK_IMPORTED_MODULE_2__.default, {
+    title: "\u0412\u043F\u0435\u0440\u0432\u044B\u0435 \u0432\u044B\u044F\u0432\u043B\u0435\u043D\u043D\u044B\u0435 \u043F\u0440\u043E\u0444\u0435\u0441\u0441\u0438\u043E\u043D\u0430\u043B\u044C\u043D\u044B\u0435 \u0437\u0430\u0431\u043E\u043B\u0435\u0432\u0430\u043D\u0438\u044F",
+    store: formStore.occupationalDiseasesEditorStore
+  }));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MedicalReportEditorForm);
+
+/***/ }),
+
+/***/ "./OperatorClientApp/pages/contingentCheckupStatus/components/medicalReportModal.js":
+/*!******************************************************************************************!*
+  !*** ./OperatorClientApp/pages/contingentCheckupStatus/components/medicalReportModal.js ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _hooks_useStore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../../hooks/useStore */ "./OperatorClientApp/hooks/useStore.js");
+/* harmony import */ var _components_editorModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../components/editorModal */ "./OperatorClientApp/components/editorModal.js");
+/* harmony import */ var _components_baseMedicalReportEditorForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../../components/baseMedicalReportEditorForm */ "./OperatorClientApp/components/baseMedicalReportEditorForm.js");
+/* harmony import */ var _medicalReportEditorForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./medicalReportEditorForm */ "./OperatorClientApp/pages/contingentCheckupStatus/components/medicalReportEditorForm.js");
+
+
+
+
+
+
+const MedicalReportModal = props => {
+  const {
+    contingentCheckupStatusStore: {
+      medicalReportModal
+    },
+    contingentCheckupStatusEditorStore: {
+      checkupStatusMedicalReportEditorStore
+    }
+  } = (0,_hooks_useStore__WEBPACK_IMPORTED_MODULE_1__.default)();
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_editorModal__WEBPACK_IMPORTED_MODULE_2__.default, {
+    title: "\u041C\u0435\u0434\u0438\u0446\u0438\u043D\u0441\u043A\u043E\u0435 \u0437\u0430\u043A\u043B\u044E\u0447\u0435\u043D\u0438\u0435",
+    editorStore: checkupStatusMedicalReportEditorStore,
+    modalStore: medicalReportModal
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_baseMedicalReportEditorForm__WEBPACK_IMPORTED_MODULE_3__.default, {
+    formStore: checkupStatusMedicalReportEditorStore
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_medicalReportEditorForm__WEBPACK_IMPORTED_MODULE_4__.default, {
+    formStore: checkupStatusMedicalReportEditorStore
+  }));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MedicalReportModal);
+
+/***/ }),
+
+/***/ "./OperatorClientApp/pages/contingentCheckupStatus/components/newlyDiagnosedDiseasesEditor.js":
+/*!****************************************************************************************************!*
+  !*** ./OperatorClientApp/pages/contingentCheckupStatus/components/newlyDiagnosedDiseasesEditor.js ***!
+  \****************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
+/* harmony import */ var _hooks_useStore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../../hooks/useStore */ "./OperatorClientApp/hooks/useStore.js");
+/* harmony import */ var _components_spinner__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../../components/spinner */ "./OperatorClientApp/components/spinner.js");
+/* harmony import */ var _utils_compareICD10Chapters__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../../../utils/compareICD10Chapters */ "./OperatorClientApp/utils/compareICD10Chapters.js");
+
+
+
+
+
+
+const NewlyDiagnosedDiseasesEditor = ({
+  title,
+  store
+}) => {
+  const {
+    icd10Store
+  } = (0,_hooks_useStore__WEBPACK_IMPORTED_MODULE_2__.default)();
+  const {
+    updateValue,
+    casesByChapterId
+  } = store;
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (!icd10Store.isLoaded) icd10Store.load();
+  }, []);
+  if (!icd10Store.isLoaded) return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_spinner__WEBPACK_IMPORTED_MODULE_3__.default, {
+    size: ".5rem"
+  });
+
+  const onChange = event => {
+    const input = event.target;
+    const id = Number(input.dataset.chapterId);
+    const value = Number(input.value);
+    updateValue(id, value);
+  };
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, title), [...casesByChapterId.entries()].map(([id]) => icd10Store.getChapterById(id)).sort(_utils_compareICD10Chapters__WEBPACK_IMPORTED_MODULE_4__.default).map(chapter => {
+    const id = chapter.id;
+    const htmlId = `icd10-chapter-${id}`;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      className: "row form-group",
+      key: id
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      className: "col",
+      style: {
+        alignItems: 'center'
+      }
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+      htmlFor: htmlId
+    }, chapter.block)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      className: "col"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+      type: "number",
+      className: "form-control form-control-sm",
+      value: casesByChapterId.get(id),
+      onChange: onChange,
+      "data-chapter-id": id,
+      id: htmlId,
+      min: "0"
+    })));
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(AddNewDiseaseControl, {
+    editorStore: store
+  }));
+};
+
+const AddNewDiseaseControl = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.observer)(({
+  editorStore
+}) => {
+  const {
+    icd10Store
+  } = (0,_hooks_useStore__WEBPACK_IMPORTED_MODULE_2__.default)();
+  const optionsData = icd10Store.chapters.filter(chapter => {
+    return ![...editorStore.casesByChapterId.keys()].includes(chapter.id);
+  });
+  if (!optionsData.length) return null;
+  const emptyValue = 'empty';
+  const options = [/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
+    value: emptyValue,
+    key: emptyValue
+  }, "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0433\u043B\u0430\u0432\u0443, \u0447\u0442\u043E\u0431\u044B \u0434\u043E\u0431\u0430\u0432\u0438\u0442\u044C"), ...optionsData.map(opt => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
+    value: opt.id,
+    key: opt.id
+  }, opt.block))];
+
+  const addNewDisease = event => {
+    const select = event.target;
+    if (select.value === emptyValue) return;
+    const id = Number(select.value);
+    const defaultValue = 1;
+    editorStore.updateValue(id, defaultValue);
+  };
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "row form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "col-6",
+    style: {
+      alignItems: 'center'
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("select", {
+    className: "form-control",
+    value: emptyValue,
+    onChange: addNewDisease
+  }, options)));
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.observer)(NewlyDiagnosedDiseasesEditor));
+
+/***/ }),
+
 /***/ "./OperatorClientApp/pages/contingentCheckupStatus/index.js":
 /*!******************************************************************!*
   !*** ./OperatorClientApp/pages/contingentCheckupStatus/index.js ***!
@@ -15741,6 +16090,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_linkIcon__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../components/linkIcon */ "./OperatorClientApp/components/linkIcon.js");
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../routes */ "./OperatorClientApp/routes.js");
 /* harmony import */ var _components_medicalReportData__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/medicalReportData */ "./OperatorClientApp/pages/contingentCheckupStatus/components/medicalReportData.js");
+/* harmony import */ var _components_medicalReportModal__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/medicalReportModal */ "./OperatorClientApp/pages/contingentCheckupStatus/components/medicalReportModal.js");
+
 
 
 
@@ -15773,7 +16124,6 @@ const ContingentCheckupStatusPage = props => {
   } = contingentCheckupStatusStore;
   if (isLoading) return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_spinner__WEBPACK_IMPORTED_MODULE_6__.default, null);
   const {
-    workPlace,
     examination
   } = checkupStatus;
   const examinationUrl = _routes__WEBPACK_IMPORTED_MODULE_13__.default.periodicExamination.getUrl(examination.id);
@@ -15803,7 +16153,8 @@ const ContingentCheckupStatusPage = props => {
     checkupExaminationResultIndexes: checkupStatus.checkupExaminationResultIndexes,
     onEditClick: onCheckupIndexValuesEditClick
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_medicalReportData__WEBPACK_IMPORTED_MODULE_14__.default, {
-    checkupStatus: checkupStatus
+    checkupStatus: checkupStatus,
+    onEditClick: onMedicalReportEditClick
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_workPlaceEditorModal__WEBPACK_IMPORTED_MODULE_7__.default, {
     editorStore: contingentCheckupStatusEditorStore.workPlaceEditorStore,
     modalStore: contingentCheckupStatusStore.workPlaceModal,
@@ -15811,7 +16162,7 @@ const ContingentCheckupStatusPage = props => {
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_checkupIndexValuesEditorModal__WEBPACK_IMPORTED_MODULE_8__.default, {
     editorStore: contingentCheckupStatusEditorStore.checkupIndexValuesEditorStore,
     modalStore: contingentCheckupStatusStore.checkupIndexValuesModal
-  }));
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_medicalReportModal__WEBPACK_IMPORTED_MODULE_15__.default, null));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.observer)(ContingentCheckupStatusPage));
@@ -17457,13 +17808,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
-/* harmony import */ var _hooks_useStore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../../hooks/useStore */ "./OperatorClientApp/hooks/useStore.js");
-/* harmony import */ var _components_forms_general_dropdownSelect__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../../components/forms/general/dropdownSelect */ "./OperatorClientApp/components/forms/general/dropdownSelect.js");
-/* harmony import */ var _components_forms_observers_inputField__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../../../components/forms/observers/inputField */ "./OperatorClientApp/components/forms/observers/inputField.js");
-/* harmony import */ var _components_editorModal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../components/editorModal */ "./OperatorClientApp/components/editorModal.js");
-
-
+/* harmony import */ var _hooks_useStore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../../hooks/useStore */ "./OperatorClientApp/hooks/useStore.js");
+/* harmony import */ var _components_editorModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../components/editorModal */ "./OperatorClientApp/components/editorModal.js");
+/* harmony import */ var _components_baseMedicalReportEditorForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../../components/baseMedicalReportEditorForm */ "./OperatorClientApp/components/baseMedicalReportEditorForm.js");
 
 
 
@@ -17474,57 +17821,20 @@ const MedicalReportModal = props => {
     preliminaryExaminationsStore: {
       medicalReportModal
     },
-    checkupResultsStore,
     preliminaryExaminationEditorStore: {
       checkupStatusMedicalReportEditorStore
     }
-  } = (0,_hooks_useStore__WEBPACK_IMPORTED_MODULE_2__.default)();
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    checkupResultsStore.loadCheckupResults();
-  }, []);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_editorModal__WEBPACK_IMPORTED_MODULE_5__.default, {
+  } = (0,_hooks_useStore__WEBPACK_IMPORTED_MODULE_1__.default)();
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_editorModal__WEBPACK_IMPORTED_MODULE_2__.default, {
     title: "\u041C\u0435\u0434\u0438\u0446\u0438\u043D\u0441\u043A\u043E\u0435 \u0437\u0430\u043A\u043B\u044E\u0447\u0435\u043D\u0438\u0435",
     editorStore: checkupStatusMedicalReportEditorStore,
     modalStore: medicalReportModal
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_general_dropdownSelect__WEBPACK_IMPORTED_MODULE_3__.default, {
-    label: "\u0420\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442 \u043C\u0435\u0434\u0438\u0446\u0438\u043D\u0441\u043A\u043E\u0433\u043E \u043E\u0441\u043C\u043E\u0442\u0440\u0430",
-    name: "checkupResultId",
-    id: "checkupResultId",
-    value: checkupStatusMedicalReportEditorStore.model.checkupResultId,
-    onChange: checkupStatusMedicalReportEditorStore.updateProperty,
-    isInvalid: checkupStatusMedicalReportEditorStore.errors['checkupResultId'],
-    errorMessage: checkupStatusMedicalReportEditorStore.errors['checkupResultId']
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
-    value: "empty"
-  }), checkupResultsStore.checkupResults.map(result => {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
-      value: result.id,
-      key: result.id
-    }, result.text);
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputField__WEBPACK_IMPORTED_MODULE_4__.default, {
-    label: "\u041C\u0435\u0434\u0438\u0446\u0438\u043D\u0441\u043A\u043E\u0435 \u0437\u0430\u043A\u043B\u044E\u0447\u0435\u043D\u0438\u0435",
-    name: "medicalReport",
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_baseMedicalReportEditorForm__WEBPACK_IMPORTED_MODULE_3__.default, {
     formStore: checkupStatusMedicalReportEditorStore
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "row"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "col"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputField__WEBPACK_IMPORTED_MODULE_4__.default, {
-    label: "\u0414\u0430\u0442\u0430 \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043D\u0438\u044F",
-    name: "dateOfComplition",
-    formStore: checkupStatusMedicalReportEditorStore,
-    type: "date"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "col"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputField__WEBPACK_IMPORTED_MODULE_4__.default, {
-    label: "\u041D\u043E\u043C\u0435\u0440 \u0432 \u0436\u0443\u0440\u043D\u0430\u043B\u0435",
-    name: "registrationJournalEntryNumber",
-    formStore: checkupStatusMedicalReportEditorStore,
-    type: "number"
-  }))));
+  }));
 };
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.observer)(MedicalReportModal));
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MedicalReportModal);
 
 /***/ }),
 
@@ -18429,11 +18739,6 @@ class BaseFormStore {
       Object.assign(this.model, values);
     });
 
-    _defineProperty(this, "clear", () => {
-      this.setInitialValues(this._template);
-      this.isLoading = true;
-    });
-
     _defineProperty(this, "validate", propName => {
       const propCheck = this._validation[propName];
       if (!propCheck) return;
@@ -18479,7 +18784,7 @@ class BaseFormStore {
       isLoading: mobx__WEBPACK_IMPORTED_MODULE_0__.observable,
       isProcessing: mobx__WEBPACK_IMPORTED_MODULE_0__.observable,
       updateProperty: mobx__WEBPACK_IMPORTED_MODULE_0__.action,
-      clear: mobx__WEBPACK_IMPORTED_MODULE_0__.action,
+      clear: mobx__WEBPACK_IMPORTED_MODULE_0__.action.bound,
       setInitialValues: mobx__WEBPACK_IMPORTED_MODULE_0__.action,
       validate: mobx__WEBPACK_IMPORTED_MODULE_0__.action,
       validateAll: mobx__WEBPACK_IMPORTED_MODULE_0__.action,
@@ -18488,6 +18793,11 @@ class BaseFormStore {
       data: mobx__WEBPACK_IMPORTED_MODULE_0__.computed,
       isValid: mobx__WEBPACK_IMPORTED_MODULE_0__.computed
     });
+  }
+
+  clear() {
+    this.setInitialValues(this._template);
+    this.isLoading = true;
   }
 
   get patchedData() {
@@ -18924,7 +19234,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
+/* harmony import */ var mobx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mobx */ "./node_modules/mobx/dist/mobx.esm.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
 
 class CheckupResultsStore {
   constructor() {
@@ -18946,6 +19259,8 @@ class CheckupResultsStore {
         text: 'Нуждается в проведении дополнительного обследования (заключение не дано)'
       }];
     });
+
+    (0,mobx__WEBPACK_IMPORTED_MODULE_0__.makeAutoObservable)(this);
   }
 
 }
@@ -18965,12 +19280,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
-/* harmony import */ var mobx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! mobx */ "./node_modules/mobx/dist/mobx.esm.js");
+/* harmony import */ var mobx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! mobx */ "./node_modules/mobx/dist/mobx.esm.js");
 /* harmony import */ var _baseFormStore__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./baseFormStore */ "./OperatorClientApp/stores/baseFormStore.js");
 /* harmony import */ var _utils_toasts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/toasts */ "./OperatorClientApp/utils/toasts.js");
 /* harmony import */ var _utils_validation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/validation */ "./OperatorClientApp/utils/validation.js");
 /* harmony import */ var _utils_formatDate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/formatDate */ "./OperatorClientApp/utils/formatDate.js");
+/* harmony import */ var _newlyDiagnosedDiseasesEditorStore__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./newlyDiagnosedDiseasesEditorStore */ "./OperatorClientApp/stores/newlyDiagnosedDiseasesEditorStore.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -18981,7 +19298,14 @@ const medicalReportTemplate = {
   checkupResultId: 'empty',
   medicalReport: '',
   dateOfComplition: '',
-  registrationJournalEntryNumber: ''
+  registrationJournalEntryNumber: '',
+  checkupStarted: false,
+  isDisabled: false,
+  needExaminationAtOccupationalPathologyCenter: false,
+  needOutpatientExamunationAndTreatment: false,
+  needInpatientExamunationAndTreatment: false,
+  needSpaTreatment: false,
+  needDispensaryObservation: false
 };
 const validation = {
   checkupResultId: {
@@ -19004,12 +19328,31 @@ class CheckupStatusMedicalReportEditorStore extends _baseFormStore__WEBPACK_IMPO
         checkupResultId: checkup.result?.id ?? 'empty',
         medicalReport: checkup.medicalReport ?? '',
         dateOfComplition: (0,_utils_formatDate__WEBPACK_IMPORTED_MODULE_3__.formatDateStringForDateInput)(checkup.dateOfComplition),
-        registrationJournalEntryNumber: checkup.registrationJournalEntryNumber ?? ''
+        registrationJournalEntryNumber: checkup.registrationJournalEntryNumber ?? '',
+        checkupStarted: checkup.checkupStarted,
+        isDisabled: checkup.isDisabled,
+        needExaminationAtOccupationalPathologyCenter: checkup.needExaminationAtOccupationalPathologyCenter,
+        needOutpatientExamunationAndTreatment: checkup.needOutpatientExamunationAndTreatment,
+        needInpatientExamunationAndTreatment: checkup.needInpatientExamunationAndTreatment,
+        needSpaTreatment: checkup.needSpaTreatment,
+        needDispensaryObservation: checkup.needDispensaryObservation
       });
+      this.chronicSomaticDiseasesEditorStore.setInitialValues(checkup.newlyDiagnosedChronicSomaticDiseases);
+      this.occupationalDiseasesEditorStore.setInitialValues(checkup.newlyDiagnosedOccupationalDiseases);
     });
 
     _defineProperty(this, "onSubmit", async () => {
-      const handler = () => this.checkupStatusEditorStore.onUpdate(this.patchedData);
+      const data = this.patchedData;
+
+      if (this.chronicSomaticDiseasesEditorStore.patchedData.length) {
+        data.newlyDiagnosedChronicSomaticDiseases = this.chronicSomaticDiseasesEditorStore.patchedData;
+      }
+
+      if (this.occupationalDiseasesEditorStore.patchedData.length) {
+        data.newlyDiagnosedOccupationalDiseases = this.occupationalDiseasesEditorStore.patchedData;
+      }
+
+      const handler = () => this.checkupStatusEditorStore.onUpdate(data);
 
       const response = await this.onSendingData(handler);
       if (!response) return;
@@ -19017,10 +19360,19 @@ class CheckupStatusMedicalReportEditorStore extends _baseFormStore__WEBPACK_IMPO
     });
 
     this.checkupStatusEditorStore = checkupStatusEditorStore;
-    (0,mobx__WEBPACK_IMPORTED_MODULE_4__.makeObservable)(this, {
-      loadInitialValues: mobx__WEBPACK_IMPORTED_MODULE_4__.action,
-      onSubmit: mobx__WEBPACK_IMPORTED_MODULE_4__.action
+    this.chronicSomaticDiseasesEditorStore = new _newlyDiagnosedDiseasesEditorStore__WEBPACK_IMPORTED_MODULE_4__.default();
+    this.occupationalDiseasesEditorStore = new _newlyDiagnosedDiseasesEditorStore__WEBPACK_IMPORTED_MODULE_4__.default();
+    (0,mobx__WEBPACK_IMPORTED_MODULE_5__.makeObservable)(this, {
+      loadInitialValues: mobx__WEBPACK_IMPORTED_MODULE_5__.action,
+      onSubmit: mobx__WEBPACK_IMPORTED_MODULE_5__.action,
+      clear: mobx__WEBPACK_IMPORTED_MODULE_5__.override
     });
+  }
+
+  clear() {
+    super.clear();
+    this.chronicSomaticDiseasesEditorStore?.clear();
+    this.occupationalDiseasesEditorStore?.clear();
   }
 
 }
@@ -19186,6 +19538,7 @@ class ContingentCheckupStatusEditorStore {
     this.rootStore = rootStore;
     this.workPlaceEditorStore = new _workplaceEditorStore__WEBPACK_IMPORTED_MODULE_0__.default(this);
     this.checkupIndexValuesEditorStore = new _checkupIndexValuesEditorStore__WEBPACK_IMPORTED_MODULE_1__.default(rootStore, this);
+    this.checkupStatusMedicalReportEditorStore = new _checkupStatusMedicalReportEditorStore__WEBPACK_IMPORTED_MODULE_2__.default(this);
   }
 
 }
@@ -19604,6 +19957,13 @@ class ICD10Store {
       }
     });
 
+    _defineProperty(this, "getChapterById", id => {
+      if (!this.isLoaded) throw 'Невозможно найти главу до загрузки';
+      const result = this.chapters.find(chapter => chapter.id === id);
+      if (!result) throw `Глава МКБ-10 c id {${id}} не найдена`;
+      return result;
+    });
+
     (0,mobx__WEBPACK_IMPORTED_MODULE_2__.makeAutoObservable)(this);
   }
 
@@ -19651,6 +20011,64 @@ class ModalStore {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ModalStore);
+
+/***/ }),
+
+/***/ "./OperatorClientApp/stores/newlyDiagnosedDiseasesEditorStore.js":
+/*!***********************************************************************!*
+  !*** ./OperatorClientApp/stores/newlyDiagnosedDiseasesEditorStore.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var mobx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mobx */ "./node_modules/mobx/dist/mobx.esm.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+class NewlyDiagnosedDiseasesEditorStore {
+  constructor() {
+    _defineProperty(this, "setInitialValues", values => {
+      if (!values) return;
+      values.forEach(element => {
+        this._initialCasesByChapterId.set(element.chapterId, element.cases);
+
+        this.casesByChapterId.set(element.chapterId, element.cases);
+      });
+    });
+
+    _defineProperty(this, "updateValue", (chapterId, cases) => {
+      this.casesByChapterId.set(chapterId, cases);
+    });
+
+    _defineProperty(this, "clear", () => {
+      this._initialCasesByChapterId.clear();
+
+      this.casesByChapterId.clear();
+    });
+
+    this._initialCasesByChapterId = mobx__WEBPACK_IMPORTED_MODULE_0__.observable.map();
+    this.casesByChapterId = mobx__WEBPACK_IMPORTED_MODULE_0__.observable.map();
+    (0,mobx__WEBPACK_IMPORTED_MODULE_0__.makeAutoObservable)(this);
+  }
+
+  get patchedData() {
+    const data = [...this.casesByChapterId.entries()];
+    return data.filter(([chapterId, cases]) => {
+      return cases !== this._initialCasesByChapterId.get(chapterId);
+    }).map(([chapterId, cases]) => ({
+      chapterId,
+      cases
+    }));
+  }
+
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (NewlyDiagnosedDiseasesEditorStore);
 
 /***/ }),
 
@@ -20656,6 +21074,27 @@ class CancellationToken {
     this.isCancelled = false;
   }
 
+}
+
+/***/ }),
+
+/***/ "./OperatorClientApp/utils/compareICD10Chapters.js":
+/*!*********************************************************!*
+  !*** ./OperatorClientApp/utils/compareICD10Chapters.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => /* binding */ compareICD10Chapters
+/* harmony export */ });
+function compareICD10Chapters(a, b) {
+  const aBlock = a.block;
+  const bBlock = b.block;
+  if (aBlock > bBlock) return 1;
+  if (aBlock < bBlock) return -1;
+  return 0;
 }
 
 /***/ }),

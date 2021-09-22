@@ -14,6 +14,7 @@ import CheckupStatusActions from './components/checkupStatusActions';
 import LinkIcon from '../../components/linkIcon';
 import routes from '../../routes';
 import MedicalReportData from './components/medicalReportData';
+import MedicalReportModal from './components/medicalReportModal';
 
 
 const ContingentCheckupStatusPage = (props) => {
@@ -29,7 +30,7 @@ const ContingentCheckupStatusPage = (props) => {
 
     if (isLoading) return <Spinner />
 
-    const { workPlace, examination } = checkupStatus;
+    const { examination } = checkupStatus;
     const examinationUrl = routes.periodicExamination.getUrl(examination.id);
 
 
@@ -66,7 +67,10 @@ const ContingentCheckupStatusPage = (props) => {
                 checkupExaminationResultIndexes={checkupStatus.checkupExaminationResultIndexes}
                 onEditClick={onCheckupIndexValuesEditClick}
             />
-            <MedicalReportData checkupStatus={checkupStatus} />
+            <MedicalReportData
+                checkupStatus={checkupStatus}
+                onEditClick={onMedicalReportEditClick}
+            />
             <WorkPlaceEditorModal
                 editorStore={contingentCheckupStatusEditorStore.workPlaceEditorStore}
                 modalStore={contingentCheckupStatusStore.workPlaceModal}
@@ -76,6 +80,7 @@ const ContingentCheckupStatusPage = (props) => {
                 editorStore={contingentCheckupStatusEditorStore.checkupIndexValuesEditorStore}
                 modalStore={contingentCheckupStatusStore.checkupIndexValuesModal}
             />
+            <MedicalReportModal />
         </>
     )
 }

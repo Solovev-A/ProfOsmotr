@@ -3,12 +3,13 @@ import React from 'react';
 import useStore from './../../../hooks/useStore';
 import EditorModal from '../../../components/editorModal';
 import BaseMedicalReportEditorForm from './../../../components/baseMedicalReportEditorForm';
+import MedicalReportEditorForm from './medicalReportEditorForm';
 
 
 const MedicalReportModal = (props) => {
     const {
-        preliminaryExaminationsStore: { medicalReportModal },
-        preliminaryExaminationEditorStore: { checkupStatusMedicalReportEditorStore }
+        contingentCheckupStatusStore: { medicalReportModal },
+        contingentCheckupStatusEditorStore: { checkupStatusMedicalReportEditorStore }
     } = useStore();
 
     return (
@@ -18,6 +19,7 @@ const MedicalReportModal = (props) => {
             modalStore={medicalReportModal}
         >
             <BaseMedicalReportEditorForm formStore={checkupStatusMedicalReportEditorStore} />
+            <MedicalReportEditorForm formStore={checkupStatusMedicalReportEditorStore} />
         </EditorModal>
     )
 }

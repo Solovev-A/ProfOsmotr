@@ -1,5 +1,11 @@
+import { makeAutoObservable } from "mobx";
+
 class CheckupResultsStore {
     checkupResults = [];
+
+    constructor() {
+        makeAutoObservable(this);
+    }
 
     loadCheckupResults = async () => {
         // здесь может быть вызов api для загрузки списка возможных результатов
