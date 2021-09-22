@@ -145,5 +145,13 @@ namespace ProfOsmotr.Web.Api
                 async () => await examinationsService.UpdateContingentCheckupStatusAsync(request),
                 async () => await accessService.CanAccessContingentCheckupStatus(id));
         }
+
+        [HttpDelete("checkup-statuses/{id}")]
+        public async Task<IActionResult> DeleteCheckupStatus(int id)
+        {
+            return await queryHandler.HandleQuery<ContingentCheckupStatus>(
+                async () => await examinationsService.DeleteContingentCheckupStatusAsync(id),
+                async () => await accessService.CanAccessContingentCheckupStatus(id));
+        }
     }
 }

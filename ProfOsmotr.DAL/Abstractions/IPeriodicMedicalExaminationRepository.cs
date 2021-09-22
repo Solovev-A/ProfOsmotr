@@ -9,5 +9,7 @@ namespace ProfOsmotr.DAL.Abstractions
         Task<ContingentCheckupStatus> FindCheckupStatus(int id, bool noTracking = false);
 
         Task<int> GetCheckupStatusClinicIdAsync(int checkupStatusId);
+
+        void DeleteCheckupStatus(ContingentCheckupStatus checkupStatus);
     }
 }

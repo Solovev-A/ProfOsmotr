@@ -518,6 +518,26 @@ namespace ProfOsmotr.BL
             }
         }
 
+        public async Task<ContingentCheckupStatusResponse> DeleteContingentCheckupStatusAsync(int id)
+        {
+            var checkupStatus = await uow.PeriodicMedicalExaminations.FindCheckupStatus(id);
+            if (checkupStatus is null)
+            {
+                return new ContingentCheckupStatusResponse("Запись медосмотра не найдена");
+            }
+
+            try
+            {
+                uow.PeriodicMedicalExaminations.DeleteCheckupStatus(checkupStatus);
+                await uow.SaveAsync();
+                return new ContingentCheckupStatusResponse(checkupStatus);
+            }
+            catch (Exception ex)
+            {
+                return new ContingentCheckupStatusResponse(ex.Message);
+            }
+        }
+
         #region Protected methods
 
         protected async Task<ServiceActionResult> UpdateLastEditor(MedicalExamination examination, int editorId)

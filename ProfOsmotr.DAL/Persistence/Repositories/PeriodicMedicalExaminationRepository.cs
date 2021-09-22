@@ -16,6 +16,11 @@ namespace ProfOsmotr.DAL
         {
         }
 
+        public void DeleteCheckupStatus(ContingentCheckupStatus checkupStatus)
+        {
+            context.Set<ContingentCheckupStatus>().Remove(checkupStatus);
+        }
+
         public async Task<ContingentCheckupStatus> FindCheckupStatus(int id, bool noTracking = false)
         {
             var set = context.Set<ContingentCheckupStatus>();
