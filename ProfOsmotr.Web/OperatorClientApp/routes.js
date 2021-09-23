@@ -12,14 +12,14 @@ const routes = {
         path: getFullPath('/examinations/preliminary'),
         name: 'Предварительные осмотры'
     },
+    preliminaryExaminationsJournal: {
+        path: getFullPath('/examinations/preliminary/journal'),
+        name: 'Журнал предварительных осмотров'
+    },
     preliminaryExamination: {
         path: getFullPath('/examinations/preliminary/:id'),
         getUrl(id) { return getUrl(this.path, ':id', id) },
         name: 'Карта предварительного осмотра'
-    },
-    createPreliminaryExamination: {
-        path: getFullPath('/examinations/preliminary/new'),
-        name: 'Создание предварительного осмотра'
     },
     periodicExaminations: {
         path: getFullPath('/examinations/periodic'),

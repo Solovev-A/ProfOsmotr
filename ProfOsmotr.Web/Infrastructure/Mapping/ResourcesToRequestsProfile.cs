@@ -69,6 +69,8 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
             CreateMap<CreateEmployerDepartmentQuery, CreateEmployerDepartmentRequest>();
 
             CreateMap<CreateContingentCheckupStatusQuery, CreateContingentCheckupStatusRequest>();
+
+            CreateMap<PreliminaryExaminationJournalQuery, ExecutePreliminaryExaminationsJournalQueryRequest>();
         }
     }
 }

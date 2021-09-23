@@ -1,4 +1,4 @@
-import { runInAction, makeObservable, action, observable } from 'mobx';
+import { runInAction, makeObservable, action, observable, computed } from 'mobx';
 
 import BasePagedListStore from './basePagedListStore';
 import { handleResponseWithToasts } from '../utils/toasts';
@@ -13,15 +13,24 @@ class BaseExaminationsStore extends BasePagedListStore {
         });
 
         this.apiService = apiService;
+        this.journal = new BasePagedListStore({
+            loader: (search, page, itemsPerPage) => this.apiService.loadJournal(this.journalYear, page, itemsPerPage),
+            initialListLoader: () => this.apiService.loadJournal(new Date().getFullYear(), 1, 20),
+            minQueryLength: 0
+        })
         this.resetExamination();
+        this.resetJournal();
         makeObservable(this, {
+            journalYear: observable,
             examination: observable,
             examinationSlug: observable,
             isExaminationLoading: observable,
             loadExamination: action,
             resetExamination: action.bound,
+            resetJournal: action.bound,
             removeExamination: action,
-            setExaminationSlug: action
+            setExaminationSlug: action,
+            setJournalYear: action
         })
     }
 
@@ -29,6 +38,10 @@ class BaseExaminationsStore extends BasePagedListStore {
         this.examination = null;
         this.examinationSlug = null;
         this.isExaminationLoading = true;
+    }
+
+    resetJournal() {
+        this.journalYear = new Date().getFullYear();
     }
 
     loadExamination = async (cancellationToken) => {
@@ -57,6 +70,24 @@ class BaseExaminationsStore extends BasePagedListStore {
 
     setExaminationSlug = (newSlug) => {
         this.examinationSlug = newSlug;
+    }
+
+    setJournalYear = (value) => {
+        this.journalYear = value;
+        this.journal.loadPage(1);
+    }
+
+    get journalYearsRange() {
+        const start = 2020;
+        const end = new Date().getFullYear(); // текущий год
+
+        const result = [];
+
+        for (let i = start; i <= end; i++) {
+            result.push(i);
+        }
+
+        return result;
     }
 }
 

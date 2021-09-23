@@ -125,5 +125,19 @@ namespace ProfOsmotr.Web.Api
                 async () => await examinationsService.DeletePreliminaryExaminationAsync(id),
                 async () => await accessService.CanAccessPreliminaryExaminationAsync(id));
         }
+
+        [HttpGet("journal")]
+        public async Task<IActionResult> GetJournal(PreliminaryExaminationJournalQuery query)
+        {
+            if (!accessService.TryGetUserClinicId(out int clinicId))
+                return Forbid();
+
+            var request = mapper.Map<ExecutePreliminaryExaminationsJournalQueryRequest>(query);
+            request.ClinicId = clinicId;
+
+            return await queryHandler.HandleQuery<QueryResult<PreliminaryMedicalExamination>,
+                PagedResource<PreliminaryMedicalExaminationsJournalItemResource>>(
+                async () => await examinationsService.GetPreliminaryMedicalExaminationsJournalAsync(request));
+        }
     }
 }

@@ -13,12 +13,13 @@ import PreliminaryExaminationsListPage from './pages/preliminaryExaminationsList
 import PreliminaryExaminationPage from './pages/preliminaryExamination';
 import PeriodicExaminationsListPage from './pages/periodicExaminationsList/index';
 import ContingentCheckupStatusPage from './pages/contingentCheckupStatus';
+import PeriodicExaminationPage from './pages/periodicExamination/index';
+import PreliminaryExaminationsJournalPage from './pages/preliminaryExaminationsJournal';
 import ErrorBoundary from './components/errorBoundary';
 import routes from './routes';
 
 import 'react-toastify/dist/ReactToastify.min.css';
 import './style.css';
-import PeriodicExaminationPage from './pages/periodicExamination/index';
 
 const App = () => (
     <Router>
@@ -34,6 +35,7 @@ const App = () => (
                 <Route path={routes.employer.path} component={EmployerPage} exact />
                 <Route path={routes.editEmployer.path} component={EmployerEditorPage} exact />
                 <Route path={routes.preliminaryExaminations.path} component={PreliminaryExaminationsListPage} exact />
+                <Route path={routes.preliminaryExaminationsJournal.path} component={PreliminaryExaminationsJournalPage} />
                 <Route path={routes.preliminaryExamination.path} component={PreliminaryExaminationPage} />
                 <Route path={routes.periodicExaminations.path} component={PeriodicExaminationsListPage} exact />
                 <Route path={routes.contingentCheckupStatus.path} component={ContingentCheckupStatusPage} />

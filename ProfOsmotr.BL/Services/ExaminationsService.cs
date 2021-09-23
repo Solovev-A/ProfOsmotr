@@ -236,6 +236,29 @@ namespace ProfOsmotr.BL
             }
         }
 
+        public async Task<QueryResponse<PreliminaryMedicalExamination>> GetPreliminaryMedicalExaminationsJournalAsync(
+            ExecutePreliminaryExaminationsJournalQueryRequest request)
+        {
+            try
+            {
+                var result = await uow.PreliminaryMedicalExaminations.ExecuteQuery(
+                                start: request.Start,
+                                length: request.ItemsPerPage,
+                                customFilter: (ex) => ex.ClinicId == request.ClinicId
+                                        && ex.CheckupStatus.DateOfCompletion.HasValue
+                                        && ex.CheckupStatus.RegistrationJournalEntryNumber.HasValue
+                                        && ex.CheckupStatus.DateOfCompletion.Value.Year == request.Year,
+                                orderingSelector: (ex) => ex.CheckupStatus.RegistrationJournalEntryNumber.Value,
+                                descending: false);
+
+                return new QueryResponse<PreliminaryMedicalExamination>(result);
+            }
+            catch (Exception ex)
+            {
+                return new QueryResponse<PreliminaryMedicalExamination>(ex.Message);
+            }
+        }
+
         public async Task<PeriodicMedicalExaminationResponse> GetPeriodicMedicalExaminationAsync(int id)
         {
             var result = await uow.PeriodicMedicalExaminations.FindExaminationAsync(id, true);

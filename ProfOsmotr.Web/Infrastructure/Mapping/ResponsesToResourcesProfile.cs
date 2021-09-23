@@ -220,6 +220,14 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
                 .ForMember(d => d.ChapterId, conf => conf.MapFrom(s => s.ICD10ChapterId));
 
             CreateMap<ICD10Chapter, ICD10ChapterResource>();
+
+            CreateMap<PreliminaryMedicalExamination, PreliminaryMedicalExaminationsJournalItemResource>()
+                .ForMember(d => d.DateOfCompletion, conf => conf.MapFrom(s => ToString(s.CheckupStatus.DateOfCompletion)))
+                .ForMember(d => d.Patient, conf => conf.MapFrom(s => s.CheckupStatus.Patient))
+                .ForMember(d => d.RegistrationJournalEntryNumber, conf => conf.MapFrom(s => s.CheckupStatus.RegistrationJournalEntryNumber));
+
+            CreateMap<Patient, JournalPatientResource>()
+                .ForMember(d => d.DateOfBirth, conf => conf.MapFrom(s => ToString(s.DateOfBirth)));
         }
 
         private string GetFullItemKey(OrderItem item)
