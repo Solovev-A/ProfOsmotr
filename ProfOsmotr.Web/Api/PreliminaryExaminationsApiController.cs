@@ -127,12 +127,12 @@ namespace ProfOsmotr.Web.Api
         }
 
         [HttpGet("journal")]
-        public async Task<IActionResult> GetJournal(PreliminaryExaminationJournalQuery query)
+        public async Task<IActionResult> GetJournal(ExaminationJournalQuery query)
         {
             if (!accessService.TryGetUserClinicId(out int clinicId))
                 return Forbid();
 
-            var request = mapper.Map<ExecutePreliminaryExaminationsJournalQueryRequest>(query);
+            var request = mapper.Map<ExecuteExaminationsJournalQueryRequest>(query);
             request.ClinicId = clinicId;
 
             return await queryHandler.HandleQuery<QueryResult<PreliminaryMedicalExamination>,

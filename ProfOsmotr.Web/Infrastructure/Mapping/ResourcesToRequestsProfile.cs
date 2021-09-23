@@ -70,7 +70,7 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
 
             CreateMap<CreateContingentCheckupStatusQuery, CreateContingentCheckupStatusRequest>();
 
-            CreateMap<PreliminaryExaminationJournalQuery, ExecutePreliminaryExaminationsJournalQueryRequest>();
+            CreateMap<ExaminationJournalQuery, ExecuteExaminationsJournalQueryRequest>();
         }
     }
 }

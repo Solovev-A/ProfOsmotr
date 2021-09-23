@@ -93,6 +93,20 @@ namespace ProfOsmotr.Web.Api
                 async () => await accessService.CanAccessPeriodicExaminationAsync(id));
         }
 
+        [HttpGet("journal")]
+        public async Task<IActionResult> GetJournal(ExaminationJournalQuery query)
+        {
+            if (!accessService.TryGetUserClinicId(out int clinicId))
+                return Forbid();
+
+            var request = mapper.Map<ExecuteExaminationsJournalQueryRequest>(query);
+            request.ClinicId = clinicId;
+
+            return await queryHandler.HandleQuery<QueryResult<PeriodicMedicalExamination>,
+                PagedResource<PeriodicMedicalExaminationListItemResource>>(
+                async () => await examinationsService.GetPeriodicMedicalExaminationsJournalAsync(request));
+        }
+
         [HttpPost("{examinationId}/checkup-statuses")]
         [ModelStateValidationFilter]
         public async Task<IActionResult> CreateCheckupStatus(int examinationId, [FromBody] CreateContingentCheckupStatusQuery query)

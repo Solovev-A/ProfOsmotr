@@ -10,6 +10,7 @@ import useListPage from '../../hooks/useListPage';
 import ItemsList from './../../components/itemsList';
 import routes from './../../routes';
 import PreliminaryExaminationListActions from './components/preliminaryExaminationListActions';
+import ExaminationStatusText from './../../components/examinationStatusText';
 
 const listColumns = [{
     title: 'Работник',
@@ -45,12 +46,7 @@ const listColumns = [{
 }, {
     title: 'Статус',
     width: '20%',
-    render: (item) => {
-        const className = item.isCompleted ? 'text-success' : 'text-info';
-        return (
-            <span className={className}>{item.isCompleted ? 'Завершен' : 'В работе'}</span>
-        )
-    }
+    render: (item) => <ExaminationStatusText examination={item} />
 }, {
     title: 'Дата завершения',
     render: (item) => item.dateOfCompletion ?? '-'

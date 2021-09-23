@@ -15,6 +15,7 @@ import PeriodicExaminationsListPage from './pages/periodicExaminationsList/index
 import ContingentCheckupStatusPage from './pages/contingentCheckupStatus';
 import PeriodicExaminationPage from './pages/periodicExamination/index';
 import PreliminaryExaminationsJournalPage from './pages/preliminaryExaminationsJournal';
+import PeriodicExaminationsJournalPage from './pages/periodicExaminationsJournal';
 import ErrorBoundary from './components/errorBoundary';
 import routes from './routes';
 
@@ -38,6 +39,7 @@ const App = () => (
                 <Route path={routes.preliminaryExaminationsJournal.path} component={PreliminaryExaminationsJournalPage} />
                 <Route path={routes.preliminaryExamination.path} component={PreliminaryExaminationPage} />
                 <Route path={routes.periodicExaminations.path} component={PeriodicExaminationsListPage} exact />
+                <Route path={routes.periodicExaminationsJournal.path} component={PeriodicExaminationsJournalPage} />
                 <Route path={routes.contingentCheckupStatus.path} component={ContingentCheckupStatusPage} />
                 <Route path={routes.periodicExamination.path} component={PeriodicExaminationPage} />
             </Switch>

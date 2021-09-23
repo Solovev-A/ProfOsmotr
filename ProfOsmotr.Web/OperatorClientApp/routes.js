@@ -25,6 +25,10 @@ const routes = {
         path: getFullPath('/examinations/periodic'),
         name: 'Периодические осмотры'
     },
+    periodicExaminationsJournal: {
+        path: getFullPath('/examinations/periodic/journal'),
+        name: 'Журнал периодических осмотров'
+    },
     periodicExamination: {
         path: getFullPath('/examinations/periodic/:id'),
         getUrl(id) { return getUrl(this.path, ':id', id) },

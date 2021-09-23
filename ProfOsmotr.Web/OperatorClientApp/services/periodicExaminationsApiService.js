@@ -12,6 +12,12 @@ class PeriodicExaminationsApiService extends ApiServiceBase {
         return api.get(`${this.baseUrl}/actual`);
     }
 
+    loadJournal = (year, page, itemsPerPage) => {
+        return api.get(`${this.baseUrl}/journal`, {
+            params: { year, page, itemsPerPage }
+        })
+    }
+
     createCheckupStatus = (examinationId, data) => {
         return api.post(`${this.baseUrl}/${examinationId}/${this.checkupStatusesPath}`, data);
     }

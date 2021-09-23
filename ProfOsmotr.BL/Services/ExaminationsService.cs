@@ -237,7 +237,7 @@ namespace ProfOsmotr.BL
         }
 
         public async Task<QueryResponse<PreliminaryMedicalExamination>> GetPreliminaryMedicalExaminationsJournalAsync(
-            ExecutePreliminaryExaminationsJournalQueryRequest request)
+            ExecuteExaminationsJournalQueryRequest request)
         {
             try
             {
@@ -303,6 +303,27 @@ namespace ProfOsmotr.BL
                     descending: true,
                     length: 20,
                     customFilter: ex => ex.ClinicId == clinicId);
+
+                return new QueryResponse<PeriodicMedicalExamination>(result);
+            }
+            catch (Exception ex)
+            {
+                return new QueryResponse<PeriodicMedicalExamination>(ex.Message);
+            }
+        }
+
+        public async Task<QueryResponse<PeriodicMedicalExamination>> GetPeriodicMedicalExaminationsJournalAsync(
+            ExecuteExaminationsJournalQueryRequest request)
+        {
+            try
+            {
+                var result = await uow.PeriodicMedicalExaminations.ExecuteQuery(
+                                start: request.Start,
+                                length: request.ItemsPerPage,
+                                customFilter: (ex) => ex.ClinicId == request.ClinicId
+                                        && ex.ExaminationYear == request.Year,
+                                orderingSelector: (ex) => ex.ReportDate,
+                                descending: false);
 
                 return new QueryResponse<PeriodicMedicalExamination>(result);
             }

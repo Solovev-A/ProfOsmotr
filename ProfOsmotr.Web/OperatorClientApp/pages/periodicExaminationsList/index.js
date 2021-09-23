@@ -9,6 +9,8 @@ import Card from './../../components/card';
 import useListPage from '../../hooks/useListPage';
 import ItemsList from './../../components/itemsList';
 import routes from './../../routes';
+import ExaminationStatusText from './../../components/examinationStatusText';
+import Actions from './components/actions';
 
 
 const listColumns = [{
@@ -22,12 +24,7 @@ const listColumns = [{
 }, {
     title: 'Статус',
     width: '20%',
-    render: (item) => {
-        const className = item.isCompleted ? 'text-success' : 'text-info';
-        return (
-            <span className={className}>{item.isCompleted ? 'Завершен' : 'В работе'}</span>
-        )
-    }
+    render: (item) => <ExaminationStatusText examination={item} />
 }, {
     title: 'Дата акта',
     render: (item) => item.reportDate ?? '-'
@@ -42,6 +39,7 @@ const PeriodicExaminationsListPage = observer((props) => {
 
     return (
         <>
+            <Actions />
             <SearchInput placeholder="название организации" disabled={inProgress} onSearch={onSearch} />
             <Card title={inSearch ? `Результаты поиска: ${totalCount}` : "Недавно добавленные медосмотры"}>
                 {inProgress
