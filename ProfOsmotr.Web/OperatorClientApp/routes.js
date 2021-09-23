@@ -1,86 +1,91 @@
 ﻿const baseUrl = '/Operator';
 
-const getFullPath = path => baseUrl + path;
-
-const getUrl = (path, slug, slugValue) => {
-    return path.replace(slug, slugValue);
-}
-
-const routes = {
-    baseUrl,
-    preliminaryExaminations: {
-        path: getFullPath('/examinations/preliminary'),
-        name: 'Предварительные осмотры'
-    },
-    preliminaryExaminationsJournal: {
-        path: getFullPath('/examinations/preliminary/journal'),
-        name: 'Журнал предварительных осмотров'
-    },
-    preliminaryExamination: {
-        path: getFullPath('/examinations/preliminary/:id'),
-        getUrl(id) { return getUrl(this.path, ':id', id) },
-        name: 'Карта предварительного осмотра'
-    },
-    periodicExaminations: {
-        path: getFullPath('/examinations/periodic'),
-        name: 'Периодические осмотры'
-    },
-    periodicExaminationsJournal: {
-        path: getFullPath('/examinations/periodic/journal'),
-        name: 'Журнал периодических осмотров'
-    },
-    periodicExamination: {
-        path: getFullPath('/examinations/periodic/:id'),
-        getUrl(id) { return getUrl(this.path, ':id', id) },
-        name: 'Карта периодического осмотра'
-    },
-    contingentCheckupStatus: {
-        path: getFullPath('/examinations/periodic/checkup-statuses/:id'),
-        getUrl(id) { return getUrl(this.path, ':id', id) },
-        name: 'Карта периодического медосмотра пациента'
-    },
-    patients: {
-        path: getFullPath('/patients'),
-        name: 'Пациенты'
-    },
-    patient: {
-        path: getFullPath('/patients/:id'),
-        getUrl(id) { return getUrl(this.path, ':id', id) },
-        name: 'Карта пациента'
-    },
-    employers: {
-        path: getFullPath('/employers'),
-        name: 'Организации'
-    },
-    employer: {
-        path: getFullPath('/employers/:id'),
-        getUrl(id) { return getUrl(this.path, ':id', id) },
-        name: 'Карта организации'
-    },
-    createEmployer: {
-        path: getFullPath('/employers/new'),
-        name: 'Добавление новой организации'
-    },
-    editEmployer: {
-        path: getFullPath('/employers/:id/edit'),
-        getUrl(id) { return getUrl(this.path, ':id', id) },
-        name: 'Редактирование пациента'
-    },
-    statistics: {
-        path: getFullPath('/statistics'),
-        name: 'Статистика'
-    },
-    createPatient: {
-        path: getFullPath('/patients/new'),
-        name: 'Добавление нового пациента'
-    },
-    editPatient: {
-        path: getFullPath('/patients/:id/edit'),
-        getUrl(id) { return getUrl(this.path, ':id', id) },
-        name: 'Редактирование пациента'
+class Route {
+    constructor({ path, name }) {
+        this.path = baseUrl + path;
+        this.name = name;
     }
 }
 
+class RouteWithSlug extends Route {
+    constructor({ path, name, slug = ':id' }) {
+        super({ path, name });
+        this.slug = slug;
+    }
+
+    getUrl = (slugValue) => {
+        return this.path.replace(this.slug, slugValue);
+    }
+}
+
+
+const routes = {
+    baseUrl,
+    preliminaryExaminations: new Route({
+        path: '/examinations/preliminary',
+        name: 'Предварительные осмотры'
+    }),
+    preliminaryExaminationsJournal: new Route({
+        path: '/examinations/preliminary/journal',
+        name: 'Журнал предварительных осмотров'
+    }),
+    preliminaryExamination: new RouteWithSlug({
+        path: '/examinations/preliminary/:id',
+        name: 'Карта предварительного осмотра'
+    }),
+    periodicExaminations: new Route({
+        path: '/examinations/periodic',
+        name: 'Периодические осмотры'
+    }),
+    periodicExaminationsJournal: new Route({
+        path: '/examinations/periodic/journal',
+        name: 'Журнал периодических осмотров'
+    }),
+    periodicExamination: new RouteWithSlug({
+        path: '/examinations/periodic/:id',
+        name: 'Карта периодического осмотра'
+    }),
+    contingentCheckupStatus: new RouteWithSlug({
+        path: '/examinations/periodic/checkup-statuses/:id',
+        name: 'Карта периодического медосмотра работника'
+    }),
+    patients: new Route({
+        path: '/patients',
+        name: 'Пациенты'
+    }),
+    patient: new RouteWithSlug({
+        path: '/patients/:id',
+        name: 'Карта пациента'
+    }),
+    createPatient: new Route({
+        path: '/patients/new',
+        name: 'Добавление нового пациента'
+    }),
+    editPatient: new RouteWithSlug({
+        path: '/patients/:id/edit',
+        name: 'Редактирование пациента'
+    }),
+    employers: new Route({
+        path: '/employers',
+        name: 'Организации'
+    }),
+    employer: new RouteWithSlug({
+        path: '/employers/:id',
+        name: 'Карта организации'
+    }),
+    createEmployer: new Route({
+        path: '/employers/new',
+        name: 'Добавление новой организации'
+    }),
+    editEmployer: new RouteWithSlug({
+        path: '/employers/:id/edit',
+        name: 'Редактирование пациента'
+    }),
+    statistics: new Route({
+        path: '/statistics',
+        name: 'Статистика'
+    })
+}
 
 
 export default routes;
