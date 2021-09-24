@@ -195,6 +195,10 @@ namespace ProfOsmotr.BL
             {
                 examination.CheckupStatus.DateOfCompletion = query.DateOfComplition;
             }
+            if (!examination.CheckupStatus.CheckupResultId.HasValue && examination.CheckupStatus.DateOfCompletion.HasValue)
+            {
+                return new PreliminaryMedicalExaminationResponse("Необходимо указать результат для завершенного медосмотра");
+            }
             if (query.IsFieldPresent(nameof(query.MedicalReport)))
             {
                 examination.CheckupStatus.MedicalReport = query.MedicalReport;
@@ -548,6 +552,14 @@ namespace ProfOsmotr.BL
             if (!checkupStatus.CheckupStarted && checkupStatus.DateOfCompletion.HasValue)
             {
                 return new ContingentCheckupStatusResponse("Медосмотр с датой завершения не может быть не начатым");
+            }
+            if (!checkupStatus.CheckupStarted && checkupStatus.CheckupResultId.HasValue)
+            {
+                return new ContingentCheckupStatusResponse("Медосмотр с результатом не может быть не начатым");
+            }
+            if (!checkupStatus.CheckupResultId.HasValue && checkupStatus.DateOfCompletion.HasValue)
+            {
+                return new ContingentCheckupStatusResponse("Необходимо указать результат для завершенного медосмотра");
             }
             if (query.IsFieldPresent(nameof(query.MedicalReport)))
             {

@@ -46,6 +46,7 @@ const BaseMedicalReportEditorForm = ({ formStore }) => {
                     <InputField label='Дата завершения'
                         name='dateOfComplition'
                         formStore={formStore}
+                        disabled={formStore.model.checkupResultId === 'empty'}
                         type='date'
                     />
                 </div>

@@ -16042,6 +16042,7 @@ const BaseMedicalReportEditorForm = ({
     label: "\u0414\u0430\u0442\u0430 \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043D\u0438\u044F",
     name: "dateOfComplition",
     formStore: formStore,
+    disabled: formStore.model.checkupResultId === 'empty',
     type: "date"
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "col"
@@ -19070,7 +19071,7 @@ const MedicalReportEditorForm = ({
     label: "\u041C\u0435\u0434\u043E\u0441\u043C\u043E\u0442\u0440 \u043D\u0430\u0447\u0430\u0442",
     name: "checkupStarted",
     formStore: formStore,
-    disabled: !!formStore.model.dateOfComplition.length,
+    disabled: formStore.model.checkupResultId !== 'empty',
     inline: true
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_2__.default, {
     label: "\u0418\u043C\u0435\u0435\u0442 \u0441\u0442\u043E\u0439\u043A\u0443\u044E \u0441\u0442\u0435\u043F\u0435\u043D\u044C \u0443\u0442\u0440\u0430\u0442\u044B \u0442\u0440\u0443\u0434\u043E\u0441\u043F\u043E\u0441\u043E\u0431\u043D\u043E\u0441\u0442\u0438",
@@ -22764,6 +22765,13 @@ class CheckupStatusMedicalReportEditorStore extends _baseFormStore__WEBPACK_IMPO
       loadInitialValues: mobx__WEBPACK_IMPORTED_MODULE_4__.action,
       onSubmit: mobx__WEBPACK_IMPORTED_MODULE_4__.action,
       clear: mobx__WEBPACK_IMPORTED_MODULE_4__.override
+    });
+    (0,mobx__WEBPACK_IMPORTED_MODULE_4__.reaction)(() => this.model.checkupResultId, value => {
+      if (value === emptyCheckupResultId) {
+        this.updateProperty('dateOfComplition', '');
+      } else {
+        this.updateProperty('checkupStarted', true);
+      }
     });
   }
 

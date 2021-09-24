@@ -1,4 +1,4 @@
-import { makeObservable, action, override } from 'mobx';
+import { makeObservable, action, override, reaction } from 'mobx';
 
 import BaseFormStore from './baseFormStore';
 import { handleResponseWithToasts } from '../utils/toasts';
@@ -34,6 +34,16 @@ class CheckupStatusMedicalReportEditorStore extends BaseFormStore {
             onSubmit: action,
             clear: override
         })
+
+        reaction(() => this.model.checkupResultId,
+            (value) => {
+                if (value === emptyCheckupResultId) {
+                    this.updateProperty('dateOfComplition', '');
+                }
+                else {
+                    this.updateProperty('checkupStarted', true);
+                }
+            })
     }
 
     loadInitialValues = async () => {

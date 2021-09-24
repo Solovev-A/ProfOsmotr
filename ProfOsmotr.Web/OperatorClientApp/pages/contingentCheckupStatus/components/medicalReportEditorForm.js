@@ -11,7 +11,7 @@ const MedicalReportEditorForm = ({ formStore }) => {
                 label="Медосмотр начат"
                 name="checkupStarted"
                 formStore={formStore}
-                disabled={!!formStore.model.dateOfComplition.length}
+                disabled={formStore.model.checkupResultId !== 'empty'}
                 inline
             />
             <InputCheckbox
