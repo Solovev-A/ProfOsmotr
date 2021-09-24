@@ -452,6 +452,11 @@ namespace ProfOsmotr.BL
 
             mapper.Map(request.Query, examination);
 
+            if (request.Query.IsFieldPresent(nameof(request.Query.ReportDate)))
+            {
+                examination.Completed = request.Query.ReportDate.HasValue;
+            }
+
             try
             {
                 await uow.SaveAsync();
@@ -535,7 +540,14 @@ namespace ProfOsmotr.BL
             if (query.IsFieldPresent(nameof(query.DateOfComplition)))
             {
                 checkupStatus.DateOfCompletion = query.DateOfComplition;
-                checkupStatus.CheckupStarted = true;
+                if (query.DateOfComplition.HasValue)
+                {
+                    checkupStatus.CheckupStarted = true;
+                }
+            }
+            if (!checkupStatus.CheckupStarted && checkupStatus.DateOfCompletion.HasValue)
+            {
+                return new ContingentCheckupStatusResponse("Медосмотр с датой завершения не может быть не начатым");
             }
             if (query.IsFieldPresent(nameof(query.MedicalReport)))
             {
@@ -760,6 +772,8 @@ namespace ProfOsmotr.BL
                 }
                 else
                 {
+                    if (request.Cases == 0) continue;
+
                     ICD10Chapter chapter = await icd10Service.FindChapterAsync(request.ChapterId);
                     if (chapter is null)
                     {

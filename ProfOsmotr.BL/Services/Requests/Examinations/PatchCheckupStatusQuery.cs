@@ -16,7 +16,7 @@ namespace ProfOsmotr.BL
 
         public string MedicalReport { get; set; }
 
-        public DateTime DateOfComplition { get; set; }
+        public DateTime? DateOfComplition { get; set; }
 
         public int RegistrationJournalEntryNumber { get; set; }
     }

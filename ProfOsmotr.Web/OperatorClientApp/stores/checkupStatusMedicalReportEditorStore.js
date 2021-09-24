@@ -2,13 +2,13 @@ import { makeObservable, action, override } from 'mobx';
 
 import BaseFormStore from './baseFormStore';
 import { handleResponseWithToasts } from '../utils/toasts';
-import { requiredString } from '../utils/validation';
 import { formatDateStringForDateInput } from '../utils/formatDate';
 import NewlyDiagnosedDiseasesEditorStore from './newlyDiagnosedDiseasesEditorStore';
 
+const emptyCheckupResultId = 'empty';
 
 const medicalReportTemplate = {
-    checkupResultId: 'empty',
+    checkupResultId: emptyCheckupResultId,
     medicalReport: '',
     dateOfComplition: '',
     registrationJournalEntryNumber: '',
@@ -21,20 +21,10 @@ const medicalReportTemplate = {
     needDispensaryObservation: false
 }
 
-const validation = {
-    checkupResultId: {
-        isValid: (value) => value !== 'empty',
-        errorMessage: 'Укажите результат медосмотра'
-    },
-    dateOfComplition: {
-        isValid: requiredString,
-        errorMessage: 'Укажите дату завершения осмотра'
-    }
-}
 
 class CheckupStatusMedicalReportEditorStore extends BaseFormStore {
     constructor(checkupStatusEditorStore) {
-        super(medicalReportTemplate, validation);
+        super(medicalReportTemplate);
         this.checkupStatusEditorStore = checkupStatusEditorStore;
         this.chronicSomaticDiseasesEditorStore = new NewlyDiagnosedDiseasesEditorStore();
         this.occupationalDiseasesEditorStore = new NewlyDiagnosedDiseasesEditorStore();
@@ -50,7 +40,7 @@ class CheckupStatusMedicalReportEditorStore extends BaseFormStore {
         const checkup = await this.checkupStatusEditorStore.loadCheckupStatus();
 
         this.setInitialValues({
-            checkupResultId: checkup.result?.id ?? 'empty',
+            checkupResultId: checkup.result?.id ?? emptyCheckupResultId,
             medicalReport: checkup.medicalReport ?? '',
             dateOfComplition: formatDateStringForDateInput(checkup.dateOfComplition),
             registrationJournalEntryNumber: checkup.registrationJournalEntryNumber ?? '',
@@ -81,6 +71,7 @@ class CheckupStatusMedicalReportEditorStore extends BaseFormStore {
         if (this.occupationalDiseasesEditorStore.patchedData.length) {
             data.newlyDiagnosedOccupationalDiseases = this.occupationalDiseasesEditorStore.patchedData;
         }
+        if (data.checkupResultId === emptyCheckupResultId) data.checkupResultId = null;
 
         const handler = () => this.checkupStatusEditorStore.onUpdate(data);
         const response = await this.onSendingData(handler);

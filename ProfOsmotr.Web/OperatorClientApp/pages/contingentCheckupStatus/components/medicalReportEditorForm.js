@@ -1,4 +1,6 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
+
 import InputCheckbox from './../../../components/forms/observers/inputCheckbox';
 import NewlyDiagnosedDiseasesEditor from './newlyDiagnosedDiseasesEditor';
 
@@ -9,6 +11,7 @@ const MedicalReportEditorForm = ({ formStore }) => {
                 label="Медосмотр начат"
                 name="checkupStarted"
                 formStore={formStore}
+                disabled={!!formStore.model.dateOfComplition.length}
                 inline
             />
             <InputCheckbox
@@ -61,4 +64,4 @@ const MedicalReportEditorForm = ({ formStore }) => {
     );
 }
 
-export default MedicalReportEditorForm;
+export default observer(MedicalReportEditorForm);

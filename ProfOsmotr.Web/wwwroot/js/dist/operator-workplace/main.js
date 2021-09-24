@@ -18968,10 +18968,6 @@ const MedicalReportData = ({
   onEditClick
 }) => {
   const {
-    result,
-    medicalReport,
-    dateOfComplition,
-    registrationJournalEntryNumber,
     checkupStarted,
     isDisabled,
     needExaminationAtOccupationalPathologyCenter,
@@ -18982,11 +18978,10 @@ const MedicalReportData = ({
     newlyDiagnosedChronicSomaticDiseases,
     newlyDiagnosedOccupationalDiseases
   } = checkupStatus;
-  const hasNoData = !result && !medicalReport && !dateOfComplition && !registrationJournalEntryNumber;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_card__WEBPACK_IMPORTED_MODULE_2__.EditableCard, {
     title: "\u041C\u0435\u0434\u0438\u0446\u0438\u043D\u0441\u043A\u043E\u0435 \u0437\u0430\u043A\u043B\u044E\u0447\u0435\u043D\u0438\u0435",
     onEditClick: onEditClick
-  }, hasNoData ? null : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_checkupStatusMedicalReportGeneralData__WEBPACK_IMPORTED_MODULE_4__.default, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_checkupStatusMedicalReportGeneralData__WEBPACK_IMPORTED_MODULE_4__.default, {
     checkup: checkupStatus
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_dataRow__WEBPACK_IMPORTED_MODULE_3__.default, {
     title: "\u041C\u0435\u0434\u043E\u0441\u043C\u043E\u0442\u0440 \u043D\u0430\u0447\u0430\u0442",
@@ -19015,7 +19010,7 @@ const MedicalReportData = ({
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_dataRow__WEBPACK_IMPORTED_MODULE_3__.default, {
     title: "\u0412\u043F\u0435\u0440\u0432\u044B\u0435 \u0432\u044B\u044F\u0432\u043B\u0435\u043D\u043D\u044B\u0435 \u043F\u0440\u043E\u0444\u0435\u0441\u0441\u0438\u043E\u043D\u0430\u043B\u044C\u043D\u044B\u0435 \u0437\u0430\u0431\u043E\u043B\u0435\u0432\u0430\u043D\u0438\u044F",
     value: renderDiseasesList(newlyDiagnosedOccupationalDiseases)
-  })));
+  }));
 };
 
 const renderBooleanValue = value => {
@@ -19060,8 +19055,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../../components/forms/observers/inputCheckbox */ "./OperatorClientApp/components/forms/observers/inputCheckbox.js");
-/* harmony import */ var _newlyDiagnosedDiseasesEditor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./newlyDiagnosedDiseasesEditor */ "./OperatorClientApp/pages/contingentCheckupStatus/components/newlyDiagnosedDiseasesEditor.js");
+/* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
+/* harmony import */ var _components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../../components/forms/observers/inputCheckbox */ "./OperatorClientApp/components/forms/observers/inputCheckbox.js");
+/* harmony import */ var _newlyDiagnosedDiseasesEditor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./newlyDiagnosedDiseasesEditor */ "./OperatorClientApp/pages/contingentCheckupStatus/components/newlyDiagnosedDiseasesEditor.js");
+
 
 
 
@@ -19069,51 +19066,52 @@ __webpack_require__.r(__webpack_exports__);
 const MedicalReportEditorForm = ({
   formStore
 }) => {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_1__.default, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_2__.default, {
     label: "\u041C\u0435\u0434\u043E\u0441\u043C\u043E\u0442\u0440 \u043D\u0430\u0447\u0430\u0442",
     name: "checkupStarted",
     formStore: formStore,
+    disabled: !!formStore.model.dateOfComplition.length,
     inline: true
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_1__.default, {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_2__.default, {
     label: "\u0418\u043C\u0435\u0435\u0442 \u0441\u0442\u043E\u0439\u043A\u0443\u044E \u0441\u0442\u0435\u043F\u0435\u043D\u044C \u0443\u0442\u0440\u0430\u0442\u044B \u0442\u0440\u0443\u0434\u043E\u0441\u043F\u043E\u0441\u043E\u0431\u043D\u043E\u0441\u0442\u0438",
     name: "isDisabled",
     formStore: formStore,
     inline: true
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_1__.default, {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_2__.default, {
     label: "\u041D\u0443\u0436\u0434\u0430\u0435\u0442\u0441\u044F \u0432 \u0434\u043E\u043E\u0431\u0441\u043B\u0435\u0434\u043E\u0432\u0430\u043D\u0438\u0438 \u0432 \u0446\u0435\u043D\u0442\u0440\u0435 \u043F\u0440\u043E\u0444\u043F\u0430\u0442\u0430\u043B\u043E\u0433\u0438\u0438",
     name: "needExaminationAtOccupationalPathologyCenter",
     formStore: formStore,
     inline: true
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_1__.default, {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_2__.default, {
     label: "\u041D\u0443\u0436\u0434\u0430\u0435\u0442\u0441\u044F \u0432 \u0430\u043C\u0431\u0443\u043B\u0430\u0442\u043E\u0440\u043D\u043E\u043C \u043E\u0431\u0441\u043B\u0435\u0434\u043E\u0432\u0430\u043D\u0438\u0438 \u0438 \u043B\u0435\u0447\u0435\u043D\u0438\u0438",
     name: "needOutpatientExamunationAndTreatment",
     formStore: formStore,
     inline: true
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_1__.default, {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_2__.default, {
     label: "\u041D\u0443\u0436\u0434\u0430\u0435\u0442\u0441\u044F \u0432 \u0441\u0442\u0430\u0446\u0438\u043E\u043D\u0430\u0440\u043D\u043E\u043C \u043E\u0431\u0441\u043B\u0435\u0434\u043E\u0432\u0430\u043D\u0438\u0438 \u0438 \u043B\u0435\u0447\u0435\u043D\u0438\u0438",
     name: "needInpatientExamunationAndTreatment",
     formStore: formStore,
     inline: true
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_1__.default, {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_2__.default, {
     label: "\u041D\u0443\u0436\u0434\u0430\u0435\u0442\u0441\u044F \u0432 \u0441\u0430\u043D\u0430\u0442\u043E\u0440\u043D\u043E-\u043A\u0443\u0440\u043E\u0440\u0442\u043D\u043E\u043C \u043B\u0435\u0447\u0435\u043D\u0438\u0438",
     name: "needSpaTreatment",
     formStore: formStore,
     inline: true
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_1__.default, {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_forms_observers_inputCheckbox__WEBPACK_IMPORTED_MODULE_2__.default, {
     label: "\u041D\u0443\u0436\u0434\u0430\u0435\u0442\u0441\u044F \u0432 \u0434\u0438\u0441\u043F\u0430\u043D\u0441\u0435\u0440\u043D\u043E\u043C \u043D\u0430\u0431\u043B\u044E\u0434\u0435\u043D\u0438\u0438",
     name: "needDispensaryObservation",
     formStore: formStore,
     inline: true
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("hr", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_newlyDiagnosedDiseasesEditor__WEBPACK_IMPORTED_MODULE_2__.default, {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("hr", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_newlyDiagnosedDiseasesEditor__WEBPACK_IMPORTED_MODULE_3__.default, {
     title: "\u0412\u043F\u0435\u0440\u0432\u044B\u0435 \u0432\u044B\u044F\u0432\u043B\u0435\u043D\u043D\u044B\u0435 \u0445\u0440\u043E\u043D\u0438\u0447\u0435\u0441\u043A\u0438\u0435 \u0441\u043E\u043C\u0430\u0442\u0438\u0447\u0435\u0441\u043A\u0438\u0435 \u0437\u0430\u0431\u043E\u043B\u0435\u0432\u0430\u043D\u0438\u044F (\u0441\u043B\u0443\u0447\u0430\u0435\u0432)",
     store: formStore.chronicSomaticDiseasesEditorStore
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("hr", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_newlyDiagnosedDiseasesEditor__WEBPACK_IMPORTED_MODULE_2__.default, {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("hr", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_newlyDiagnosedDiseasesEditor__WEBPACK_IMPORTED_MODULE_3__.default, {
     title: "\u0412\u043F\u0435\u0440\u0432\u044B\u0435 \u0432\u044B\u044F\u0432\u043B\u0435\u043D\u043D\u044B\u0435 \u043F\u0440\u043E\u0444\u0435\u0441\u0441\u0438\u043E\u043D\u0430\u043B\u044C\u043D\u044B\u0435 \u0437\u0430\u0431\u043E\u043B\u0435\u0432\u0430\u043D\u0438\u044F",
     store: formStore.occupationalDiseasesEditorStore
   }));
 };
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MedicalReportEditorForm);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.observer)(MedicalReportEditorForm));
 
 /***/ }),
 
@@ -21096,17 +21094,10 @@ const MedicalReportData = ({
   examination,
   onEditClick
 }) => {
-  const {
-    result,
-    medicalReport,
-    dateOfComplition,
-    registrationJournalEntryNumber
-  } = examination;
-  const hasNoData = !result && !medicalReport && !dateOfComplition && !registrationJournalEntryNumber;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_card__WEBPACK_IMPORTED_MODULE_1__.EditableCard, {
     title: "\u041C\u0435\u0434\u0438\u0446\u0438\u043D\u0441\u043A\u043E\u0435 \u0437\u0430\u043A\u043B\u044E\u0447\u0435\u043D\u0438\u0435",
     onEditClick: onEditClick
-  }, hasNoData ? null : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_checkupStatusMedicalReportGeneralData__WEBPACK_IMPORTED_MODULE_2__.default, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_checkupStatusMedicalReportGeneralData__WEBPACK_IMPORTED_MODULE_2__.default, {
     checkup: examination
   }));
 };
@@ -22696,12 +22687,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
-/* harmony import */ var mobx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! mobx */ "./node_modules/mobx/dist/mobx.esm.js");
+/* harmony import */ var mobx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! mobx */ "./node_modules/mobx/dist/mobx.esm.js");
 /* harmony import */ var _baseFormStore__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./baseFormStore */ "./OperatorClientApp/stores/baseFormStore.js");
 /* harmony import */ var _utils_toasts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/toasts */ "./OperatorClientApp/utils/toasts.js");
-/* harmony import */ var _utils_validation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/validation */ "./OperatorClientApp/utils/validation.js");
-/* harmony import */ var _utils_formatDate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/formatDate */ "./OperatorClientApp/utils/formatDate.js");
-/* harmony import */ var _newlyDiagnosedDiseasesEditorStore__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./newlyDiagnosedDiseasesEditorStore */ "./OperatorClientApp/stores/newlyDiagnosedDiseasesEditorStore.js");
+/* harmony import */ var _utils_formatDate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/formatDate */ "./OperatorClientApp/utils/formatDate.js");
+/* harmony import */ var _newlyDiagnosedDiseasesEditorStore__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./newlyDiagnosedDiseasesEditorStore */ "./OperatorClientApp/stores/newlyDiagnosedDiseasesEditorStore.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -22709,9 +22699,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-
+const emptyCheckupResultId = 'empty';
 const medicalReportTemplate = {
-  checkupResultId: 'empty',
+  checkupResultId: emptyCheckupResultId,
   medicalReport: '',
   dateOfComplition: '',
   registrationJournalEntryNumber: '',
@@ -22723,27 +22713,17 @@ const medicalReportTemplate = {
   needSpaTreatment: false,
   needDispensaryObservation: false
 };
-const validation = {
-  checkupResultId: {
-    isValid: value => value !== 'empty',
-    errorMessage: 'Укажите результат медосмотра'
-  },
-  dateOfComplition: {
-    isValid: _utils_validation__WEBPACK_IMPORTED_MODULE_2__.requiredString,
-    errorMessage: 'Укажите дату завершения осмотра'
-  }
-};
 
 class CheckupStatusMedicalReportEditorStore extends _baseFormStore__WEBPACK_IMPORTED_MODULE_0__.default {
   constructor(checkupStatusEditorStore) {
-    super(medicalReportTemplate, validation);
+    super(medicalReportTemplate);
 
     _defineProperty(this, "loadInitialValues", async () => {
       const checkup = await this.checkupStatusEditorStore.loadCheckupStatus();
       this.setInitialValues({
-        checkupResultId: checkup.result?.id ?? 'empty',
+        checkupResultId: checkup.result?.id ?? emptyCheckupResultId,
         medicalReport: checkup.medicalReport ?? '',
-        dateOfComplition: (0,_utils_formatDate__WEBPACK_IMPORTED_MODULE_3__.formatDateStringForDateInput)(checkup.dateOfComplition),
+        dateOfComplition: (0,_utils_formatDate__WEBPACK_IMPORTED_MODULE_2__.formatDateStringForDateInput)(checkup.dateOfComplition),
         registrationJournalEntryNumber: checkup.registrationJournalEntryNumber ?? '',
         checkupStarted: checkup.checkupStarted,
         isDisabled: checkup.isDisabled,
@@ -22768,6 +22748,8 @@ class CheckupStatusMedicalReportEditorStore extends _baseFormStore__WEBPACK_IMPO
         data.newlyDiagnosedOccupationalDiseases = this.occupationalDiseasesEditorStore.patchedData;
       }
 
+      if (data.checkupResultId === emptyCheckupResultId) data.checkupResultId = null;
+
       const handler = () => this.checkupStatusEditorStore.onUpdate(data);
 
       const response = await this.onSendingData(handler);
@@ -22776,12 +22758,12 @@ class CheckupStatusMedicalReportEditorStore extends _baseFormStore__WEBPACK_IMPO
     });
 
     this.checkupStatusEditorStore = checkupStatusEditorStore;
-    this.chronicSomaticDiseasesEditorStore = new _newlyDiagnosedDiseasesEditorStore__WEBPACK_IMPORTED_MODULE_4__.default();
-    this.occupationalDiseasesEditorStore = new _newlyDiagnosedDiseasesEditorStore__WEBPACK_IMPORTED_MODULE_4__.default();
-    (0,mobx__WEBPACK_IMPORTED_MODULE_5__.makeObservable)(this, {
-      loadInitialValues: mobx__WEBPACK_IMPORTED_MODULE_5__.action,
-      onSubmit: mobx__WEBPACK_IMPORTED_MODULE_5__.action,
-      clear: mobx__WEBPACK_IMPORTED_MODULE_5__.override
+    this.chronicSomaticDiseasesEditorStore = new _newlyDiagnosedDiseasesEditorStore__WEBPACK_IMPORTED_MODULE_3__.default();
+    this.occupationalDiseasesEditorStore = new _newlyDiagnosedDiseasesEditorStore__WEBPACK_IMPORTED_MODULE_3__.default();
+    (0,mobx__WEBPACK_IMPORTED_MODULE_4__.makeObservable)(this, {
+      loadInitialValues: mobx__WEBPACK_IMPORTED_MODULE_4__.action,
+      onSubmit: mobx__WEBPACK_IMPORTED_MODULE_4__.action,
+      clear: mobx__WEBPACK_IMPORTED_MODULE_4__.override
     });
   }
 
@@ -24190,13 +24172,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
-/* harmony import */ var mobx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! mobx */ "./node_modules/mobx/dist/mobx.esm.js");
+/* harmony import */ var mobx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! mobx */ "./node_modules/mobx/dist/mobx.esm.js");
 /* harmony import */ var _baseFormStore__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./baseFormStore */ "./OperatorClientApp/stores/baseFormStore.js");
 /* harmony import */ var _utils_toasts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/toasts */ "./OperatorClientApp/utils/toasts.js");
-/* harmony import */ var _utils_validation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../utils/validation */ "./OperatorClientApp/utils/validation.js");
-/* harmony import */ var _utils_formatDate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../utils/formatDate */ "./OperatorClientApp/utils/formatDate.js");
+/* harmony import */ var _utils_formatDate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../utils/formatDate */ "./OperatorClientApp/utils/formatDate.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 
 
@@ -24206,21 +24186,15 @@ const reportDataTemplate = {
   reportDate: '',
   recommendations: ''
 };
-const validation = {
-  reportDate: {
-    isValid: _utils_validation__WEBPACK_IMPORTED_MODULE_2__.requiredString,
-    errorMessage: 'Укажите дату заключительного акта'
-  }
-};
 
 class ReportDataEditorStore extends _baseFormStore__WEBPACK_IMPORTED_MODULE_0__.default {
   constructor(examinationEditorStore) {
-    super(reportDataTemplate, validation);
+    super(reportDataTemplate);
 
     _defineProperty(this, "loadInitialValues", async () => {
       const examination = await this.examinationEditorStore.loadExamination();
       this.setInitialValues({
-        reportDate: (0,_utils_formatDate__WEBPACK_IMPORTED_MODULE_3__.formatDateStringForDateInput)(examination.reportDate),
+        reportDate: (0,_utils_formatDate__WEBPACK_IMPORTED_MODULE_2__.formatDateStringForDateInput)(examination.reportDate),
         recommendations: examination.recommendations ?? ''
       });
     });
@@ -24234,9 +24208,9 @@ class ReportDataEditorStore extends _baseFormStore__WEBPACK_IMPORTED_MODULE_0__.
     });
 
     this.examinationEditorStore = examinationEditorStore;
-    (0,mobx__WEBPACK_IMPORTED_MODULE_4__.makeObservable)(this, {
-      loadInitialValues: mobx__WEBPACK_IMPORTED_MODULE_4__.action,
-      onSubmit: mobx__WEBPACK_IMPORTED_MODULE_4__.action
+    (0,mobx__WEBPACK_IMPORTED_MODULE_3__.makeObservable)(this, {
+      loadInitialValues: mobx__WEBPACK_IMPORTED_MODULE_3__.action,
+      onSubmit: mobx__WEBPACK_IMPORTED_MODULE_3__.action
     });
   }
 
