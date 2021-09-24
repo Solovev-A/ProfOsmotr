@@ -71,6 +71,8 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
             CreateMap<CreateContingentCheckupStatusQuery, CreateContingentCheckupStatusRequest>();
 
             CreateMap<ExaminationJournalQuery, ExecuteExaminationsJournalQueryRequest>();
+
+            CreateMap<CreatePeriodicExaminationQuery, CreatePeriodicMedicalExaminationRequest>();
         }
     }
 }

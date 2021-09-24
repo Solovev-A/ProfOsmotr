@@ -85,7 +85,7 @@ namespace ProfOsmotr.Web.Api
                 CreatorId = userId
             };
 
-            return await queryHandler.HandleQuery<PreliminaryMedicalExamination, CreatedPreliminaryExaminationResource>(
+            return await queryHandler.HandleQuery<PreliminaryMedicalExamination, CreatedExaminationResource>(
                 async () => await examinationsService.CreatePreliminaryMedicalExaminationAsync(request),
                 async () => await accessService.CanAccessPatientAsync(query.PatientId));
         }

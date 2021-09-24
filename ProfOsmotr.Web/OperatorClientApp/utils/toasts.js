@@ -19,8 +19,8 @@ const errorToast = (message) => {
 }
 
 const handleResponseWithToasts = (response, showSuccessToast = false) => {
-    if (response.success === false) {
-        errorToast(response.message);
+    if (!response || response.success === false) {
+        errorToast(response?.message);
     }
     else if (showSuccessToast) {
         successToast();

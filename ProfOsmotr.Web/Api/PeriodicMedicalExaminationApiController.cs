@@ -66,6 +66,21 @@ namespace ProfOsmotr.Web.Api
                 async () => await examinationsService.ListActualPeriodicMedicalExaminationsAsync(clinicId));
         }
 
+        [HttpPost]
+        [ModelStateValidationFilter]
+        public async Task<IActionResult> Post([FromBody] CreatePeriodicExaminationQuery query)
+        {
+            if (!accessService.TryGetUserId(out int userId))
+                return Forbid();
+
+            var request = mapper.Map<CreatePeriodicMedicalExaminationRequest>(query);
+            request.CreatorId = userId;
+
+            return await queryHandler.HandleQuery<PeriodicMedicalExamination, CreatedExaminationResource>(
+                async () => await examinationsService.CreatePeriodicMedicalExaminationAsync(request),
+                async () => await accessService.CanAccessEmployerAsync(query.EmployerId));
+        }
+
         [HttpPatch("{id}")]
         [ModelStateValidationFilter]
         public async Task<IActionResult> Patch(int id, [FromBody] PatchPeriodicExaminationQuery query)

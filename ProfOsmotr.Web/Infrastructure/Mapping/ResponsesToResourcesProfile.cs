@@ -173,7 +173,7 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
             CreateMap<CheckupResult, CheckupResultResource>()
                 .ForMember(d => d.Id, conf => conf.MapFrom(s => s.Id.ToString()));
 
-            CreateMap<PreliminaryMedicalExamination, CreatedPreliminaryExaminationResource>();
+            CreateMap<PreliminaryMedicalExamination, CreatedExaminationResource>();
 
             CreateMap<ProfessionSearchResult, ProfessionSearchResultResource>();
 
@@ -228,6 +228,8 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
 
             CreateMap<Patient, JournalPatientResource>()
                 .ForMember(d => d.DateOfBirth, conf => conf.MapFrom(s => ToString(s.DateOfBirth)));
+
+            CreateMap<PeriodicMedicalExamination, CreatedExaminationResource>();
         }
 
         private string GetFullItemKey(OrderItem item)

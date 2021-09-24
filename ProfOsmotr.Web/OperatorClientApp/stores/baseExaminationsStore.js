@@ -1,4 +1,4 @@
-import { runInAction, makeObservable, action, observable, computed } from 'mobx';
+import { runInAction, makeObservable, action, observable } from 'mobx';
 
 import BasePagedListStore from './basePagedListStore';
 import { handleResponseWithToasts } from '../utils/toasts';
@@ -75,19 +75,6 @@ class BaseExaminationsStore extends BasePagedListStore {
     setJournalYear = (value) => {
         this.journalYear = value;
         this.journal.loadPage(1);
-    }
-
-    get journalYearsRange() {
-        const start = 2020;
-        const end = new Date().getFullYear(); // текущий год
-
-        const result = [];
-
-        for (let i = start; i <= end; i++) {
-            result.push(i);
-        }
-
-        return result;
     }
 }
 

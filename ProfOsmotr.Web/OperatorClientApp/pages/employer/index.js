@@ -19,11 +19,12 @@ const EmployerPage = (props) => {
         onReset: employersStore.resetEmployer
     });
 
-    const onAddPeriodicExamination = () => {
-        // ... вызов api для создания медосмотра
-        const id = 0;
-        const newUrl = routes.periodicExaminations.getUrl(id);
-        props.history.push(newUrl);
+    const onAddPeriodicExamination = async (year) => {
+        const response = await employersStore.onAddPeriodicExamination(year);
+        if (response.success !== false) {
+            const newUrl = routes.periodicExamination.getUrl(response.id);
+            props.history.push(newUrl);
+        }
     }
 
     const { isEmployerLoading, employer } = employersStore;

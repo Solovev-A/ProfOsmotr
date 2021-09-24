@@ -4,9 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import routes from './../../../routes'
+import YearPicker from '../../../components/yearPicker';
 
 const EmployerActions = ({ employerId, onAddPeriodicExamination }) => {
     const actionClassName = "btn btn-secondary";
+    const currentYear = new Date().getFullYear();
 
     return (
         <div className="mb-3">
@@ -16,14 +18,13 @@ const EmployerActions = ({ employerId, onAddPeriodicExamination }) => {
                 Редактировать
             </Link>
             {' '}
-            <button type="button"
-                className={actionClassName}
-                onClick={onAddPeriodicExamination}
-            >
-                <FontAwesomeIcon icon={faPlus} />
-                {' '}
-                Добавить периодический медосмотр
-            </button>
+            <YearPicker
+                title={<><FontAwesomeIcon icon={faPlus} /> Добавить периодический медосмотр</>}
+                start={currentYear - 1}
+                end={currentYear + 1}
+                onYearPick={onAddPeriodicExamination}
+                className="d-inline-block"
+            />
         </div>
     )
 }

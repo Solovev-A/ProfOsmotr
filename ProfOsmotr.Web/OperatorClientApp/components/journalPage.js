@@ -6,10 +6,11 @@ import Pagination from './pagination';
 import Card from './card';
 import ItemsList from './itemsList';
 import useJournalPage from '../hooks/useJournalPage';
+import YearPicker from './yearPicker';
 
 
 const JournalPage = ({ examinationsStore, title, listColumns, examinationRoute }) => {
-    const { journal } = examinationsStore;
+    const { journalYear, setJournalYear, journal } = examinationsStore;
 
     useJournalPage(examinationsStore);
 
@@ -18,7 +19,7 @@ const JournalPage = ({ examinationsStore, title, listColumns, examinationRoute }
     return (
         <>
             <h2>{title}</h2>
-            <YearSelect examinationsStore={examinationsStore} />
+            <YearPicker title={`Год: ${journalYear}`} onYearPick={setJournalYear} className="mb-3" />
             <Card title={`Количество записей: ${totalCount}`}>
                 {inProgress
                     ? <Spinner />
@@ -34,32 +35,6 @@ const JournalPage = ({ examinationsStore, title, listColumns, examinationRoute }
         </>
     )
 }
-
-const YearSelect = observer(({ examinationsStore }) => {
-    const { journalYearsRange, journalYear, setJournalYear } = examinationsStore;
-    const htmlId = "journal-year";
-
-    const handleChange = (event) => {
-        const select = event.target;
-        const value = Number(select.value);
-        setJournalYear(value);
-    }
-
-    return (
-        <div className="mb-3 form-group" style={{ width: "10%" }}>
-            <label htmlFor={htmlId}>Год</label>
-            <select onChange={handleChange} defaultValue={journalYear} className="form-control" id={htmlId}>
-                {
-                    journalYearsRange.map(y => {
-                        return (
-                            <option value={y} key={y}>{y}</option>
-                        )
-                    })
-                }
-            </select>
-        </div>
-    )
-})
 
 
 export default observer(JournalPage);

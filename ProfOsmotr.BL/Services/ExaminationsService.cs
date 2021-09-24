@@ -333,6 +333,43 @@ namespace ProfOsmotr.BL
             }
         }
 
+        public async Task<PeriodicMedicalExaminationResponse> CreatePeriodicMedicalExaminationAsync(
+            CreatePeriodicMedicalExaminationRequest request)
+        {
+            var creatorResponse = await userService.GetUser(request.CreatorId);
+            if (!creatorResponse.Succeed)
+            {
+                return new PeriodicMedicalExaminationResponse(creatorResponse.Message);
+            }
+
+            var employerResponse = await employerService.GetEmployerAsync(request.EmployerId);
+            if (!employerResponse.Succeed)
+            {
+                return new PeriodicMedicalExaminationResponse(employerResponse.Message);
+            }
+
+            Employer employer = employerResponse.Result;
+
+            var examination = new PeriodicMedicalExamination()
+            {
+                ClinicId = employer.ClinicId,
+                EmployerId = request.EmployerId,
+                ExaminationYear = request.ExaminationYear,
+                LastEditorId = request.CreatorId
+            };
+
+            try
+            {
+                await uow.PeriodicMedicalExaminations.AddAsync(examination);
+                await uow.SaveAsync();
+                return new PeriodicMedicalExaminationResponse(examination);
+            }
+            catch (Exception ex)
+            {
+                return new PeriodicMedicalExaminationResponse(ex.Message);
+            }
+        }
+
         public async Task<PeriodicMedicalExaminationResponse> DeletePeriodicExaminationAsync(int id)
         {
             var examination = await uow.PeriodicMedicalExaminations.FindAsync(id);

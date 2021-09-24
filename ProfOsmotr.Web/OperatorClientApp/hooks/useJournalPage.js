@@ -8,7 +8,7 @@ const useJournalPage = (examinationsStore) => {
         return () => {
             examinationsStore.resetJournal();
         }
-    })
+    }, [])
 }
 
 export default useJournalPage;

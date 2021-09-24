@@ -42,6 +42,9 @@ namespace ProfOsmotr.BL.Abstractions
         Task<ContingentCheckupStatusResponse> DeleteContingentCheckupStatusAsync(int id);
 
         Task<QueryResponse<PreliminaryMedicalExamination>> GetPreliminaryMedicalExaminationsJournalAsync(ExecuteExaminationsJournalQueryRequest request);
+
         Task<QueryResponse<PeriodicMedicalExamination>> GetPeriodicMedicalExaminationsJournalAsync(ExecuteExaminationsJournalQueryRequest request);
+
+        Task<PeriodicMedicalExaminationResponse> CreatePeriodicMedicalExaminationAsync(CreatePeriodicMedicalExaminationRequest request);
     }
 }
