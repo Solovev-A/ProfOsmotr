@@ -1,6 +1,7 @@
 ﻿using ProfOsmotr.BL.Abstractions;
 using ProfOsmotr.DAL;
 using ProfOsmotr.DAL.Abstractions;
+using ProfOsmotr.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -32,6 +32,7 @@
     "react-dropdown-components": "github:solovev-a/react-dropdown-components",
     "react-router-dom": "^5.2.0",
     "react-toastify": "^7.0.4",
+    "recharts": "^2.1.4",
     "select2": "4.0.13",
     "styled-components": "^5.3.0"
   },

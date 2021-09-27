@@ -21,6 +21,7 @@ import routes from './routes';
 
 import 'react-toastify/dist/ReactToastify.min.css';
 import './style.css';
+import StatisticsPage from './pages/statistics/index';
 
 const App = () => (
     <Router>
@@ -42,6 +43,7 @@ const App = () => (
                 <Route path={routes.periodicExaminationsJournal.path} component={PeriodicExaminationsJournalPage} />
                 <Route path={routes.contingentCheckupStatus.path} component={ContingentCheckupStatusPage} />
                 <Route path={routes.periodicExamination.path} component={PeriodicExaminationPage} />
+                <Route path={routes.statistics.path} component={StatisticsPage} exact />
             </Switch>
         </ErrorBoundary>
         <ToastContainer

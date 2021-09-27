@@ -1,4 +1,5 @@
 ﻿using ProfOsmotr.DAL;
+using ProfOsmotr.DAL.Models;
 using System.Threading.Tasks;
 
 namespace ProfOsmotr.BL.Abstractions

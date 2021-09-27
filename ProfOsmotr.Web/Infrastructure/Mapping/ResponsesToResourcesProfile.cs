@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ProfOsmotr.BL.Models;
 using ProfOsmotr.DAL;
+using ProfOsmotr.DAL.Models;
 using ProfOsmotr.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -230,6 +231,8 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
                 .ForMember(d => d.DateOfBirth, conf => conf.MapFrom(s => ToString(s.DateOfBirth)));
 
             CreateMap<PeriodicMedicalExamination, CreatedExaminationResource>();
+
+            CreateMap<ExaminationsStatisticsData, ExaminationsStatisticsDataResource>();
         }
 
         private string GetFullItemKey(OrderItem item)

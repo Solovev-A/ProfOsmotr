@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProfOsmotr.DAL.Abstractions;
+using ProfOsmotr.DAL.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

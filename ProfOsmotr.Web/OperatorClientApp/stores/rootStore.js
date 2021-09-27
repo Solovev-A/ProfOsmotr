@@ -15,6 +15,7 @@ import ContingentCheckupStatusCreatorStore from './contingentCheckupStatusCreato
 import ContingentCheckupStatusStore from './contingentCheckupStatusStore';
 import ContingentCheckupStatusEditorStore from './contingentCheckupStatusEditorStore';
 import ICD10Store from './icd10Store';
+import StatisticsStore from './statisticsStore';
 
 class RootStore {
     constructor() {
@@ -35,6 +36,7 @@ class RootStore {
         this.contingentCheckupStatusStore = new ContingentCheckupStatusStore();
         this.contingentCheckupStatusEditorStore = new ContingentCheckupStatusEditorStore(this);
         this.icd10Store = new ICD10Store();
+        this.statisticsStore = new StatisticsStore();
     }
 }
 

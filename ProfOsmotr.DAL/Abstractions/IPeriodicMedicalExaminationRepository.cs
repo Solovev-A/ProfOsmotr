@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using ProfOsmotr.DAL.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ProfOsmotr.DAL.Abstractions
 {
@@ -11,5 +13,6 @@ namespace ProfOsmotr.DAL.Abstractions
         Task<int> GetCheckupStatusClinicIdAsync(int checkupStatusId);
 
         void DeleteCheckupStatus(ContingentCheckupStatus checkupStatus);
+        Task<IEnumerable<CountResult>> CountCheckupsByMonth(int clinicId);
     }
 }

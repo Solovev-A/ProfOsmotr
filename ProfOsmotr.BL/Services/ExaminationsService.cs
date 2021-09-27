@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using ProfOsmotr.BL.Abstractions;
+using ProfOsmotr.BL.Infrastructure;
+using ProfOsmotr.BL.Models;
 using ProfOsmotr.DAL;
 using ProfOsmotr.DAL.Abstractions;
 using System;
@@ -640,6 +642,41 @@ namespace ProfOsmotr.BL
             catch (Exception ex)
             {
                 return new ContingentCheckupStatusResponse(ex.Message);
+            }
+        }
+
+        public async Task<ExaminationsStatisticsResponse> CalculateStatistics(CalculateStatisticsRequest request)
+        {
+            try
+            {
+                var preliminaryExaminatinsCount = await uow.PreliminaryMedicalExaminations.CountExaminationsByMonth(request.ClinicId);
+                var contingentCheckupStatusesCount = await uow.PeriodicMedicalExaminations.CountCheckupsByMonth(request.ClinicId);
+
+                var firstPreliminaryStatsPeriod = preliminaryExaminatinsCount.FirstOrDefault()?.Period;
+                var firstCheckupStatusesStatsPeriod = contingentCheckupStatusesCount.FirstOrDefault()?.Period;
+
+                // опеределяем самый ранний период из представленных в статистике
+                var firstPeriod = firstPreliminaryStatsPeriod is null
+                    ? firstCheckupStatusesStatsPeriod is null ? null : firstCheckupStatusesStatsPeriod
+                    : firstCheckupStatusesStatsPeriod is null
+                        ? firstPreliminaryStatsPeriod : string.Compare(firstPreliminaryStatsPeriod, firstCheckupStatusesStatsPeriod) >= 0
+                            ? firstCheckupStatusesStatsPeriod : firstPreliminaryStatsPeriod;
+
+                var range = StatisticsHelper.GetPeriodsRange(firstPeriod);
+
+                var result = range
+                    .Select(period => new ExaminationsStatisticsData()
+                    {
+                        Period = period,
+                        ContingentCheckupStatusesCount = contingentCheckupStatusesCount.FirstOrDefault(r => r.Period == period)?.Count ?? 0,
+                        PreliminaryExaminationsCount = preliminaryExaminatinsCount.FirstOrDefault(r => r.Period == period)?.Count ?? 0
+                    });
+
+                return new ExaminationsStatisticsResponse(result);
+            }
+            catch (Exception ex)
+            {
+                return new ExaminationsStatisticsResponse(ex.Message);
             }
         }
 

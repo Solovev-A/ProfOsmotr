@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProfOsmotr.BL.Abstractions;
 using ProfOsmotr.DAL;
+using ProfOsmotr.DAL.Models;
 using ProfOsmotr.Web.Infrastructure;
 using ProfOsmotr.Web.Models;
 using ProfOsmotr.Web.Services;

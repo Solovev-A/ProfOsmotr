@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProfOsmotr.DAL.Abstractions;
 using ProfOsmotr.DAL.Infrastructure;
+using ProfOsmotr.DAL.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -19,6 +21,24 @@ namespace ProfOsmotr.DAL
         public void DeleteCheckupStatus(ContingentCheckupStatus checkupStatus)
         {
             context.Set<ContingentCheckupStatus>().Remove(checkupStatus);
+        }
+
+        public async Task<IEnumerable<CountResult>> CountCheckupsByMonth(int clinicId)
+        {
+            return await context.Set<ContingentCheckupStatus>()
+                .AsNoTracking()
+                .Where(s => s.PeriodicMedicalExamination.ClinicId == clinicId && s.DateOfCompletion.HasValue)
+                .GroupBy(s => new
+                {
+                    Month = s.DateOfCompletion.Value.Month,
+                    Year = s.DateOfCompletion.Value.Year
+                })
+                .Select(g => new CountResult()
+                {
+                    Period = $"{g.Key.Month:D2}-{g.Key.Year}",
+                    Count = g.Count()
+                })
+                .ToListAsync();
         }
 
         public async Task<ContingentCheckupStatus> FindCheckupStatus(int id, bool noTracking = false)
