@@ -8,6 +8,7 @@ import EmployerActions from './components/employerActions';
 import EmployerInfo from './components/employerInfo';
 import EmployerExamiantions from './components/employerExaminations';
 import usePageId from './../../hooks/usePageId';
+import useTitle from './../../hooks/useTitle';
 
 const EmployerPage = (props) => {
     const employerId = props.match.params.id;
@@ -28,6 +29,11 @@ const EmployerPage = (props) => {
     }
 
     const { isEmployerLoading, employer } = employersStore;
+
+    const title = isEmployerLoading
+        ? 'Организация - Загрузка'
+        : `${employer.name} - Организация`;
+    useTitle(title);
 
     if (isEmployerLoading) return <Spinner />
 

@@ -11,6 +11,7 @@ import ItemsList from './../../components/itemsList';
 import routes from './../../routes';
 import ExaminationStatusText from './../../components/examinationStatusText';
 import Actions from './components/actions';
+import useTitle from './../../hooks/useTitle';
 
 
 const listColumns = [{
@@ -32,6 +33,8 @@ const listColumns = [{
 
 
 const PeriodicExaminationsListPage = observer((props) => {
+    useTitle('Периодические медосмотры');
+
     const { periodicExaminationsStore } = useStore();
     useListPage(periodicExaminationsStore);
 

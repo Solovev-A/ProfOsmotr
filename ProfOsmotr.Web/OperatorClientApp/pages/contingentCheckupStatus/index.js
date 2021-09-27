@@ -15,6 +15,8 @@ import LinkIcon from '../../components/linkIcon';
 import routes from '../../routes';
 import MedicalReportData from './components/medicalReportData';
 import MedicalReportModal from './components/medicalReportModal';
+import useTitle from '../../hooks/useTitle';
+import { getShortName } from '../../utils/personNames';
 
 
 const ContingentCheckupStatusPage = (props) => {
@@ -27,6 +29,11 @@ const ContingentCheckupStatusPage = (props) => {
     });
 
     const { isLoading, checkupStatus } = contingentCheckupStatusStore;
+
+    const title = isLoading
+        ? 'Периодический осмотр работника - Загрузка'
+        : `${getShortName(checkupStatus.patient)} - Периодический осмотр работника`
+    useTitle(title);
 
     if (isLoading) return <Spinner />
 

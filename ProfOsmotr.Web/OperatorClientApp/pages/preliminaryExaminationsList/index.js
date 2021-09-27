@@ -11,16 +11,18 @@ import ItemsList from './../../components/itemsList';
 import routes from './../../routes';
 import PreliminaryExaminationListActions from './components/preliminaryExaminationListActions';
 import ExaminationStatusText from './../../components/examinationStatusText';
+import useTitle from '../../hooks/useTitle';
+import { getFullName } from '../../utils/personNames';
 
 const listColumns = [{
     title: 'Работник',
     width: '30%',
     render: (item) => {
-        const { patient: { lastName, firstName, patronymicName, dateOfBirth } } = item;
+        const { patient } = item;
         return (
             <>
-                {lastName} {firstName} {patronymicName}<br />
-                {dateOfBirth}
+                {getFullName(patient)}<br />
+                {patient.dateOfBirth}
             </>
         )
     }
@@ -54,6 +56,8 @@ const listColumns = [{
 
 
 const PreliminaryExaminationsListPage = (props) => {
+    useTitle('Предварительные медосмотры');
+
     const { preliminaryExaminationsStore } = useStore();
     useListPage(preliminaryExaminationsStore);
 

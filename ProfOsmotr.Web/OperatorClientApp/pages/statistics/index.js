@@ -4,8 +4,11 @@ import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Resp
 
 import useStore from './../../hooks/useStore';
 import Spinner from './../../components/spinner';
+import useTitle from './../../hooks/useTitle';
 
 const StatisticsPage = () => {
+    useTitle('Статистика меодсмотров работников');
+
     const { statisticsStore } = useStore();
     const { isLoading, examinationsData, loadExaminationsStatistics } = statisticsStore;
 

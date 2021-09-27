@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { Autocomplete } from 'react-dropdown-components';
 
 import SuggestionsMark from './../components/suggestionsMark';
+import { getFullName } from '../utils/personNames';
 
 
 const PatientAutocomplete = observer(({ value, onChange, patientListStore, disabled = false }) => {
@@ -23,7 +24,7 @@ const PatientAutocomplete = observer(({ value, onChange, patientListStore, disab
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 {mark}
                 <div>
-                    {patient.lastName} {patient.firstName} {patient.patronymicName}<br />
+                    {getFullName(patient)}<br />
                     {patient.dateOfBirth}
                 </div>
             </div>

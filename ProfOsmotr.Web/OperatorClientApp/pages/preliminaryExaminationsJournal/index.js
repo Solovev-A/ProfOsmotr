@@ -4,6 +4,8 @@ import { observer } from 'mobx-react-lite';
 import useStore from '../../hooks/useStore';
 import routes from './../../routes';
 import JournalPage from '../../components/journalPage';
+import useTitle from '../../hooks/useTitle';
+import { getFullName } from '../../utils/personNames'
 
 
 const listColumns = [{
@@ -18,11 +20,11 @@ const listColumns = [{
     title: 'Работник',
     width: '35%',
     render: (item) => {
-        const { patient: { lastName, firstName, patronymicName, dateOfBirth } } = item;
+        const { patient } = item;
         return (
             <>
-                {lastName} {firstName} {patronymicName}<br />
-                {dateOfBirth}
+                {getFullName(patient)}<br />
+                {patient.dateOfBirth}
             </>
         )
     }
@@ -34,6 +36,8 @@ const listColumns = [{
 
 
 const PreliminaryExaminationsJournalPage = (props) => {
+    useTitle('Журнал предварительных медосмотров');
+
     const { preliminaryExaminationsStore } = useStore();
 
     return (

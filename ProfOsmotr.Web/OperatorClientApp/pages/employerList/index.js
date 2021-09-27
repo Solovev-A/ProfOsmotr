@@ -10,8 +10,11 @@ import useListPage from '../../hooks/useListPage';
 import EmployerListActions from './components/employerListActions';
 import ItemsList from './../../components/itemsList';
 import routes from './../../routes';
+import useTitle from './../../hooks/useTitle';
 
 const EmployerListPage = (props) => {
+    useTitle('Организации');
+
     const { employersStore } = useStore();
     useListPage(employersStore);
 

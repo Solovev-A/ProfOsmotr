@@ -5,6 +5,7 @@ import useStore from '../../hooks/useStore';
 import JournalPage from '../../components/journalPage';
 import routes from './../../routes';
 import ExaminationStatusText from './../../components/examinationStatusText';
+import useTitle from '../../hooks/useTitle';
 
 
 const listColumns = [{
@@ -22,6 +23,8 @@ const listColumns = [{
 
 
 const PeriodicExaminationsJournalPage = (props) => {
+    useTitle('Журнал периодических медосмотров');
+
     const { periodicExaminationsStore } = useStore();
 
     return (

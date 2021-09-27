@@ -13,6 +13,7 @@ import ReportDataEditorModal from './components/reportDataEditorModal';
 import EmployerDataEditorModal from './components/employerDataEditorModal';
 import CreateContingentCheckupStatusModal from './components/createContingentCheckupStatusModal';
 import usePageId from './../../hooks/usePageId';
+import useTitle from './../../hooks/useTitle';
 
 
 const PeriodicExaminationPage = observer((props) => {
@@ -25,6 +26,11 @@ const PeriodicExaminationPage = observer((props) => {
     });
 
     const { isExaminationLoading, examination } = periodicExaminationsStore;
+
+    const title = isExaminationLoading
+        ? 'Периодический медосмотр - Загрузка'
+        : `${examination.employer.name} - Периодический медосмотр`;
+    useTitle(title);
 
     if (isExaminationLoading) return <Spinner />
 

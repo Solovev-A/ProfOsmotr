@@ -1,6 +1,7 @@
 import React from 'react';
 import { AddBtn } from '../../../components/buttons';
 import ItemsList from '../../../components/itemsList';
+import { getFullName } from '../../../utils/personNames';
 import Card from './../../../components/card';
 import routes from './../../../routes';
 
@@ -8,11 +9,11 @@ const contingentListColumns = [{
     title: 'Работник',
     width: '30%',
     render: (item) => {
-        const { patient: { lastName, firstName, patronymicName, dateOfBirth } } = item;
+        const { patient } = item;
         return (
             <>
-                {lastName} {firstName} {patronymicName}<br />
-                {dateOfBirth}
+                {getFullName(patient)}<br />
+                {patient.dateOfBirth}
             </>
         )
     }

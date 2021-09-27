@@ -10,8 +10,10 @@ import Card from './../../components/card';
 import useListPage from './../../hooks/useListPage';
 import ItemsList from './../../components/itemsList';
 import routes from './../../routes';
+import useTitle from './../../hooks/useTitle';
 
 const PatientListPage = (props) => {
+    useTitle('Пациенты');
     const { patientsListStore } = useStore();
     useListPage(patientsListStore);
 

@@ -9,6 +9,7 @@ import PatientActions from './components/patientActions';
 import PatientExamiantions from './components/patientExaminations';
 import preliminaryExaminationsApiService from './../../services/preliminaryExaminationsApiService';
 import usePageId from './../../hooks/usePageId';
+import useTitle from './../../hooks/useTitle';
 
 const PatientPage = (props) => {
     const patientId = props.match.params.id;
@@ -37,6 +38,11 @@ const PatientPage = (props) => {
         preliminaryMedicalExaminations,
         contingentCheckupStatuses
     } = patientStore;
+
+    const title = isLoading
+        ? 'Пациент - Загрузка'
+        : `${fullName} - Пациент`;
+    useTitle(title);
 
     if (isLoading) return <Spinner />
 

@@ -13,6 +13,8 @@ import WorkPlaceData from '../../components/workPlaceData';
 import MedicalReportData from './components/medicalReportData';
 import MedicalReportModal from './components/medicalReportModal';
 import usePageId from './../../hooks/usePageId';
+import useTitle from './../../hooks/useTitle';
+import { getShortName } from '../../utils/personNames';
 
 
 const PreliminaryExaminationPage = (props) => {
@@ -28,8 +30,12 @@ const PreliminaryExaminationPage = (props) => {
 
     const { isExaminationLoading, examination } = preliminaryExaminationsStore;
 
-    if (isExaminationLoading) return <Spinner />
+    const title = isExaminationLoading
+        ? 'Предварительный осмотр - Загрузка'
+        : `${getShortName(examination.patient)} - Предварительный медосмотр`
+    useTitle(title);
 
+    if (isExaminationLoading) return <Spinner />
 
     const onWorkPlaceEditClick = () => {
         preliminaryExaminationsStore

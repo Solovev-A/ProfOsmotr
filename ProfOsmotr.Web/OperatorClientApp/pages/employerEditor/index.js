@@ -8,11 +8,15 @@ import EmployerEditor from '../../components/employerEditor';
 import SubmitBtn from './../../components/forms/general/submitBtn';
 import Spinner from './../../components/spinner';
 import routes from './../../routes';
+import useTitle from './../../hooks/useTitle';
 
 const EmployerEditorPage = (props) => {
     const { employerEditorStore } = useStore();
     const employerId = props.match.params.id;
     const errorHandler = useErrorHandler();
+
+    const title = `${employerId ? 'Редактирование' : 'Добавление новой'} организации`;
+    useTitle(title);
 
     useEffect(() => {
         employerEditorStore.setEmployerId(employerId);
@@ -45,7 +49,7 @@ const EmployerEditorPage = (props) => {
 
     return (
         <>
-            <h2>{employerId ? 'Редактирование' : 'Добавление новой'} организации</h2>
+            <h2>{title}</h2>
             <form onSubmit={onSubmit}>
                 <EmployerEditor />
                 <SubmitBtn disabled={!isValid} processing={isProcessing}>

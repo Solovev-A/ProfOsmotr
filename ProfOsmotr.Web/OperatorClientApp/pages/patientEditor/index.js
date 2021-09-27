@@ -8,11 +8,15 @@ import Spinner from '../../components/spinner';
 import { SubmitBtn } from '../../components/forms/general';
 import CancellationToken from './../../utils/cancellationToken';
 import useErrorHandler from './../../hooks/useErrorHandler';
+import useTitle from './../../hooks/useTitle';
 
 const PatientEditorPage = (props) => {
     const { patientEditorStore } = useStore();
     const patientId = props.match.params.id;
     const errorHandler = useErrorHandler();
+
+    const title = `${patientId ? 'Редактирование' : 'Добавление нового'} пациента`;
+    useTitle(title);
 
     useEffect(() => {
         patientEditorStore.setPatientId(patientId);
@@ -45,7 +49,7 @@ const PatientEditorPage = (props) => {
 
     return (
         <>
-            <h2>{patientId ? 'Редактирование' : 'Добавление нового'} пациента</h2>
+            <h2>{title}</h2>
             <form onSubmit={onSubmit}>
                 <PatientEditor />
                 <SubmitBtn disabled={!isValid} processing={isProcessing}>
