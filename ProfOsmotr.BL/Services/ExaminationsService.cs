@@ -193,9 +193,9 @@ namespace ProfOsmotr.BL
             {
                 UpdateCheckupResult(examination, examination.CheckupStatus, query.CheckupResultId);
             }
-            if (query.IsFieldPresent(nameof(query.DateOfComplition)))
+            if (query.IsFieldPresent(nameof(query.DateOfCompletion)))
             {
-                examination.CheckupStatus.DateOfCompletion = query.DateOfComplition;
+                examination.CheckupStatus.DateOfCompletion = query.DateOfCompletion;
             }
             if (!examination.CheckupStatus.CheckupResultId.HasValue && examination.CheckupStatus.DateOfCompletion.HasValue)
             {
@@ -456,6 +456,40 @@ namespace ProfOsmotr.BL
                 return new PeriodicMedicalExaminationResponse("Медосмотр не найден");
             }
 
+            if (request.Query.IsFieldPresent(nameof(request.Query.ContingentGroupMedicalReport)))
+            {
+                var query = request.Query.ContingentGroupMedicalReport;
+                foreach (var checkupStatusId in query.CheckupStatuses)
+                {
+                    var checkupStatus = examination.Statuses.FirstOrDefault(status => status.Id == checkupStatusId);
+
+                    if (checkupStatus is null)
+                    {
+                        return new PeriodicMedicalExaminationResponse($"Медосмотр работника с id {checkupStatusId} не принадлежит периодическому медосмотру");
+                    }
+
+                    mapper.Map(query, checkupStatus);
+
+                    if (query.DateOfCompletion.HasValue)
+                    {
+                        checkupStatus.CheckupStarted = true;
+                    }
+
+                    if (!checkupStatus.CheckupStarted && checkupStatus.DateOfCompletion.HasValue)
+                    {
+                        return new PeriodicMedicalExaminationResponse("Медосмотр с датой завершения не может быть не начатым");
+                    }
+                    if (!checkupStatus.CheckupStarted && checkupStatus.CheckupResultId.HasValue)
+                    {
+                        return new PeriodicMedicalExaminationResponse("Медосмотр с результатом не может быть не начатым");
+                    }
+                    if (!checkupStatus.CheckupResultId.HasValue && checkupStatus.DateOfCompletion.HasValue)
+                    {
+                        return new PeriodicMedicalExaminationResponse("Необходимо указать результат для завершенного медосмотра");
+                    }
+                }
+            }
+
             mapper.Map(request.Query, examination);
 
             if (request.Query.IsFieldPresent(nameof(request.Query.ReportDate)))
@@ -543,10 +577,10 @@ namespace ProfOsmotr.BL
             {
                 checkupStatus.CheckupResultId = query.CheckupResultId;
             }
-            if (query.IsFieldPresent(nameof(query.DateOfComplition)))
+            if (query.IsFieldPresent(nameof(query.DateOfCompletion)))
             {
-                checkupStatus.DateOfCompletion = query.DateOfComplition;
-                if (query.DateOfComplition.HasValue)
+                checkupStatus.DateOfCompletion = query.DateOfCompletion;
+                if (query.DateOfCompletion.HasValue)
                 {
                     checkupStatus.CheckupStarted = true;
                 }

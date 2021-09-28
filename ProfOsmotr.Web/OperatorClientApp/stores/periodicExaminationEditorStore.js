@@ -1,6 +1,7 @@
 import periodicExaminationsApiService from "../services/periodicExaminationsApiService";
 import ReportDataEditorStore from './reportDataEditorStore';
 import EmployerDataEditorStore from './employerDataEditorStore';
+import ContingentGroupMedicalReportEditorStore from './contingentGroupMedicalReportEditorStore';
 
 
 class PeriodicExaminationEditorStore {
@@ -8,6 +9,7 @@ class PeriodicExaminationEditorStore {
         this.rootStore = rootStore;
         this.reportDataEditorStore = new ReportDataEditorStore(this);
         this.employerDataEditorStore = new EmployerDataEditorStore(this);
+        this.contingentGroupMedicalReportEditorStore = new ContingentGroupMedicalReportEditorStore(this);
     }
 
     loadExamination = () => {
@@ -19,6 +21,12 @@ class PeriodicExaminationEditorStore {
 
         const examinationId = this.rootStore.periodicExaminationsStore.examination.id;
         return periodicExaminationsApiService.updateEntity(examinationId, data);
+    }
+
+    get checkedCheckupStatusesId() {
+        return this.rootStore.periodicExaminationsStore.examination.checkupStatuses
+            .filter(s => s.checked === true)
+            .map(s => s.id);
     }
 }
 

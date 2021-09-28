@@ -10,7 +10,7 @@ const emptyCheckupResultId = 'empty';
 const medicalReportTemplate = {
     checkupResultId: emptyCheckupResultId,
     medicalReport: '',
-    dateOfComplition: '',
+    dateOfCompletion: '',
     registrationJournalEntryNumber: '',
     checkupStarted: false,
     isDisabled: false,
@@ -38,7 +38,7 @@ class CheckupStatusMedicalReportEditorStore extends BaseFormStore {
         reaction(() => this.model.checkupResultId,
             (value) => {
                 if (value === emptyCheckupResultId) {
-                    this.updateProperty('dateOfComplition', '');
+                    this.updateProperty('dateOfCompletion', '');
                 }
                 else {
                     this.updateProperty('checkupStarted', true);
@@ -52,7 +52,7 @@ class CheckupStatusMedicalReportEditorStore extends BaseFormStore {
         this.setInitialValues({
             checkupResultId: checkup.result?.id ?? emptyCheckupResultId,
             medicalReport: checkup.medicalReport ?? '',
-            dateOfComplition: formatDateStringForDateInput(checkup.dateOfComplition),
+            dateOfCompletion: formatDateStringForDateInput(checkup.dateOfCompletion),
             registrationJournalEntryNumber: checkup.registrationJournalEntryNumber ?? '',
             checkupStarted: checkup.checkupStarted,
             isDisabled: checkup.isDisabled,

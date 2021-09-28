@@ -20,6 +20,7 @@ class PeriodicExaminationsStore extends BaseExaminationsStore {
         this.reportDataModal = new ModalStore();
         this.employerDataModal = new ModalStore();
         this.createContingentCheckupStatusModal = new ModalStore();
+        this.contingentGroupMedicalReportEditorModal = new ModalStore();
     }
 }
 

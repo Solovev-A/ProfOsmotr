@@ -135,7 +135,7 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
             CreateMap<CheckupStatus, CheckupStatusResource>()
                 .Include<IndividualCheckupStatus, PreliminaryMedicalExaminationResource>()
                 .Include<ContingentCheckupStatus, ContingentCheckupStatusResource>()
-                .ForMember(d => d.DateOfComplition, conf => conf.MapFrom(s => ToString(s.DateOfCompletion)))
+                .ForMember(d => d.DateOfCompletion, conf => conf.MapFrom(s => ToString(s.DateOfCompletion)))
                 .ForMember(d => d.MedicalReport, conf => conf.MapFrom(s => s.MedicalReport))
                 .ForMember(d => d.Patient, conf => conf.MapFrom(s => s.Patient))
                 .ForMember(d => d.RegistrationJournalEntryNumber, conf => conf.MapFrom(s => s.RegistrationJournalEntryNumber))

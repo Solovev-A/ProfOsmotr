@@ -16,7 +16,7 @@ namespace ProfOsmotr.Web.Models
 
         public string MedicalReport { get; set; }
 
-        public string DateOfComplition { get; set; }
+        public string DateOfCompletion { get; set; }
 
         public int? RegistrationJournalEntryNumber { get; set; }
     }

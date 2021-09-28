@@ -14,6 +14,7 @@ import EmployerDataEditorModal from './components/employerDataEditorModal';
 import CreateContingentCheckupStatusModal from './components/createContingentCheckupStatusModal';
 import usePageId from './../../hooks/usePageId';
 import useTitle from './../../hooks/useTitle';
+import ContingentGroupMedicalReportEditorModal from './components/contingentGroupMedicalReportEditorModal';
 
 
 const PeriodicExaminationPage = observer((props) => {
@@ -59,6 +60,7 @@ const PeriodicExaminationPage = observer((props) => {
             <ReportDataEditorModal />
             <EmployerDataEditorModal />
             <CreateContingentCheckupStatusModal />
+            <ContingentGroupMedicalReportEditorModal />
         </>
     )
 })

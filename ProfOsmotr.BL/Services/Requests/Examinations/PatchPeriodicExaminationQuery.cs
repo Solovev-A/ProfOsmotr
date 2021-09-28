@@ -9,5 +9,7 @@ namespace ProfOsmotr.BL
         public string Recommendations { get; set; }
 
         public DateTime? ReportDate { get; set; }
+
+        public UpdateContingentGroupMedicalReportQuery ContingentGroupMedicalReport { get; set; }
     }
 }

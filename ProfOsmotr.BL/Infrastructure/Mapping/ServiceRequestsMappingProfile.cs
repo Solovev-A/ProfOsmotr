@@ -93,6 +93,8 @@ namespace ProfOsmotr.BL.Infrastructure.Mapping
                 .ForMember(d => d.WorkingWithJobTypesTotal, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.WorkingWithJobTypesTotal))))
                 .ForMember(d => d.WorkingWithJobTypesUnder18, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.WorkingWithJobTypesUnder18))))
                 .ForMember(d => d.WorkingWithJobTypesWomen, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.WorkingWithJobTypesWomen))));
+
+            CreateMap<UpdateContingentGroupMedicalReportQuery, ContingentCheckupStatus>();
         }
     }
 }
