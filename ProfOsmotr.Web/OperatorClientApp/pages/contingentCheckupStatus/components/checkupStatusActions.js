@@ -29,11 +29,14 @@ const CheckupStatusActions = () => {
                 Выписка
             </Button>
             &nbsp;
-            <Button>
+            <a href={routes.contingentCheckupStatusMedicalReport.getUrl(contingentCheckupStatusStore.checkupStatusSlug)}
+                className="btn btn-secondary"
+                download
+            >
                 <FontAwesomeIcon icon={faFileAlt} />
                 {' '}
                 Заключение
-            </Button>
+            </a>
             &nbsp;
             <Button onClick={onRemoveCheckupStatus}>
                 <FontAwesomeIcon icon={faTrash} />

@@ -25,6 +25,14 @@ namespace ProfOsmotr.Web.Services
 
         public async Task<IActionResult> HandleQuery<TServiceResult>(
             Func<Task<BaseResponse<TServiceResult>>> serviceFunc,
+            Func<TServiceResult, IActionResult> actionResultCreator,
+            params Func<Task<AccessResult>>[] accessChecks)
+        {
+            return await ProcessQuery(serviceFunc, (res) => actionResultCreator(res), accessChecks);
+        }
+
+        public async Task<IActionResult> HandleQuery<TServiceResult>(
+            Func<Task<BaseResponse<TServiceResult>>> serviceFunc,
             params Func<Task<AccessResult>>[] accessChecks)
         {
             return await ProcessQuery(serviceFunc, (res) => new OkResult(), accessChecks);

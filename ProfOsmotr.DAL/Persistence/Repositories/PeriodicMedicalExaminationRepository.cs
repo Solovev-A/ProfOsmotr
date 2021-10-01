@@ -54,6 +54,7 @@ namespace ProfOsmotr.DAL
                 .Include(s => s.LastEditor.UserProfile)
                 .Include(s => s.Patient)
                 .Include(s => s.PeriodicMedicalExamination.Employer)
+                .Include(s => s.PeriodicMedicalExamination.Clinic.ClinicDetails)
                 .Include(s => s.Profession.OrderItems)
                 .Include(s => s.NewlyDiagnosedChronicSomaticDiseases)
                 .Include(s => s.NewlyDiagnosedOccupationalDiseases)

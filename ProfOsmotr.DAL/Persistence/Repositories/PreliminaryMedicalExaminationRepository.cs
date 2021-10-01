@@ -40,6 +40,7 @@ namespace ProfOsmotr.DAL
             var query = noTracking ? dbSet.AsNoTracking() : dbSet;
 
             return await query
+                .Include(ex => ex.Clinic.ClinicDetails)
                 .Include(ex => ex.Employer)
                 .Include(ex => ex.CheckupStatus.Patient)
                 .Include(ex => ex.CheckupStatus.Profession.OrderItems)

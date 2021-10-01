@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProfOsmotr.BL;
 using ProfOsmotr.BL.Abstractions;
+using ProfOsmotr.BL.Models;
 using ProfOsmotr.DAL;
 using ProfOsmotr.Web.Infrastructure;
 using ProfOsmotr.Web.Models;
@@ -71,6 +72,15 @@ namespace ProfOsmotr.Web.Api
             return await queryHandler.HandleQuery<QueryResult<PreliminaryMedicalExamination>,
                 PagedResource<PreliminaryMedicalExaminationsListItemResource>>(
                 async () => await examinationsService.ListActualPreliminaryMedicalExaminationsAsync(clinicId));
+        }
+
+        [HttpGet("{id}/report")]
+        public async Task<IActionResult> GetMedicalReport(int id)
+        {
+            return await queryHandler.HandleQuery<BaseFileResult>(
+                async () => await examinationsService.GetPreliminaryExaminationMedicalReportAsync(id),
+                (res) => File(res.Bytes, res.ContentType, res.FileName),
+                async () => await accessService.CanAccessPreliminaryExaminationAsync(id));
         }
 
         [HttpPost]

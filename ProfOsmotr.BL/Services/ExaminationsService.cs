@@ -6,6 +6,7 @@ using ProfOsmotr.DAL;
 using ProfOsmotr.DAL.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -22,6 +23,8 @@ namespace ProfOsmotr.BL
         private readonly IOrderService orderService;
         private readonly IICD10Service icd10Service;
         private readonly IMapper mapper;
+        private readonly IReportDataFactory reportDataFactory;
+        private readonly IReportsCreator reportsCreator;
 
         public ExaminationsService(IProfUnitOfWork uow,
                                    IPatientService patientService,
@@ -30,7 +33,9 @@ namespace ProfOsmotr.BL
                                    IProfessionService professionService,
                                    IOrderService orderService,
                                    IICD10Service icd10Service,
-                                   IMapper mapper)
+                                   IMapper mapper,
+                                   IReportDataFactory reportDataFactory,
+                                   IReportsCreator reportsCreator)
         {
             this.uow = uow ?? throw new ArgumentNullException(nameof(uow));
             this.patientService = patientService ?? throw new ArgumentNullException(nameof(patientService));
@@ -40,6 +45,8 @@ namespace ProfOsmotr.BL
             this.orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
             this.icd10Service = icd10Service ?? throw new ArgumentNullException(nameof(icd10Service));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.reportDataFactory = reportDataFactory ?? throw new ArgumentNullException(nameof(reportDataFactory));
+            this.reportsCreator = reportsCreator ?? throw new ArgumentNullException(nameof(reportsCreator));
         }
 
         public async Task<PreliminaryMedicalExaminationResponse> GetPreliminaryMedicalExaminationAsync(int id)
@@ -171,7 +178,6 @@ namespace ProfOsmotr.BL
                 {
                     return new PreliminaryMedicalExaminationResponse(result.ErrorMessage);
                 }
-
             }
             if (query.IsFieldPresent(nameof(query.ProfessionId)))
             {
@@ -551,7 +557,6 @@ namespace ProfOsmotr.BL
                 {
                     return new ContingentCheckupStatusResponse(result.ErrorMessage);
                 }
-
             }
             if (query.IsFieldPresent(nameof(query.ProfessionId)))
             {
@@ -714,6 +719,30 @@ namespace ProfOsmotr.BL
             }
         }
 
+        public async Task<FileResultResponse> GetPreliminaryExaminationMedicalReportAsync(int examinationId)
+        {
+            var examination = await uow.PreliminaryMedicalExaminations.FindExaminationAsync(examinationId);
+
+            if (examination is null)
+            {
+                return new FileResultResponse("Медосмотр не найден");
+            }
+
+            return await CreateCheckupStatusMedicalReport(examination.CheckupStatus);
+        }
+
+        public async Task<FileResultResponse> GetContingentCheckupStatusMedicalReportAsync(int checkupStatusId)
+        {
+            var checkupStatus = await uow.PeriodicMedicalExaminations.FindCheckupStatus(checkupStatusId);
+
+            if (checkupStatus is null)
+            {
+                return new FileResultResponse("Медосмотр работника не найден");
+            }
+
+            return await CreateCheckupStatusMedicalReport(checkupStatus);
+        }
+
         #region Protected methods
 
         protected async Task<ServiceActionResult> UpdateLastEditor(MedicalExamination examination, int editorId)
@@ -873,6 +902,20 @@ namespace ProfOsmotr.BL
             return new ServiceActionResult();
         }
 
-        #endregion
+        protected async Task<FileResultResponse> CreateCheckupStatusMedicalReport(CheckupStatus checkupStatus)
+        {
+            try
+            {
+                var data = reportDataFactory.CreateCheckupStatusMedicalReportData(checkupStatus);
+                var result = await reportsCreator.CreateCheckupStatusMedicalReport(data);
+                return new FileResultResponse(result);
+            }
+            catch (Exception ex)
+            {
+                return new FileResultResponse(ex.Message);
+            }
+        }
+
+        #endregion Protected methods
     }
 }

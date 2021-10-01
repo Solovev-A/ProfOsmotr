@@ -94,6 +94,8 @@ namespace ProfOsmotr.Web.Infrastructure
             services.AddTransient<IEmployerService, EmployerService>();
             services.AddTransient<IExaminationsService, ExaminationsService>();
             services.AddTransient<IICD10Service, ICD10Service>();
+            services.AddTransient<IReportDataFactory, ReportDataFactory>();
+            services.AddTransient<IReportsCreator, DocxReportsCreator>();
         }
     }
 }

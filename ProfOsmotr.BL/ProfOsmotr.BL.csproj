@@ -10,6 +10,13 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="TemplateEngine.Docx" Version="1.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Templates\checkup-status-medical-report.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

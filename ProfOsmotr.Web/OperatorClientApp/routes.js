@@ -1,15 +1,15 @@
-﻿const baseUrl = '/Operator';
+﻿const base = '/Operator';
 
 class Route {
-    constructor({ path, name }) {
+    constructor({ path, name, baseUrl = base }) {
         this.path = baseUrl + path;
         this.name = name;
     }
 }
 
 class RouteWithSlug extends Route {
-    constructor({ path, name, slug = ':id' }) {
-        super({ path, name });
+    constructor({ path, name, slug = ':id', baseUrl = base }) {
+        super({ path, name, baseUrl });
         this.slug = slug;
     }
 
@@ -18,9 +18,15 @@ class RouteWithSlug extends Route {
     }
 }
 
+class ApiRouteWithSlug extends RouteWithSlug {
+    constructor({ path, name }) {
+        super({ path, name, baseUrl: '/api' });
+    }
+}
+
 
 const routes = {
-    baseUrl,
+    base,
     preliminaryExaminations: new Route({
         path: '/examinations/preliminary',
         name: 'Предварительные осмотры'
@@ -32,6 +38,10 @@ const routes = {
     preliminaryExamination: new RouteWithSlug({
         path: '/examinations/preliminary/:id',
         name: 'Карта предварительного осмотра'
+    }),
+    preliminaryExaminationMedicalReport: new ApiRouteWithSlug({
+        path: '/examinations/preliminary/:id/report',
+        name: 'Заключение по результатам предварительного осмотра'
     }),
     periodicExaminations: new Route({
         path: '/examinations/periodic',
@@ -48,6 +58,10 @@ const routes = {
     contingentCheckupStatus: new RouteWithSlug({
         path: '/examinations/periodic/checkup-statuses/:id',
         name: 'Карта периодического медосмотра работника'
+    }),
+    contingentCheckupStatusMedicalReport: new ApiRouteWithSlug({
+        path: '/examinations/periodic/checkup-statuses/:id/report',
+        name: 'Заключение периодического медосмотра работника'
     }),
     patients: new Route({
         path: '/patients',

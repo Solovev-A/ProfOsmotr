@@ -28,13 +28,14 @@ const PreliminaryExaminationActions = () => {
                 Выписка
             </button>
             &nbsp;
-            <button type="button"
+            <a href={routes.preliminaryExaminationMedicalReport.getUrl(preliminaryExaminationsStore.examinationSlug)}
                 className={actionClassName}
+                download
             >
                 <FontAwesomeIcon icon={faFileAlt} />
                 {' '}
                 Заключение
-            </button>
+            </a>
             &nbsp;
             <button type="button"
                 className={actionClassName}
