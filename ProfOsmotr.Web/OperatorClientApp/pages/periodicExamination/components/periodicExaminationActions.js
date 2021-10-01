@@ -20,6 +20,14 @@ const PeriodicExaminationActions = () => {
 
     return (
         <div className="mb-3">
+            <a href={routes.periodicExaminationAllReports.getUrl(periodicExaminationsStore.examinationSlug)}
+                className={actionClassName}
+            >
+                <FontAwesomeIcon icon={faFileAlt} />
+                {' '}
+                Все заключения
+            </a>
+            &nbsp;
             <button type="button"
                 className={actionClassName}
             >

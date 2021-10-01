@@ -5,6 +5,6 @@ namespace ProfOsmotr.BL.Abstractions
 {
     public interface IReportsCreator
     {
-        Task<BaseFileResult> CreateCheckupStatusMedicalReport(CheckupStatusMedicalReportData data);
+        Task<BaseFileResult> CreateCheckupStatusesMedicalReport(params CheckupStatusMedicalReportData[] datas);
     }
 }

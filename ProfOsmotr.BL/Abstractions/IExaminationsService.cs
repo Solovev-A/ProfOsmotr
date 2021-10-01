@@ -49,5 +49,6 @@ namespace ProfOsmotr.BL.Abstractions
         Task<ExaminationsStatisticsResponse> CalculateStatistics(CalculateStatisticsRequest request);
         Task<FileResultResponse> GetPreliminaryExaminationMedicalReportAsync(int examinationId);
         Task<FileResultResponse> GetContingentCheckupStatusMedicalReportAsync(int checkupStatusId);
+        Task<FileResultResponse> GetAllMedicalReportsAsync(int periodicExaminationId);
     }
 }

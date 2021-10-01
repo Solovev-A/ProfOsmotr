@@ -192,5 +192,14 @@ namespace ProfOsmotr.Web.Api
                 (res) => File(res.Bytes, res.ContentType, res.FileName),
                 async () => await accessService.CanAccessContingentCheckupStatus(id));
         }
+
+        [HttpGet("{id}/reports")]
+        public async Task<IActionResult> GetAllMedicalReports(int id)
+        {
+            return await queryHandler.HandleQuery<BaseFileResult>(
+                async () => await examinationsService.GetAllMedicalReportsAsync(id),
+                (res) => File(res.Bytes, res.ContentType, res.FileName),
+                async () => await accessService.CanAccessPeriodicExaminationAsync(id));
+        }
     }
 }

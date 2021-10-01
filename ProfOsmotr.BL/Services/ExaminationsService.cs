@@ -743,6 +743,31 @@ namespace ProfOsmotr.BL
             return await CreateCheckupStatusMedicalReport(checkupStatus);
         }
 
+        public async Task<FileResultResponse> GetAllMedicalReportsAsync(int periodicExaminationId)
+        {
+            var examination = await uow.PeriodicMedicalExaminations.FindAsync(periodicExaminationId);
+
+            if (examination is null)
+            {
+                return new FileResultResponse("Медосмотр не найден");
+            }
+
+            var checkupStatuses = await uow.PeriodicMedicalExaminations.ListAllCheckupStatuses(periodicExaminationId);
+
+            try
+            {
+                CheckupStatusMedicalReportData[] datas = checkupStatuses
+                    .Select(s => reportDataFactory.CreateCheckupStatusMedicalReportData(s))
+                    .ToArray();
+                var result = await reportsCreator.CreateCheckupStatusesMedicalReport(datas);
+                return new FileResultResponse(result);
+            }
+            catch (Exception ex)
+            {
+                return new FileResultResponse(ex.Message);
+            }
+        }
+
         #region Protected methods
 
         protected async Task<ServiceActionResult> UpdateLastEditor(MedicalExamination examination, int editorId)
@@ -907,7 +932,7 @@ namespace ProfOsmotr.BL
             try
             {
                 var data = reportDataFactory.CreateCheckupStatusMedicalReportData(checkupStatus);
-                var result = await reportsCreator.CreateCheckupStatusMedicalReport(data);
+                var result = await reportsCreator.CreateCheckupStatusesMedicalReport(data);
                 return new FileResultResponse(result);
             }
             catch (Exception ex)

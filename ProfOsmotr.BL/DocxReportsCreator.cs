@@ -2,7 +2,9 @@
 using ProfOsmotr.BL.Infrastructure;
 using ProfOsmotr.BL.Models;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -22,10 +24,16 @@ namespace ProfOsmotr.BL
             templateEngineHelper = new TemplateEngineHelper(reportsDirectoryPath);
         }
 
-        public async Task<BaseFileResult> CreateCheckupStatusMedicalReport(CheckupStatusMedicalReportData data)
+        public async Task<BaseFileResult> CreateCheckupStatusesMedicalReport(params CheckupStatusMedicalReportData[] datas)
         {
+            if (datas is null || datas.Length == 0)
+                throw new ArgumentException();
+
+            var data = new { Reports = (IEnumerable<CheckupStatusMedicalReportData>)datas };
             string reportPath = templateEngineHelper.CreateReport(checkupStatusMedicalReportTemplatePath, data);
-            string fileName = $"{data.FullName} - мед. заключение";
+            string fileName = datas.Length > 1
+                ? $"{datas[0].Employer} - заключения"
+                : $"{datas[0].FullName} - заключение";
             return await CreateResult(reportPath, fileName);
         }
 

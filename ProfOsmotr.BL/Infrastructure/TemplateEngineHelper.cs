@@ -98,6 +98,7 @@ namespace ProfOsmotr.BL.Infrastructure
                             ProcessObject(item, row);
                             table.AddRow(row.ToArray());
                         }
+                        target.Add(table);
                     }
                     // если свойство - строка, обрабатываем как обычное поле
                     else if (propType == typeof(string))
