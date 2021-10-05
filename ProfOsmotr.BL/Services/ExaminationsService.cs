@@ -2,6 +2,7 @@
 using ProfOsmotr.BL.Abstractions;
 using ProfOsmotr.BL.Infrastructure;
 using ProfOsmotr.BL.Models;
+using ProfOsmotr.BL.Models.ReportData;
 using ProfOsmotr.DAL;
 using ProfOsmotr.DAL.Abstractions;
 using System;
@@ -23,7 +24,6 @@ namespace ProfOsmotr.BL
         private readonly IOrderService orderService;
         private readonly IICD10Service icd10Service;
         private readonly IMapper mapper;
-        private readonly IReportDataFactory reportDataFactory;
         private readonly IReportsCreator reportsCreator;
 
         public ExaminationsService(IProfUnitOfWork uow,
@@ -34,7 +34,6 @@ namespace ProfOsmotr.BL
                                    IOrderService orderService,
                                    IICD10Service icd10Service,
                                    IMapper mapper,
-                                   IReportDataFactory reportDataFactory,
                                    IReportsCreator reportsCreator)
         {
             this.uow = uow ?? throw new ArgumentNullException(nameof(uow));
@@ -45,7 +44,6 @@ namespace ProfOsmotr.BL
             this.orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
             this.icd10Service = icd10Service ?? throw new ArgumentNullException(nameof(icd10Service));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            this.reportDataFactory = reportDataFactory ?? throw new ArgumentNullException(nameof(reportDataFactory));
             this.reportsCreator = reportsCreator ?? throw new ArgumentNullException(nameof(reportsCreator));
         }
 
@@ -721,51 +719,38 @@ namespace ProfOsmotr.BL
 
         public async Task<FileResultResponse> GetPreliminaryExaminationMedicalReportAsync(int examinationId)
         {
-            var examination = await uow.PreliminaryMedicalExaminations.FindExaminationAsync(examinationId);
-
-            if (examination is null)
-            {
-                return new FileResultResponse("Медосмотр не найден");
-            }
-
-            return await CreateCheckupStatusMedicalReport(examination.CheckupStatus);
+            return await CreatePreliminaryExaminationReport(examinationId, CreateCheckupStatusMedicalReport);
         }
 
         public async Task<FileResultResponse> GetContingentCheckupStatusMedicalReportAsync(int checkupStatusId)
         {
-            var checkupStatus = await uow.PeriodicMedicalExaminations.FindCheckupStatus(checkupStatusId);
-
-            if (checkupStatus is null)
-            {
-                return new FileResultResponse("Медосмотр работника не найден");
-            }
-
-            return await CreateCheckupStatusMedicalReport(checkupStatus);
+            return await CreateContingentCheckupStatusReport(checkupStatusId, CreateCheckupStatusMedicalReport);
         }
 
         public async Task<FileResultResponse> GetAllMedicalReportsAsync(int periodicExaminationId)
         {
-            var examination = await uow.PeriodicMedicalExaminations.FindAsync(periodicExaminationId);
+            return await CreatePeriodicMedicalExaminationAllStatusesReport(
+                periodicExaminationId,
+                s => new CheckupStatusMedicalReportData(s),
+                reportsCreator.CreateCheckupStatusesMedicalReport);
+        }
 
-            if (examination is null)
-            {
-                return new FileResultResponse("Медосмотр не найден");
-            }
+        public async Task<FileResultResponse> GetPreliminaryExaminationExcerptAsync(int examinationId)
+        {
+            return await CreatePreliminaryExaminationReport(examinationId, CreateCheckupStatusExcerpt);
+        }
 
-            var checkupStatuses = await uow.PeriodicMedicalExaminations.ListAllCheckupStatuses(periodicExaminationId);
+        public async Task<FileResultResponse> GetContingentCheckupStatusExcerptAsync(int checkupStatusId)
+        {
+            return await CreateContingentCheckupStatusReport(checkupStatusId, CreateCheckupStatusExcerpt);
+        }
 
-            try
-            {
-                CheckupStatusMedicalReportData[] datas = checkupStatuses
-                    .Select(s => reportDataFactory.CreateCheckupStatusMedicalReportData(s))
-                    .ToArray();
-                var result = await reportsCreator.CreateCheckupStatusesMedicalReport(datas);
-                return new FileResultResponse(result);
-            }
-            catch (Exception ex)
-            {
-                return new FileResultResponse(ex.Message);
-            }
+        public async Task<FileResultResponse> GetAllExcerptsAsync(int periodicExaminationId)
+        {
+            return await CreatePeriodicMedicalExaminationAllStatusesReport(
+                periodicExaminationId,
+                s => new CheckupStatusExcerptData(s),
+                reportsCreator.CreateCheckupStatusExcerpt);
         }
 
         #region Protected methods
@@ -931,8 +916,81 @@ namespace ProfOsmotr.BL
         {
             try
             {
-                var data = reportDataFactory.CreateCheckupStatusMedicalReportData(checkupStatus);
+                var data = new CheckupStatusMedicalReportData(checkupStatus);
                 var result = await reportsCreator.CreateCheckupStatusesMedicalReport(data);
+                return new FileResultResponse(result);
+            }
+            catch (Exception ex)
+            {
+                return new FileResultResponse(ex.Message);
+            }
+        }
+
+        protected async Task<FileResultResponse> CreateCheckupStatusExcerpt(CheckupStatus checkupStatus)
+        {
+            try
+            {
+                var data = new CheckupStatusExcerptData(checkupStatus);
+                var result = await reportsCreator.CreateCheckupStatusExcerpt(data);
+                return new FileResultResponse(result);
+            }
+            catch (Exception ex)
+            {
+                return new FileResultResponse(ex.Message);
+            }
+        }
+
+        protected async Task<FileResultResponse> CreatePreliminaryExaminationReport(int preliminaryExaminationId,
+                                                                                    Func<IndividualCheckupStatus, Task<FileResultResponse>> reportCreator)
+        {
+            var examination = await uow.PreliminaryMedicalExaminations.FindExaminationAsync(preliminaryExaminationId);
+
+            if (examination is null)
+            {
+                return new FileResultResponse("Медосмотр не найден");
+            }
+
+            return await reportCreator(examination.CheckupStatus);
+        }
+
+        protected async Task<FileResultResponse> CreateContingentCheckupStatusReport(int checkupStatusId,
+                                                                                     Func<ContingentCheckupStatus, Task<FileResultResponse>> reportCreator)
+        {
+            var checkupStatus = await uow.PeriodicMedicalExaminations.FindCheckupStatus(checkupStatusId);
+
+            if (checkupStatus is null)
+            {
+                return new FileResultResponse("Медосмотр работника не найден");
+            }
+
+            return await reportCreator(checkupStatus);
+        }
+
+        protected async Task<FileResultResponse> CreatePeriodicMedicalExaminationAllStatusesReport<T>(
+            int periodicExaminationId,
+            Func<ContingentCheckupStatus, T> reportDataSelector,
+            Func<T[], Task<BaseFileResult>> reportCreator)
+        {
+            var examination = await uow.PeriodicMedicalExaminations.FindAsync(periodicExaminationId);
+
+            if (examination is null)
+            {
+                return new FileResultResponse("Медосмотр не найден");
+            }
+
+            var checkupStatuses = await uow.PeriodicMedicalExaminations.ListAllCheckupStatuses(periodicExaminationId);
+
+            if (!checkupStatuses.Any())
+            {
+                return new FileResultResponse("Список медосмотров пациентов пуст");
+            }
+
+            try
+            {
+                T[] datas = checkupStatuses
+                    .Select(reportDataSelector)
+                    .ToArray();
+                var result = await reportCreator(datas);
                 return new FileResultResponse(result);
             }
             catch (Exception ex)

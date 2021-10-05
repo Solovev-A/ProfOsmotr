@@ -84,21 +84,21 @@ namespace ProfOsmotr.BL.Infrastructure
                         ProcessObject(value, target);
                     }
                     // если тип свойства - перечисление объектов,
-                    // обрабатываем его как таблица, а содержимое - как строки таблицы
+                    // обрабатываем его как повторение, а содержимое - как элементы повторения
                     else if (propType.IsGenericType
                         && propType.GetGenericTypeDefinition() == typeof(IEnumerable<>)
                         && IsClassAndNotString(propType.GetGenericArguments()[0]))
                     {
-                        TableContent table = new TableContent(targetPropName);
+                        RepeatContent repeat = new RepeatContent(targetPropName);
                         targetPropName += ".";
 
                         foreach (var item in (IEnumerable)value)
                         {
-                            ICollection<IContentItem> row = new List<IContentItem>();
-                            ProcessObject(item, row);
-                            table.AddRow(row.ToArray());
+                            ICollection<IContentItem> currentItemFields = new List<IContentItem>();
+                            ProcessObject(item, currentItemFields);
+                            repeat.AddItem(currentItemFields.ToArray());
                         }
-                        target.Add(table);
+                        target.Add(repeat);
                     }
                     // если свойство - строка, обрабатываем как обычное поле
                     else if (propType == typeof(string))

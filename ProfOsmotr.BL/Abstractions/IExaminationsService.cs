@@ -46,9 +46,19 @@ namespace ProfOsmotr.BL.Abstractions
         Task<QueryResponse<PeriodicMedicalExamination>> GetPeriodicMedicalExaminationsJournalAsync(ExecuteExaminationsJournalQueryRequest request);
 
         Task<PeriodicMedicalExaminationResponse> CreatePeriodicMedicalExaminationAsync(CreatePeriodicMedicalExaminationRequest request);
+
         Task<ExaminationsStatisticsResponse> CalculateStatistics(CalculateStatisticsRequest request);
+
         Task<FileResultResponse> GetPreliminaryExaminationMedicalReportAsync(int examinationId);
+
         Task<FileResultResponse> GetContingentCheckupStatusMedicalReportAsync(int checkupStatusId);
+
         Task<FileResultResponse> GetAllMedicalReportsAsync(int periodicExaminationId);
+
+        Task<FileResultResponse> GetPreliminaryExaminationExcerptAsync(int examinationId);
+
+        Task<FileResultResponse> GetContingentCheckupStatusExcerptAsync(int checkupStatusId);
+
+        Task<FileResultResponse> GetAllExcerptsAsync(int periodicExaminationId);
     }
 }

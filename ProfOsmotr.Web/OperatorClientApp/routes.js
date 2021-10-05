@@ -43,6 +43,10 @@ const routes = {
         path: '/examinations/preliminary/:id/report',
         name: 'Заключение по результатам предварительного осмотра'
     }),
+    preliminaryExaminationExcerpt: new ApiRouteWithSlug({
+        path: '/examinations/preliminary/:id/excerpt',
+        name: 'Выписка по результатам предварительного осмотра'
+    }),
     periodicExaminations: new Route({
         path: '/examinations/periodic',
         name: 'Периодические осмотры'
@@ -59,6 +63,10 @@ const routes = {
         path: '/examinations/periodic/:id/reports',
         name: 'Все заключения периодического осмотра'
     }),
+    periodicExaminationAllExcerpts: new ApiRouteWithSlug({
+        path: '/examinations/periodic/:id/excerpts',
+        name: 'Все выписки периодического осмотра'
+    }),
     contingentCheckupStatus: new RouteWithSlug({
         path: '/examinations/periodic/checkup-statuses/:id',
         name: 'Карта периодического медосмотра работника'
@@ -66,6 +74,10 @@ const routes = {
     contingentCheckupStatusMedicalReport: new ApiRouteWithSlug({
         path: '/examinations/periodic/checkup-statuses/:id/report',
         name: 'Заключение периодического медосмотра работника'
+    }),
+    contingentCheckupStatusExcerpt: new ApiRouteWithSlug({
+        path: '/examinations/periodic/checkup-statuses/:id/excerpt',
+        name: 'Выписка по результатам периодического медосмотра работника'
     }),
     patients: new Route({
         path: '/patients',

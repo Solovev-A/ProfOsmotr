@@ -1,10 +1,9 @@
 ﻿using ProfOsmotr.BL.Abstractions;
 using ProfOsmotr.BL.Infrastructure;
 using ProfOsmotr.BL.Models;
+using ProfOsmotr.BL.Models.ReportData;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -14,6 +13,7 @@ namespace ProfOsmotr.BL
     {
         protected readonly string reportsDirectoryPath;
         protected readonly string checkupStatusMedicalReportTemplatePath;
+        protected readonly string checkupStatusExcerptTemplatePath;
         protected readonly TemplateEngineHelper templateEngineHelper;
 
         public DocxReportsCreator()
@@ -21,19 +21,33 @@ namespace ProfOsmotr.BL
             reportsDirectoryPath = GetFullPath(@"ReportsTemp\");
             Directory.CreateDirectory(reportsDirectoryPath);
             checkupStatusMedicalReportTemplatePath = GetFullPath(@"Templates\checkup-status-medical-report.docx");
+            checkupStatusExcerptTemplatePath = GetFullPath(@"Templates\checkup-status-excerpt.docx");
             templateEngineHelper = new TemplateEngineHelper(reportsDirectoryPath);
         }
 
         public async Task<BaseFileResult> CreateCheckupStatusesMedicalReport(params CheckupStatusMedicalReportData[] datas)
         {
+            return await CreateCheckupStatusesReport(datas, checkupStatusMedicalReportTemplatePath, "заключение");
+        }
+
+        public async Task<BaseFileResult> CreateCheckupStatusExcerpt(params CheckupStatusExcerptData[] datas)
+        {
+            return await CreateCheckupStatusesReport(datas, checkupStatusExcerptTemplatePath, "выписка");
+        }
+
+        protected async Task<BaseFileResult> CreateCheckupStatusesReport<TData>(TData[] datas,
+                                                                              string templatePath,
+                                                                              string fileNameLabel)
+            where TData : CheckupStatusMedicalReportData
+        {
             if (datas is null || datas.Length == 0)
                 throw new ArgumentException();
 
-            var data = new { Reports = (IEnumerable<CheckupStatusMedicalReportData>)datas };
-            string reportPath = templateEngineHelper.CreateReport(checkupStatusMedicalReportTemplatePath, data);
+            var data = new MultiItemReportData<TData>(datas);
+            string reportPath = templateEngineHelper.CreateReport(templatePath, data);
             string fileName = datas.Length > 1
-                ? $"{datas[0].Employer} - заключения"
-                : $"{datas[0].FullName} - заключение";
+                ? $"{datas[0].Employer} - {fileNameLabel}"
+                : $"{datas[0].FullName} - {fileNameLabel}";
             return await CreateResult(reportPath, fileName);
         }
 

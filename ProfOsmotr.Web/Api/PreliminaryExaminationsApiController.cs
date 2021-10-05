@@ -83,6 +83,15 @@ namespace ProfOsmotr.Web.Api
                 async () => await accessService.CanAccessPreliminaryExaminationAsync(id));
         }
 
+        [HttpGet("{id}/excerpt")]
+        public async Task<IActionResult> GetExcerpt(int id)
+        {
+            return await queryHandler.HandleQuery<BaseFileResult>(
+                async () => await examinationsService.GetPreliminaryExaminationExcerptAsync(id),
+                (res) => File(res.Bytes, res.ContentType, res.FileName),
+                async () => await accessService.CanAccessPreliminaryExaminationAsync(id));
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreatePreliminaryExaminationQuery query)
         {

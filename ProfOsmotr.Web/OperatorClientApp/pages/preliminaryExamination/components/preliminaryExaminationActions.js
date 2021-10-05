@@ -9,10 +9,11 @@ import useStore from './../../../hooks/useStore';
 const PreliminaryExaminationActions = () => {
     const actionClassName = "btn btn-secondary";
     const { preliminaryExaminationsStore } = useStore();
+    const { removeExamination, examinationSlug } = preliminaryExaminationsStore;
     const history = useHistory();
 
     const onRemoveExamination = async () => {
-        const response = await preliminaryExaminationsStore.removeExamination();
+        const response = await removeExamination();
         if (response && response.success !== false) {
             history.replace(routes.preliminaryExaminations.path);
         }
@@ -20,15 +21,16 @@ const PreliminaryExaminationActions = () => {
 
     return (
         <div className="mb-3">
-            <button type="button"
-                className={actionClassName}
+            <a href={routes.preliminaryExaminationExcerpt.getUrl(examinationSlug)}
+                className="btn btn-secondary"
+                download
             >
                 <FontAwesomeIcon icon={faFileMedical} />
                 {' '}
                 Выписка
-            </button>
+            </a>
             &nbsp;
-            <a href={routes.preliminaryExaminationMedicalReport.getUrl(preliminaryExaminationsStore.examinationSlug)}
+            <a href={routes.preliminaryExaminationMedicalReport.getUrl(examinationSlug)}
                 className={actionClassName}
                 download
             >

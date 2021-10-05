@@ -14,6 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Templates\checkup-status-excerpt.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Templates\checkup-status-medical-report.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

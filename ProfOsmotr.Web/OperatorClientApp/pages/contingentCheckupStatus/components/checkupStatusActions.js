@@ -9,13 +9,14 @@ import { Button } from '../../../components/buttons';
 
 const CheckupStatusActions = () => {
     const { contingentCheckupStatusStore } = useStore();
+    const { removeCheckupStatus, checkupStatusSlug } = contingentCheckupStatusStore;
     const history = useHistory();
 
     const examinationId = contingentCheckupStatusStore.checkupStatus.examination.id;
     const examinationUrl = routes.periodicExamination.getUrl(examinationId);
 
     const onRemoveCheckupStatus = async () => {
-        const response = await contingentCheckupStatusStore.removeCheckupStatus();
+        const response = await removeCheckupStatus();
         if (response && response.success !== false) {
             history.replace(examinationUrl);
         }
@@ -23,13 +24,16 @@ const CheckupStatusActions = () => {
 
     return (
         <div className="mb-3">
-            <Button>
+            <a href={routes.contingentCheckupStatusExcerpt.getUrl(checkupStatusSlug)}
+                className="btn btn-secondary"
+                download
+            >
                 <FontAwesomeIcon icon={faFileMedical} />
                 {' '}
                 Выписка
-            </Button>
+            </a>
             &nbsp;
-            <a href={routes.contingentCheckupStatusMedicalReport.getUrl(contingentCheckupStatusStore.checkupStatusSlug)}
+            <a href={routes.contingentCheckupStatusMedicalReport.getUrl(checkupStatusSlug)}
                 className="btn btn-secondary"
                 download
             >

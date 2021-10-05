@@ -201,5 +201,23 @@ namespace ProfOsmotr.Web.Api
                 (res) => File(res.Bytes, res.ContentType, res.FileName),
                 async () => await accessService.CanAccessPeriodicExaminationAsync(id));
         }
+
+        [HttpGet("checkup-statuses/{id}/excerpt")]
+        public async Task<IActionResult> GetCheckupStatusExcerpt(int id)
+        {
+            return await queryHandler.HandleQuery<BaseFileResult>(
+                async () => await examinationsService.GetContingentCheckupStatusExcerptAsync(id),
+                (res) => File(res.Bytes, res.ContentType, res.FileName),
+                async () => await accessService.CanAccessContingentCheckupStatus(id));
+        }
+
+        [HttpGet("{id}/excerpts")]
+        public async Task<IActionResult> GetAllExcerpts(int id)
+        {
+            return await queryHandler.HandleQuery<BaseFileResult>(
+                async () => await examinationsService.GetAllExcerptsAsync(id),
+                (res) => File(res.Bytes, res.ContentType, res.FileName),
+                async () => await accessService.CanAccessPeriodicExaminationAsync(id));
+        }
     }
 }
