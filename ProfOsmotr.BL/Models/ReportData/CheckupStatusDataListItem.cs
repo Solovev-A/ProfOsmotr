@@ -11,5 +11,24 @@
         {
             N = n + ".";
         }
+
+        protected CheckupStatusDataListItem()
+        {
+        }
+
+        public static CheckupStatusDataListItem Empty()
+        {
+            string emptyValue = "-";
+            return new CheckupStatusDataListItem()
+            {
+                CheckupResult = emptyValue,
+                DateOfBirth = emptyValue,
+                EmployerDepartment = emptyValue,
+                FullName = emptyValue,
+                Gender = emptyValue,
+                MedicalReport = emptyValue,
+                N = emptyValue
+            };
+        }
     }
 }

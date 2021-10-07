@@ -15,5 +15,7 @@ namespace ProfOsmotr.DAL.Abstractions
         void DeleteCheckupStatus(ContingentCheckupStatus checkupStatus);
         Task<IEnumerable<CountResult>> CountCheckupsByMonth(int clinicId);
         Task<IEnumerable<ContingentCheckupStatus>> ListAllCheckupStatuses(int examinationId);
+        Task<PeriodicMedicalExamination> FindExaminationReportData(int id);
+        Task<IEnumerable<PeriodicMedicalExamination>> FindAllExaminations(int examinationYear);
     }
 }

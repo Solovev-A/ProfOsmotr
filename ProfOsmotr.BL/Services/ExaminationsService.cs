@@ -753,6 +753,31 @@ namespace ProfOsmotr.BL
                 reportsCreator.CreateCheckupStatusExcerpt);
         }
 
+        public async Task<FileResultResponse> GetPeriodicMedicalExaminationReportAsync(int examinationId)
+        {
+            var examination = await uow.PeriodicMedicalExaminations.FindExaminationReportData(examinationId);
+            if (examination is null)
+            {
+                return new FileResultResponse("Медосмотр не найден");
+            }
+
+            if (!examination.ReportDate.HasValue)
+            {
+                return new FileResultResponse("Медосмотр еще не завершен. Задайте, по крайней мере, дату завершения.");
+            }
+
+            try
+            {
+                var data = new PeriodicExaminationReportData(examination);
+                var result = await reportsCreator.CreatePeriodicMedicalExaminationReport(data);
+                return new FileResultResponse(result);
+            }
+            catch (Exception ex)
+            {
+                return new FileResultResponse(ex.Message);
+            }
+        }
+
         #region Protected methods
 
         protected async Task<ServiceActionResult> UpdateLastEditor(MedicalExamination examination, int editorId)

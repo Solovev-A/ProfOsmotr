@@ -12,6 +12,10 @@ namespace ProfOsmotr.BL.Models.ReportData
             FullName = $"{patient.LastName} {patient.FirstName} {patient.PatronymicName}".Trim();
         }
 
+        protected PatientBase()
+        {
+        }
+
         public string FullName { get; set; }
     }
 }

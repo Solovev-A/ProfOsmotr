@@ -59,19 +59,43 @@ namespace ProfOsmotr.DAL
 
         public async Task<PeriodicMedicalExamination> FindExaminationAsync(int id, bool noTracking = false)
         {
-            var query = noTracking ? dbSet.AsNoTracking() : dbSet;
+            var initial = GetInitialPeriodicMedicalExaminationQuery();
+            var query = noTracking ? initial.AsNoTracking() : initial;
 
             return await query
-                .Include(ex => ex.Employer)
-                .Include(ex => ex.EmployerData)
+                .Include(ex => ex.Statuses)
+                    .ThenInclude(s => s.Patient)
+                .Include(ex => ex.Statuses)
+                    .ThenInclude(s => s.Profession.OrderItems.Where(oi => !oi.IsDeleted))
+                .Include(ex => ex.LastEditor.UserProfile)
+                .Include(ex => ex.Statuses
+                                    .OrderBy(s => s.Patient.LastName)
+                                    .ThenBy(s => s.Patient.FirstName)
+                                    .ThenBy(s => s.Patient.PatronymicName))
+                .FirstOrDefaultAsync(ex => ex.Id == id);
+        }
+
+        public async Task<PeriodicMedicalExamination> FindExaminationReportData(int id)
+        {
+            return await GetPeriodicExaminationReportDataQuery()
                 .Include(ex => ex.Statuses)
                     .ThenInclude(s => s.Patient)
                 .Include(ex => ex.Statuses)
                     .ThenInclude(s => s.Profession.OrderItems.Where(oi => !oi.IsDeleted))
                 .Include(ex => ex.Statuses)
-                    .ThenInclude(s => s.CheckupResult)
-                .Include(ex => ex.LastEditor.UserProfile)
+                    .ThenInclude(s => s.EmployerDepartment)
+                .Include(ex => ex.Statuses
+                                    .OrderBy(s => s.Patient.LastName)
+                                    .ThenBy(s => s.Patient.FirstName)
+                                    .ThenBy(s => s.Patient.PatronymicName))
                 .FirstOrDefaultAsync(ex => ex.Id == id);
+        }
+
+        public async Task<IEnumerable<PeriodicMedicalExamination>> FindAllExaminations(int examinationYear)
+        {
+            return await GetPeriodicExaminationReportDataQuery()
+                .Where(ex => ex.ExaminationYear == examinationYear)
+                .ToListAsync();
         }
 
         public async Task<int> GetCheckupStatusClinicIdAsync(int checkupStatusId)
@@ -86,6 +110,8 @@ namespace ProfOsmotr.DAL
 
         protected override IQueryable<PeriodicMedicalExamination> GetInitialQuery()
         {
+            // для списка периодических медосмотров
+
             return dbSet.AsNoTracking()
                 .Include(e => e.Employer);
         }
@@ -112,7 +138,31 @@ namespace ProfOsmotr.DAL
                 .Include(s => s.PeriodicMedicalExamination.Clinic.ClinicDetails)
                 .Include(s => s.Profession.OrderItems)
                 .Include(s => s.NewlyDiagnosedChronicSomaticDiseases)
-                .Include(s => s.NewlyDiagnosedOccupationalDiseases);
+                    .ThenInclude(d => d.ICD10Chapter)
+                .Include(s => s.NewlyDiagnosedOccupationalDiseases)
+                    .ThenInclude(d => d.ICD10Chapter);
+        }
+
+        protected IQueryable<PeriodicMedicalExamination> GetInitialPeriodicMedicalExaminationQuery()
+        {
+            return dbSet
+                .Include(ex => ex.Employer)
+                .Include(ex => ex.EmployerData)
+                .Include(ex => ex.Statuses)
+                    .ThenInclude(s => s.CheckupResult);
+        }
+
+        protected IQueryable<PeriodicMedicalExamination> GetPeriodicExaminationReportDataQuery()
+        {
+            return GetInitialPeriodicMedicalExaminationQuery()
+                .AsNoTracking()
+                .Include(ex => ex.Statuses)
+                    .ThenInclude(s => s.NewlyDiagnosedChronicSomaticDiseases)
+                        .ThenInclude(d => d.ICD10Chapter)
+                .Include(ex => ex.Statuses)
+                    .ThenInclude(s => s.NewlyDiagnosedOccupationalDiseases)
+                        .ThenInclude(d => d.ICD10Chapter)
+                .Include(ex => ex.Clinic.ClinicDetails);
         }
     }
 }

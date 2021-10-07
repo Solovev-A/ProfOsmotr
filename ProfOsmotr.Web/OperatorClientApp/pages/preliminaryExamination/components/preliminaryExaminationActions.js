@@ -1,7 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faFileMedical, faFileAlt } from '@fortawesome/free-solid-svg-icons';
+import { faFileDownload, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 
 import routes from './../../../routes'
 import useStore from './../../../hooks/useStore';
@@ -21,23 +22,17 @@ const PreliminaryExaminationActions = () => {
 
     return (
         <div className="mb-3">
-            <a href={routes.preliminaryExaminationExcerpt.getUrl(examinationSlug)}
-                className="btn btn-secondary"
-                download
+            <DropdownButton title={<><FontAwesomeIcon icon={faFileDownload} /> Документы</>}
+                variant="secondary"
+                style={{ display: 'inline-block' }}
             >
-                <FontAwesomeIcon icon={faFileMedical} />
-                {' '}
-                Выписка
-            </a>
-            &nbsp;
-            <a href={routes.preliminaryExaminationMedicalReport.getUrl(examinationSlug)}
-                className={actionClassName}
-                download
-            >
-                <FontAwesomeIcon icon={faFileAlt} />
-                {' '}
-                Заключение
-            </a>
+                <Dropdown.Item href={routes.preliminaryExaminationMedicalReport.getUrl(examinationSlug)} >
+                    Заключение
+                </Dropdown.Item>
+                <Dropdown.Item href={routes.preliminaryExaminationExcerpt.getUrl(examinationSlug)} >
+                    Выписка
+                </Dropdown.Item>
+            </DropdownButton>
             &nbsp;
             <button type="button"
                 className={actionClassName}

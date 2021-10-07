@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProfOsmotr.BL.Abstractions;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -76,9 +77,17 @@ namespace ProfOsmotr.BL.Infrastructure
                     value = prop.GetValue(obj, null);
                     Type propType = prop.PropertyType;
 
+                    if (typeof(IReportField).IsAssignableFrom(propType))
+                    {
+                        var reportField = (IReportField)value;
+                        var valueString = reportField is null || reportField.Value is null
+                            ? string.Empty
+                            : reportField.Value;
+                        target.Add(new FieldContent(targetPropName, valueString));
+                    }
                     // если тип свойства - класс, обрабатываем и его свойства,
                     // сохраняя вложенность свойств в названии результирующего свойства
-                    if (IsClassAndNotString(propType))
+                    else if (IsClassAndNotString(propType))
                     {
                         targetPropName += ".";
                         ProcessObject(value, target);

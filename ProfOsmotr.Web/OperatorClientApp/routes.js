@@ -67,6 +67,10 @@ const routes = {
         path: '/examinations/periodic/:id/excerpts',
         name: 'Все выписки периодического осмотра'
     }),
+    periodicExaminationReport: new ApiRouteWithSlug({
+        path: '/examinations/periodic/:id/report',
+        name: 'Заключительный акт периодического медосмотра'
+    }),
     contingentCheckupStatus: new RouteWithSlug({
         path: '/examinations/periodic/checkup-statuses/:id',
         name: 'Карта периодического медосмотра работника'

@@ -14,6 +14,7 @@ namespace ProfOsmotr.BL
         protected readonly string reportsDirectoryPath;
         protected readonly string checkupStatusMedicalReportTemplatePath;
         protected readonly string checkupStatusExcerptTemplatePath;
+        protected readonly string periodicMedicalExaminationReportTemplatePath;
         protected readonly TemplateEngineHelper templateEngineHelper;
 
         public DocxReportsCreator()
@@ -22,6 +23,7 @@ namespace ProfOsmotr.BL
             Directory.CreateDirectory(reportsDirectoryPath);
             checkupStatusMedicalReportTemplatePath = GetFullPath(@"Templates\checkup-status-medical-report.docx");
             checkupStatusExcerptTemplatePath = GetFullPath(@"Templates\checkup-status-excerpt.docx");
+            periodicMedicalExaminationReportTemplatePath = GetFullPath(@"Templates\periodic-examination-report.docx");
             templateEngineHelper = new TemplateEngineHelper(reportsDirectoryPath);
         }
 
@@ -33,6 +35,13 @@ namespace ProfOsmotr.BL
         public async Task<BaseFileResult> CreateCheckupStatusExcerpt(params CheckupStatusExcerptData[] datas)
         {
             return await CreateCheckupStatusesReport(datas, checkupStatusExcerptTemplatePath, "выписка");
+        }
+
+        public async Task<BaseFileResult> CreatePeriodicMedicalExaminationReport(PeriodicExaminationReportData data)
+        {
+            string reportPath = templateEngineHelper.CreateReport(periodicMedicalExaminationReportTemplatePath, data);
+            string fileName = $"{data.Employer} {data.ExaminationYear} - заключительный акт";
+            return await CreateResult(reportPath, fileName);
         }
 
         protected async Task<BaseFileResult> CreateCheckupStatusesReport<TData>(TData[] datas,

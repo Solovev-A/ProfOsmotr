@@ -1,7 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faFileAlt, faFileMedical } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faFileDownload } from '@fortawesome/free-solid-svg-icons';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 
 import routes from './../../../routes'
 import useStore from './../../../hooks/useStore';
@@ -21,37 +22,33 @@ const PeriodicExaminationActions = () => {
 
     return (
         <div className="mb-3">
-            {
-                examination.checkupStatuses.length
-                    ?
-                    <>
-                        <a href={routes.periodicExaminationAllReports.getUrl(examinationSlug)}
-                            className={actionClassName}
-                        >
-                            <FontAwesomeIcon icon={faFileAlt} />
-                            {' '}
-                            Все заключения
-                        </a>
-                        &nbsp;
-                        <a href={routes.periodicExaminationAllExcerpts.getUrl(examinationSlug)}
-                            className={actionClassName}
-                        >
-                            <FontAwesomeIcon icon={faFileMedical} />
-                            {' '}
-                            Все выписки
-                        </a>
-                        &nbsp;
-                        <button type="button"
-                            className={actionClassName}
-                        >
-                            <FontAwesomeIcon icon={faFileAlt} />
-                            {' '}
+            <DropdownButton title={<><FontAwesomeIcon icon={faFileDownload} /> Документы</>}
+                variant="secondary"
+                style={{ display: 'inline-block' }}
+            >
+                {
+                    examination.checkupStatuses.length
+                        ?
+                        <>
+                            <Dropdown.Item href={routes.periodicExaminationAllReports.getUrl(examinationSlug)} >
+                                Все заключения
+                            </Dropdown.Item>
+                            <Dropdown.Item href={routes.periodicExaminationAllExcerpts.getUrl(examinationSlug)} >
+                                Все выписки
+                            </Dropdown.Item>
+                        </>
+                        : null
+                }
+                {
+                    examination.reportDate
+                        ?
+                        <Dropdown.Item href={routes.periodicExaminationReport.getUrl(examinationSlug)} >
                             Заключительный акт
-                        </button>
-                        &nbsp;
-                    </>
-                    : null
-            }
+                        </Dropdown.Item>
+                        : null
+                }
+            </DropdownButton>
+            &nbsp;
             <button type="button"
                 className={actionClassName}
                 onClick={onRemoveExamination}
@@ -60,7 +57,7 @@ const PeriodicExaminationActions = () => {
                 {' '}
                 Удалить
             </button>
-        </div>
+        </div >
     )
 }
 

@@ -60,5 +60,7 @@ namespace ProfOsmotr.BL.Abstractions
         Task<FileResultResponse> GetContingentCheckupStatusExcerptAsync(int checkupStatusId);
 
         Task<FileResultResponse> GetAllExcerptsAsync(int periodicExaminationId);
+
+        Task<FileResultResponse> GetPeriodicMedicalExaminationReportAsync(int examinationId);
     }
 }
