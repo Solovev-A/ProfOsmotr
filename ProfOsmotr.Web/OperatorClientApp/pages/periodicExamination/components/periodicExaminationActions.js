@@ -1,11 +1,11 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faFileDownload } from '@fortawesome/free-solid-svg-icons';
-import { Dropdown, DropdownButton } from 'react-bootstrap';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import routes from './../../../routes'
 import useStore from './../../../hooks/useStore';
+import DocumentsDropdown from './../../../components/documentsDropdown';
 
 const PeriodicExaminationActions = () => {
     const actionClassName = "btn btn-secondary";
@@ -20,34 +20,28 @@ const PeriodicExaminationActions = () => {
         }
     }
 
+    const docs = [];
+    if (examination.checkupStatuses.length) {
+        docs.push({
+            href: routes.periodicExaminationAllReports.getUrl(examinationSlug),
+            title: 'Все заключения'
+        })
+        docs.push({
+            href: routes.periodicExaminationAllExcerpts.getUrl(examinationSlug),
+            title: 'Все выписки'
+        })
+    }
+    if (examination.reportDate) {
+        docs.push({
+            href: routes.periodicExaminationReport.getUrl(examinationSlug),
+            title: 'Заключительный акт'
+        })
+    }
+
+
     return (
         <div className="mb-3">
-            <DropdownButton title={<><FontAwesomeIcon icon={faFileDownload} /> Документы</>}
-                variant="secondary"
-                style={{ display: 'inline-block' }}
-            >
-                {
-                    examination.checkupStatuses.length
-                        ?
-                        <>
-                            <Dropdown.Item href={routes.periodicExaminationAllReports.getUrl(examinationSlug)} >
-                                Все заключения
-                            </Dropdown.Item>
-                            <Dropdown.Item href={routes.periodicExaminationAllExcerpts.getUrl(examinationSlug)} >
-                                Все выписки
-                            </Dropdown.Item>
-                        </>
-                        : null
-                }
-                {
-                    examination.reportDate
-                        ?
-                        <Dropdown.Item href={routes.periodicExaminationReport.getUrl(examinationSlug)} >
-                            Заключительный акт
-                        </Dropdown.Item>
-                        : null
-                }
-            </DropdownButton>
+            <DocumentsDropdown docs={docs} />
             &nbsp;
             <button type="button"
                 className={actionClassName}

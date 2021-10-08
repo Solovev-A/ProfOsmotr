@@ -6,6 +6,7 @@ import { faTrash, faFileMedical, faFileAlt } from '@fortawesome/free-solid-svg-i
 import routes from './../../../routes'
 import useStore from './../../../hooks/useStore';
 import { Button } from '../../../components/buttons';
+import DocumentsDropdown from './../../../components/documentsDropdown';
 
 const CheckupStatusActions = () => {
     const { contingentCheckupStatusStore } = useStore();
@@ -24,23 +25,14 @@ const CheckupStatusActions = () => {
 
     return (
         <div className="mb-3">
-            <a href={routes.contingentCheckupStatusExcerpt.getUrl(checkupStatusSlug)}
-                className="btn btn-secondary"
-                download
-            >
-                <FontAwesomeIcon icon={faFileMedical} />
-                {' '}
-                Выписка
-            </a>
-            &nbsp;
-            <a href={routes.contingentCheckupStatusMedicalReport.getUrl(checkupStatusSlug)}
-                className="btn btn-secondary"
-                download
-            >
-                <FontAwesomeIcon icon={faFileAlt} />
-                {' '}
-                Заключение
-            </a>
+            <DocumentsDropdown docs={[{
+                href: routes.contingentCheckupStatusExcerpt.getUrl(checkupStatusSlug),
+                title: 'Выписка'
+            }, {
+                href: routes.contingentCheckupStatusMedicalReport.getUrl(checkupStatusSlug),
+                title: 'Заключение'
+            }]}
+            />
             &nbsp;
             <Button onClick={onRemoveCheckupStatus}>
                 <FontAwesomeIcon icon={faTrash} />
