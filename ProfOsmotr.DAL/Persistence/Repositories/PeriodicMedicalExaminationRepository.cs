@@ -79,8 +79,6 @@ namespace ProfOsmotr.DAL
         {
             return await GetPeriodicExaminationReportDataQuery()
                 .Include(ex => ex.Statuses)
-                    .ThenInclude(s => s.Patient)
-                .Include(ex => ex.Statuses)
                     .ThenInclude(s => s.Profession.OrderItems.Where(oi => !oi.IsDeleted))
                 .Include(ex => ex.Statuses)
                     .ThenInclude(s => s.EmployerDepartment)
@@ -91,10 +89,10 @@ namespace ProfOsmotr.DAL
                 .FirstOrDefaultAsync(ex => ex.Id == id);
         }
 
-        public async Task<IEnumerable<PeriodicMedicalExamination>> FindAllExaminations(int examinationYear)
+        public async Task<IEnumerable<PeriodicMedicalExamination>> FindAllExaminations(int examinationYear, int clinicId)
         {
             return await GetPeriodicExaminationReportDataQuery()
-                .Where(ex => ex.ExaminationYear == examinationYear)
+                .Where(ex => ex.ExaminationYear == examinationYear && ex.ClinicId == clinicId)
                 .ToListAsync();
         }
 
@@ -156,6 +154,8 @@ namespace ProfOsmotr.DAL
         {
             return GetInitialPeriodicMedicalExaminationQuery()
                 .AsNoTracking()
+                .Include(ex => ex.Statuses)
+                    .ThenInclude(s => s.Patient)
                 .Include(ex => ex.Statuses)
                     .ThenInclude(s => s.NewlyDiagnosedChronicSomaticDiseases)
                         .ThenInclude(d => d.ICD10Chapter)

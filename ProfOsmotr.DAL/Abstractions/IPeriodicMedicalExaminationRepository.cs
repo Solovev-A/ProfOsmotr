@@ -16,6 +16,6 @@ namespace ProfOsmotr.DAL.Abstractions
         Task<IEnumerable<CountResult>> CountCheckupsByMonth(int clinicId);
         Task<IEnumerable<ContingentCheckupStatus>> ListAllCheckupStatuses(int examinationId);
         Task<PeriodicMedicalExamination> FindExaminationReportData(int id);
-        Task<IEnumerable<PeriodicMedicalExamination>> FindAllExaminations(int examinationYear);
+        Task<IEnumerable<PeriodicMedicalExamination>> FindAllExaminations(int examinationYear, int clinicId);
     }
 }

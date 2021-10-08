@@ -9,7 +9,7 @@ import useJournalPage from '../hooks/useJournalPage';
 import YearPicker from './yearPicker';
 
 
-const JournalPage = ({ examinationsStore, title, listColumns, examinationRoute }) => {
+const JournalPage = ({ examinationsStore, title, listColumns, examinationRoute, actions }) => {
     const { journalYear, setJournalYear, journal } = examinationsStore;
 
     useJournalPage(examinationsStore);
@@ -19,7 +19,22 @@ const JournalPage = ({ examinationsStore, title, listColumns, examinationRoute }
     return (
         <>
             <h2>{title}</h2>
-            <YearPicker title={`Год: ${journalYear}`} onYearPick={setJournalYear} className="mb-3" />
+            <YearPicker
+                title={`Год: ${journalYear}`}
+                onYearPick={setJournalYear}
+                className="mb-3 d-inline-block"
+            />
+            &nbsp;
+            {
+                actions && actions.map(actionRenderer => {
+                    return (
+                        <>
+                            {actionRenderer()}
+                            &nbsp;
+                        </>
+                    )
+                })
+            }
             <Card title={`Количество записей: ${totalCount}`}>
                 {inProgress
                     ? <Spinner />

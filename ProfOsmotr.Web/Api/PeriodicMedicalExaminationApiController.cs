@@ -228,5 +228,22 @@ namespace ProfOsmotr.Web.Api
                 (res) => File(res.Bytes, res.ContentType, res.FileName),
                 async () => await accessService.CanAccessPeriodicExaminationAsync(id));
         }
+
+        [HttpGet("year-report")]
+        public async Task<IActionResult> GetYearReport(int year)
+        {
+            if (!accessService.TryGetUserClinicId(out int clinicId))
+                return Forbid();
+
+            var request = new PeriodicExaminationYearReportRequest
+            {
+                ClinicId = clinicId,
+                Year = year
+            };
+
+            return await queryHandler.HandleQuery<BaseFileResult>(
+                async () => await examinationsService.GetPeriodicMedicalExaminationsYearReport(request),
+                (res) => File(res.Bytes, res.ContentType, res.FileName));
+        }
     }
 }

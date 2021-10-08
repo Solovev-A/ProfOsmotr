@@ -18,6 +18,12 @@ class RouteWithSlug extends Route {
     }
 }
 
+class ApiRoute extends Route {
+    constructor({ path, name }) {
+        super({ path, name, baseUrl: '/api' });
+    }
+}
+
 class ApiRouteWithSlug extends RouteWithSlug {
     constructor({ path, name }) {
         super({ path, name, baseUrl: '/api' });
@@ -70,6 +76,10 @@ const routes = {
     periodicExaminationReport: new ApiRouteWithSlug({
         path: '/examinations/periodic/:id/report',
         name: 'Заключительный акт периодического медосмотра'
+    }),
+    periodicExaminationsYearReport: new ApiRoute({
+        path: '/examinations/periodic/year-report',
+        name: 'Годовой отчет периодических медосмотров'
     }),
     contingentCheckupStatus: new RouteWithSlug({
         path: '/examinations/periodic/checkup-statuses/:id',

@@ -11,5 +11,6 @@ namespace ProfOsmotr.BL.Abstractions
         Task<BaseFileResult> CreateCheckupStatusExcerpt(params CheckupStatusExcerptData[] datas);
 
         Task<BaseFileResult> CreatePeriodicMedicalExaminationReport(PeriodicExaminationReportData data);
+        Task<BaseFileResult> CreatePeriodicMedicalExaminationsYearReport(PeriodicExaminationsYearReportData data);
     }
 }

@@ -62,5 +62,6 @@ namespace ProfOsmotr.BL.Abstractions
         Task<FileResultResponse> GetAllExcerptsAsync(int periodicExaminationId);
 
         Task<FileResultResponse> GetPeriodicMedicalExaminationReportAsync(int examinationId);
+        Task<FileResultResponse> GetPeriodicMedicalExaminationsYearReport(PeriodicExaminationYearReportRequest request);
     }
 }

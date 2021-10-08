@@ -778,6 +778,27 @@ namespace ProfOsmotr.BL
             }
         }
 
+        public async Task<FileResultResponse> GetPeriodicMedicalExaminationsYearReport(PeriodicExaminationYearReportRequest request)
+        {
+            var examinations = await uow.PeriodicMedicalExaminations.FindAllExaminations(request.Year, request.ClinicId);
+
+            if (!examinations.Any())
+            {
+                return new FileResultResponse("Список периодических медосмотров пуст. Невозможно создать отчет");
+            }
+
+            try
+            {
+                var data = new PeriodicExaminationsYearReportData(examinations);
+                var result = await reportsCreator.CreatePeriodicMedicalExaminationsYearReport(data);
+                return new FileResultResponse(result);
+            }
+            catch (Exception ex)
+            {
+                return new FileResultResponse(ex.Message);
+            }
+        }
+
         #region Protected methods
 
         protected async Task<ServiceActionResult> UpdateLastEditor(MedicalExamination examination, int editorId)
