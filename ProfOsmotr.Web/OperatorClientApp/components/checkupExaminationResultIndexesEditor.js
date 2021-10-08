@@ -45,6 +45,7 @@ const CheckupExaminationResultIndexesForm = observer(({ examinationResultIndex, 
                                     onChange={onChange}
                                     data-checkup-index-id={id}
                                     id={htmlId}
+                                    maxLength="1000"
                                 />
                             </div>
                         </div>
