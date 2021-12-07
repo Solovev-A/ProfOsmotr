@@ -16,27 +16,4 @@
     <ProjectReference Include="..\ProfOsmotr.DAL\ProfOsmotr.DAL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="OperatorClientApp\pages\createPatient\" />
-    <Folder Include="OperatorClientApp\pages\editPatient\" />
-    <Folder Include="OperatorClientApp\pages\employer\" />
-    <Folder Include="OperatorClientApp\pages\employersMain\" />
-    <Folder Include="OperatorClientApp\pages\createEmployer\" />
-    <Folder Include="OperatorClientApp\pages\editEmployer\" />
-    <Folder Include="OperatorClientApp\pages\createPreliminaryExamination\" />
-    <Folder Include="OperatorClientApp\pages\createPeriodicExamination\" />
-    <Folder Include="OperatorClientApp\pages\periodicExaminationCheckup\" />
-    <Folder Include="OperatorClientApp\pages\periodicExaminationsMain\" />
-    <Folder Include="OperatorClientApp\pages\periodicExamination\" />
-    <Folder Include="OperatorClientApp\pages\periodicExaminationsList\" />
-    <Folder Include="OperatorClientApp\pages\preliminaryExamination\" />
-    <Folder Include="OperatorClientApp\pages\preliminaryExaminationsList\" />
-    <Folder Include="OperatorClientApp\pages\patient\" />
-    <Folder Include="OperatorClientApp\pages\patientsMain\" />
-    <Folder Include="OperatorClientApp\services\" />
-    <Folder Include="wwwroot\css\dist\" />
-  </ItemGroup>
-
-
-
 </Project>

@@ -86,7 +86,7 @@ namespace ProfOsmotr.Web.Api
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody] UserLoginResource resource)
+        public async Task<IActionResult> Login([FromBody] UserLoginQuery resource)
         {
             var authResult = await authService.Authenticate(resource);
             return Ok(authResult);
@@ -96,7 +96,7 @@ namespace ProfOsmotr.Web.Api
         [Route("update/{id}")]
         [ModelStateValidationFilter]
         [AuthorizeAdministratorAndClinicModerator]
-        public async Task<IActionResult> Update(int id, [FromBody] UpdateUserResource resource)
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateUserQuery resource)
         {
             if (resource.RoleId.HasValue && !CanSetRole(resource.RoleId.Value, id))
                 return BadRequest(new ErrorResource("Недопустимое значение roleId"));

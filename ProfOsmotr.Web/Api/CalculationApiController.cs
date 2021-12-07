@@ -27,7 +27,7 @@ namespace ProfOsmotr.Web.Api
         [HttpPost]
         [Route("create")]
         [ModelStateValidationFilter]
-        public async Task<IActionResult> Create([FromBody] CreateCalculationResource resource)
+        public async Task<IActionResult> Create([FromBody] CreateCalculationQuery resource)
         {
             if (!accessService.TryGetUserClinicId(out int clinicId) || !accessService.TryGetUserId(out int userId))
                 return Forbid();
@@ -47,7 +47,7 @@ namespace ProfOsmotr.Web.Api
         [HttpPost]
         [Route("update")]
         [ModelStateValidationFilter]
-        public async Task<IActionResult> Update([FromBody] UpdateCalculationResource resource)
+        public async Task<IActionResult> Update([FromBody] UpdateCalculationQuery resource)
         {
             if (!accessService.TryGetUserId(out int userId))
                 return Forbid();

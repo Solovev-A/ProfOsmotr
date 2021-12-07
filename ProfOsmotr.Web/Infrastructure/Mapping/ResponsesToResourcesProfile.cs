@@ -227,7 +227,7 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
                 .ForMember(d => d.Patient, conf => conf.MapFrom(s => s.CheckupStatus.Patient))
                 .ForMember(d => d.RegistrationJournalEntryNumber, conf => conf.MapFrom(s => s.CheckupStatus.RegistrationJournalEntryNumber));
 
-            CreateMap<Patient, JournalPatientResource>()
+            CreateMap<Patient, JournalRecordPatientResource>()
                 .ForMember(d => d.DateOfBirth, conf => conf.MapFrom(s => ToString(s.DateOfBirth)));
 
             CreateMap<PeriodicMedicalExamination, CreatedExaminationResource>();

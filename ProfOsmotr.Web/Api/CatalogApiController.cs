@@ -28,7 +28,7 @@ namespace ProfOsmotr.Web.Api
         [Route("update")]
         [ModelStateValidationFilter]
         [AuthorizeAdministratorAndClinicModerator]
-        public async Task<IActionResult> Update([FromBody] UpdateCatalogItemResource updateResource)
+        public async Task<IActionResult> Update([FromBody] UpdateCatalogItemQuery updateResource)
         {
             if (!accessService.TryGetUserClinicId(out int clinicId))
                 return Forbid();

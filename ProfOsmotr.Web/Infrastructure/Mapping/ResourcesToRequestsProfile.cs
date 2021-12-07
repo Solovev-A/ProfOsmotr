@@ -14,43 +14,43 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
             CreateMap<CreateProfessonQuery, CreateProfessionRequest>()
                 .ForMember(d => d.OrderItemIdentifiers, conf => conf.MapFrom(s => s.OrderItems));
 
-            CreateMap<CreateCalculationResource, CreateCalculationRequest>()
+            CreateMap<CreateCalculationQuery, CreateCalculationRequest>()
                 .ForMember(d => d.CreateCalculationSourceRequests, conf => conf.MapFrom(s => s.Sources));
 
-            CreateMap<UpdateCalculationResource, UpdateCalculationRequest>();
+            CreateMap<UpdateCalculationQuery, UpdateCalculationRequest>();
 
-            CreateMap<UpdateCalculationResultItemResource, UpdateCalculationResultItemRequest>();
+            CreateMap<UpdateCalculationResultItemQuery, UpdateCalculationResultItemRequest>();
 
-            CreateMap<PaginationQueryResource, CalculationsPaginationQuery>();
+            CreateMap<BasePaginationQuery, CalculationsPaginationQuery>();
 
-            CreateMap<SaveServiceRequest, UpdateCatalogItemResource>()
+            CreateMap<SaveServiceRequest, UpdateCatalogItemQuery>()
                 .ForMember(d => d.FullName, conf => conf.MapFrom(s => s.ServiceDetails.FullName))
                 .ForMember(d => d.Code, conf => conf.MapFrom(s => s.ServiceDetails.Code))
                 .ReverseMap();
 
-            CreateMap<AddOrderItemResource, AddOrderItemRequest>()
+            CreateMap<AddOrderItemQuery, AddOrderItemRequest>()
                 .ForMember(d => d.OrderExaminationIdentifiers, conf => conf.MapFrom(s => s.Examinations));
 
-            CreateMap<UpdateOrderItemResource, UpdateOrderItemRequest>()
+            CreateMap<UpdateOrderItemQuery, UpdateOrderItemRequest>()
                 .ForMember(d => d.OrderExaminationIdentifiers, conf => conf.MapFrom(s => s.Examinations));
 
-            CreateMap<UpdateOrderExaminationResource, SaveOrderExaminationRequest>();
+            CreateMap<UpdateOrderExaminationQuery, SaveOrderExaminationRequest>();
 
-            CreateMap<AddOrderExaminationResource, SaveOrderExaminationRequest>();
+            CreateMap<AddOrderExaminationQuery, SaveOrderExaminationRequest>();
 
-            CreateMap<RegisterRequestSenderResource, CreateUserRequest>();
+            CreateMap<RegisterRequestSenderQuery, CreateUserRequest>();
 
             CreateMap<CreateUserResource, CreateUserRequest>();
 
-            CreateMap<UpdateUserResource, UpdateUserRequest>();
+            CreateMap<UpdateUserQuery, UpdateUserRequest>();
 
-            CreateMap<CreateRegisterRequestResource, RegisterDataRequest>();
+            CreateMap<CreateRegisterRequestQuery, RegisterDataRequest>();
 
-            CreateMap<ManageClinicResource, ManageClinicRequest>();
+            CreateMap<ManageClinicQuery, ManageClinicRequest>();
 
-            CreateMap<UpdateClinicDetailsResource, UpdateClinicDetailsRequest>();
+            CreateMap<UpdateClinicDetailsQuery, UpdateClinicDetailsRequest>();
 
-            CreateMap<SaveExaminationResultIndexResource, SaveExaminationResultIndexRequest>();
+            CreateMap<SaveExaminationResultIndexQuery, SaveExaminationResultIndexRequest>();
 
             CreateMap<SearchPatientQuery, ListPatientsRequest>();
 

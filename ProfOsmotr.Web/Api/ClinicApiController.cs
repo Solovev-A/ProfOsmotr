@@ -32,7 +32,7 @@ namespace ProfOsmotr.Web.Api
         [Route("addRegisterRequest")]
         [ModelStateValidationFilter]
         [AllowAnonymous]
-        public async Task<IActionResult> CreateRegisterRequest([FromBody] CreateRegisterRequestResource resource)
+        public async Task<IActionResult> CreateRegisterRequest([FromBody] CreateRegisterRequestQuery resource)
         {
             var request = mapper.Map<RegisterDataRequest>(resource);
 
@@ -100,7 +100,7 @@ namespace ProfOsmotr.Web.Api
         [Route("manageRequest")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
-        public async Task<IActionResult> ManageRegisterRequest([FromBody] ManageRegisterRequestResource resource)
+        public async Task<IActionResult> ManageRegisterRequest([FromBody] ManageRegisterRequestQuery resource)
         {
             if (resource.Approved)
             {
@@ -126,7 +126,7 @@ namespace ProfOsmotr.Web.Api
         [Route("manageClinic")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
-        public async Task<IActionResult> ManageClinic([FromBody] ManageClinicResource resource)
+        public async Task<IActionResult> ManageClinic([FromBody] ManageClinicQuery resource)
         {
             if (!accessService.TryGetUserClinicId(out int userClinicId))
                 return Forbid();
@@ -146,7 +146,7 @@ namespace ProfOsmotr.Web.Api
         [Route("updateDetails")]
         [ModelStateValidationFilter]
         [AuthorizeAdministratorAndClinicModerator]
-        public async Task<IActionResult> UpdateDetails([FromBody] UpdateClinicDetailsResource resource)
+        public async Task<IActionResult> UpdateDetails([FromBody] UpdateClinicDetailsQuery resource)
         {
             if (!accessService.TryGetUserClinicId(out int clinicId))
                 return Forbid();

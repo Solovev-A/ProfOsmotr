@@ -28,7 +28,7 @@ namespace ProfOsmotr.Web.Api
         [Route("addExamination")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
-        public async Task<IActionResult> AddExamination([FromBody] AddOrderExaminationResource resource)
+        public async Task<IActionResult> AddExamination([FromBody] AddOrderExaminationQuery resource)
         {
             var request = mapper.Map<SaveOrderExaminationRequest>(resource);
 
@@ -46,7 +46,7 @@ namespace ProfOsmotr.Web.Api
         [Route("addItem")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
-        public async Task<IActionResult> AddItem([FromBody] AddOrderItemResource resource)
+        public async Task<IActionResult> AddItem([FromBody] AddOrderItemQuery resource)
         {
             var request = mapper.Map<AddOrderItemRequest>(resource);
 
@@ -114,7 +114,7 @@ namespace ProfOsmotr.Web.Api
         [Route("examination/{examinationId}/index")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
-        public async Task<IActionResult> CreateIndex(int examinationId, [FromBody] SaveExaminationResultIndexResource resource)
+        public async Task<IActionResult> CreateIndex(int examinationId, [FromBody] SaveExaminationResultIndexQuery resource)
         {
             return await SaveExaminationIndex(examinationId, resource, orderService.AddIndexAsync);
         }
@@ -123,7 +123,7 @@ namespace ProfOsmotr.Web.Api
         [Route("index/{id}")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
-        public async Task<IActionResult> UpdateIndex(int id, [FromBody] SaveExaminationResultIndexResource resource)
+        public async Task<IActionResult> UpdateIndex(int id, [FromBody] SaveExaminationResultIndexQuery resource)
         {
             return await SaveExaminationIndex(id, resource, orderService.UpdateIndexAsync);
         }
@@ -153,7 +153,7 @@ namespace ProfOsmotr.Web.Api
         [Route("updateExamination")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
-        public async Task<IActionResult> UpdateExamination([FromBody] UpdateOrderExaminationResource resource)
+        public async Task<IActionResult> UpdateExamination([FromBody] UpdateOrderExaminationQuery resource)
         {
             var request = mapper.Map<SaveOrderExaminationRequest>(resource);
 
@@ -171,7 +171,7 @@ namespace ProfOsmotr.Web.Api
         [Route("updateItem")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
-        public async Task<IActionResult> UpdateItem([FromBody] UpdateOrderItemResource resource)
+        public async Task<IActionResult> UpdateItem([FromBody] UpdateOrderItemQuery resource)
         {
             var request = mapper.Map<UpdateOrderItemRequest>(resource);
 
@@ -185,7 +185,7 @@ namespace ProfOsmotr.Web.Api
             return Ok(itemResource);
         }
 
-        private async Task<IActionResult> SaveExaminationIndex(int targetId, SaveExaminationResultIndexResource resource, SaveIndexFunc func)
+        private async Task<IActionResult> SaveExaminationIndex(int targetId, SaveExaminationResultIndexQuery resource, SaveIndexFunc func)
         {
             var request = mapper.Map<SaveExaminationResultIndexRequest>(resource);
             ExaminationResultIndexResponse response = await func(targetId, request);

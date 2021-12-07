@@ -13,7 +13,7 @@ namespace ProfOsmotr.Web.Services
         /// </summary>
         /// <param name="resource">Исходные данные для аутентификации пользователя</param>
         /// <returns></returns>
-        Task<AuthenticationResult> Authenticate(UserLoginResource resource);
+        Task<AuthenticationResult> Authenticate(UserLoginQuery resource);
 
         /// <summary>
         /// Завершает сеанс работы пользователя
