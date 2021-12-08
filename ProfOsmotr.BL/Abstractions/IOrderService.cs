@@ -44,6 +44,12 @@ namespace ProfOsmotr.BL.Abstractions
         /// <param name="id">Идентификатор удаляемого пункта</param>
         /// <returns></returns>
         Task<OrderItemResponse> DeleteItemAsync(int id);
+
+        /// <summary>
+        /// Предоставляет показатель результата обследования по приказу с идентификатором <paramref name="id"/>
+        /// </summary>
+        /// <param name="id">Идентификатор результата обследования по приказу</param>
+        /// <returns></returns>
         Task<ExaminationResultIndex> FindExaminationResultIndexAsync(int id);
 
         /// <summary>

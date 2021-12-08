@@ -116,7 +116,7 @@ namespace ProfOsmotr.BL
                 return new PreliminaryMedicalExaminationResponse(creatorResponse.Message);
             }
 
-            var patientResponse = await patientService.CheckPatientAsync(request.PatientId);
+            var patientResponse = await patientService.FindPatientAsync(request.PatientId);
             if (!patientResponse.Succeed)
             {
                 return new PreliminaryMedicalExaminationResponse(patientResponse.Message);
@@ -409,7 +409,7 @@ namespace ProfOsmotr.BL
                 return new ContingentCheckupStatusResponse("Медосмотр не найден");
             }
 
-            var patientResponse = await patientService.CheckPatientAsync(request.PatientId);
+            var patientResponse = await patientService.FindPatientAsync(request.PatientId);
             if (!patientResponse.Succeed)
             {
                 return new ContingentCheckupStatusResponse(patientResponse.Message);

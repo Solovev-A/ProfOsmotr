@@ -24,7 +24,7 @@ namespace ProfOsmotr.BL
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<PatientResponse> CheckPatientAsync(int id)
+        public async Task<PatientResponse> FindPatientAsync(int id)
         {
             var patient = await uow.Patients.FindAsync(id);
 

@@ -38,16 +38,52 @@ namespace ProfOsmotr.Web.Services
         /// <returns></returns>
         Task<AccessResult> CanManageUserAsync(int userId);
 
+        /// <summary>
+        /// Проверяет, может ли текущий пользователь получить доступ к данным о пациенте
+        /// с идентификатором <paramref name="patientId"/>
+        /// </summary>
+        /// <param name="patientId">Идентификатор пациента, доступ к данным которого проверяется</param>
+        /// <returns></returns>
         Task<AccessResult> CanAccessPatientAsync(int patientId);
 
+        /// <summary>
+        /// Проверяет, может ли текущий пользователь получить доступ к периодическому медосмотру
+        /// с идентификатором <paramref name="id"/>
+        /// </summary>
+        /// <param name="id">Идентификатор периодического медосмотра, доступ к которому проверяется</param>
+        /// <returns></returns>
         Task<AccessResult> CanAccessPeriodicExaminationAsync(int id);
 
+        /// <summary>
+        /// Проверяет, может ли текущий пользователь получить доступ к организации
+        /// с идентификатором <paramref name="employerId"/>
+        /// </summary>
+        /// <param name="employerId">Идентификатор организации, доступ к которой проверяется</param>
+        /// <returns></returns>
         Task<AccessResult> CanAccessEmployerAsync(int employerId);
 
+        /// <summary>
+        /// Проверяет, может ли текущий пользователь получить доступ к предварительному медосмотру
+        /// с идентификатором <paramref name="examinationId"/>
+        /// </summary>
+        /// <param name="examinationId">Идентификатор предварительного медосмотра, доступ к которому проверяется</param>
+        /// <returns></returns>
         Task<AccessResult> CanAccessPreliminaryExaminationAsync(int examinationId);
 
+        /// <summary>
+        /// Проверяет, может ли текущий пользователь получить доступ к подразделению
+        /// с идентификатором <paramref name="employerDepartmentId"/>
+        /// </summary>
+        /// <param name="employerDepartmentId">Идентификатор подразделения организации, доступ к которому проверяется</param>
+        /// <returns></returns>
         Task<AccessResult> CanAccessEmployerDepartmentAsync(int employerDepartmentId);
 
+        /// <summary>
+        /// Проверяет, может ли текущий пользователь получить доступ к периодическому медосмотру работника
+        /// с идентификтором <paramref name="id"/>
+        /// </summary>
+        /// <param name="id">Идентификатор периодического медосмотра работника, доступ к которому проверяется</param>
+        /// <returns></returns>
         Task<AccessResult> CanAccessContingentCheckupStatus(int id);
     }
 }
