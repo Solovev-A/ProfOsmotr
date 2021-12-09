@@ -32,8 +32,7 @@ namespace ProfOsmotr.Web.Api
             this.accessService = accessService ?? throw new ArgumentNullException(nameof(accessService));
         }
 
-        [HttpPost]
-        [Route("create")]
+        [HttpPost("create")]
         [ModelStateValidationFilter]
         [AuthorizeAdministratorAndClinicModerator]
         public async Task<IActionResult> Create([FromBody] CreateUserResource resource)
@@ -51,8 +50,7 @@ namespace ProfOsmotr.Web.Api
             return Ok(result);
         }
 
-        [HttpPost]
-        [Route("list")]
+        [HttpPost("list")]
         [ModelStateValidationFilter]
         [AuthorizeAdministratorAndClinicModerator]
         public async Task<IActionResult> List([FromBody] DataTablesParameters parameters)
@@ -83,8 +81,7 @@ namespace ProfOsmotr.Web.Api
             }
         }
 
-        [HttpPost]
-        [Route("login")]
+        [HttpPost("login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] UserLoginQuery resource)
         {
@@ -92,8 +89,7 @@ namespace ProfOsmotr.Web.Api
             return Ok(authResult);
         }
 
-        [HttpPost]
-        [Route("update/{id}")]
+        [HttpPost("update/{id}")]
         [ModelStateValidationFilter]
         [AuthorizeAdministratorAndClinicModerator]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateUserQuery resource)

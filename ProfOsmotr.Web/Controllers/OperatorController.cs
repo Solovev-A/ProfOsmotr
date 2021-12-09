@@ -3,6 +3,7 @@
 namespace ProfOsmotr.Web.Controllers
 {
     [Route("[controller]")] // АРМ оператора будет доступно по пути /Operator
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class OperatorController : Controller
     {
         // Любой путь после /Operator/ будет вести к этому действию

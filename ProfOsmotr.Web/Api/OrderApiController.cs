@@ -24,8 +24,7 @@ namespace ProfOsmotr.Web.Api
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        [HttpPost]
-        [Route("addExamination")]
+        [HttpPost("addExamination")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
         public async Task<IActionResult> AddExamination([FromBody] AddOrderExaminationQuery resource)
@@ -42,8 +41,7 @@ namespace ProfOsmotr.Web.Api
             return Ok(examinationResource);
         }
 
-        [HttpPost]
-        [Route("addItem")]
+        [HttpPost("addItem")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
         public async Task<IActionResult> AddItem([FromBody] AddOrderItemQuery resource)
@@ -60,8 +58,7 @@ namespace ProfOsmotr.Web.Api
             return Ok(itemResource);
         }
 
-        [HttpPost]
-        [Route("deleteItem")]
+        [HttpPost("deleteItem")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
         public async Task<IActionResult> DeleteItem([FromBody] int id)
@@ -74,7 +71,7 @@ namespace ProfOsmotr.Web.Api
             return Ok(new { succeed = true });
         }
 
-        [Route("getExaminations")]
+        [HttpGet("getExaminations")]
         public async Task<IActionResult> GetExaminations()
         {
             var examinations = await orderService.GetExaminationsAsync();
@@ -88,7 +85,7 @@ namespace ProfOsmotr.Web.Api
             return Ok(result);
         }
 
-        [Route("getExaminationsMin")]
+        [HttpGet("getExaminationsMin")]
         public async Task<IActionResult> GetExaminationsMin()
         {
             var examinations = await orderService.GetExaminationsShortDataAsync();
@@ -97,7 +94,7 @@ namespace ProfOsmotr.Web.Api
             return Ok(resource);
         }
 
-        [Route("getIndexes/{examinationId}")]
+        [HttpGet("getIndexes/{examinationId}")]
         public async Task<IActionResult> GetIndexes(int examinationId)
         {
             var response = await orderService.GetExaminationResultIndexes(examinationId);
@@ -110,8 +107,7 @@ namespace ProfOsmotr.Web.Api
             return Ok(resource);
         }
 
-        [HttpPost]
-        [Route("examination/{examinationId}/index")]
+        [HttpPost("examination/{examinationId}/index")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
         public async Task<IActionResult> CreateIndex(int examinationId, [FromBody] SaveExaminationResultIndexQuery resource)
@@ -119,8 +115,7 @@ namespace ProfOsmotr.Web.Api
             return await SaveExaminationIndex(examinationId, resource, orderService.AddIndexAsync);
         }
 
-        [HttpPost]
-        [Route("index/{id}")]
+        [HttpPost("index/{id}")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
         public async Task<IActionResult> UpdateIndex(int id, [FromBody] SaveExaminationResultIndexQuery resource)
@@ -128,8 +123,7 @@ namespace ProfOsmotr.Web.Api
             return await SaveExaminationIndex(id, resource, orderService.UpdateIndexAsync);
         }
 
-        [HttpDelete]
-        [Route("index/{id}")]
+        [HttpDelete("index/{id}")]
         [AuthorizeAdministrator]
         public async Task<IActionResult> DeleteIndex(int id)
         {
@@ -140,7 +134,7 @@ namespace ProfOsmotr.Web.Api
             return Ok(result);
         }
 
-        [Route("getOrder")]
+        [HttpGet("getOrder")]
         public async Task<IActionResult> GetOrder(bool nocache)
         {
             IEnumerable<DAL.OrderItem> order = await orderService.GetOrderAsync(nocache);
@@ -149,8 +143,7 @@ namespace ProfOsmotr.Web.Api
             return Ok(orderResource);
         }
 
-        [HttpPost]
-        [Route("updateExamination")]
+        [HttpPost("updateExamination")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
         public async Task<IActionResult> UpdateExamination([FromBody] UpdateOrderExaminationQuery resource)
@@ -167,8 +160,7 @@ namespace ProfOsmotr.Web.Api
             return Ok(examinationResource);
         }
 
-        [HttpPost]
-        [Route("updateItem")]
+        [HttpPost("updateItem")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
         public async Task<IActionResult> UpdateItem([FromBody] UpdateOrderItemQuery resource)

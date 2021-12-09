@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Converters;
 using ProfOsmotr.Web.Infrastructure;
 using ProfOsmotr.Web.Services;
@@ -72,6 +73,11 @@ namespace ProfOsmotr.Web
 
             services.AddMemoryCache();
             services.AddProfOsmotr(connection, isAuthorizationEnabled);
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Profosmotr Api", Version = "v1" });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -100,13 +106,20 @@ namespace ProfOsmotr.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("v1/swagger.json", "Profosmotr V1");
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 var action = isAuthorizationEnabled ? "About" : "Index";
-
+                
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: $"{{controller=Home}}/{{action={action}}}/{{id?}}");
+
+                endpoints.MapSwagger();
             });
         }
 

@@ -28,8 +28,7 @@ namespace ProfOsmotr.Web.Api
             this.accessService = accessService ?? throw new ArgumentNullException(nameof(accessService));
         }
 
-        [HttpPost]
-        [Route("addRegisterRequest")]
+        [HttpPost("addRegisterRequest")]
         [ModelStateValidationFilter]
         [AllowAnonymous]
         public async Task<IActionResult> CreateRegisterRequest([FromBody] CreateRegisterRequestQuery resource)
@@ -45,8 +44,7 @@ namespace ProfOsmotr.Web.Api
             return Ok(result);
         }
 
-        [HttpPost]
-        [Route("list")]
+        [HttpPost("list")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
         public async Task<IActionResult> ListClincs([FromBody] DataTablesParameters parameters)
@@ -78,8 +76,7 @@ namespace ProfOsmotr.Web.Api
             return Ok(result);
         }
 
-        [HttpPost]
-        [Route("newRequests")]
+        [HttpPost("newRequests")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
         public async Task<IActionResult> ListNewRegisterRequests([FromBody] DataTablesParameters parameters)
@@ -87,8 +84,7 @@ namespace ProfOsmotr.Web.Api
             return await ListRegisterRequests(parameters, GetNewRegisterRequests);
         }
 
-        [HttpPost]
-        [Route("processedRequests")]
+        [HttpPost("processedRequests")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
         public async Task<IActionResult> ListProcessedRegisterRequests([FromBody] DataTablesParameters parameters)
@@ -96,8 +92,7 @@ namespace ProfOsmotr.Web.Api
             return await ListRegisterRequests(parameters, GetProcessedRegisterRequests);
         }
 
-        [HttpPost]
-        [Route("manageRequest")]
+        [HttpPost("manageRequest")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
         public async Task<IActionResult> ManageRegisterRequest([FromBody] ManageRegisterRequestQuery resource)
@@ -122,8 +117,7 @@ namespace ProfOsmotr.Web.Api
             }
         }
 
-        [HttpPost]
-        [Route("manageClinic")]
+        [HttpPost("manageClinic")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
         public async Task<IActionResult> ManageClinic([FromBody] ManageClinicQuery resource)
@@ -142,8 +136,7 @@ namespace ProfOsmotr.Web.Api
             return Ok(result);
         }
 
-        [HttpPost]
-        [Route("updateDetails")]
+        [HttpPost("updateDetails")]
         [ModelStateValidationFilter]
         [AuthorizeAdministratorAndClinicModerator]
         public async Task<IActionResult> UpdateDetails([FromBody] UpdateClinicDetailsQuery resource)
