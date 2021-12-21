@@ -33,11 +33,13 @@ namespace ProfOsmotr.Web.Infrastructure
 
         private static void AddDatabase(IServiceCollection services, string connectionString)
         {
+            string startupAssemblyName = typeof(Program).Assembly.GetName().Name;
+
             services.AddDbContext<ProfContext>(options =>
                 options
                     .UseLazyLoadingProxies()
                     .UseLoggerFactory(loggerFactory)
-                    .UseSqlite(connectionString));
+                    .UseSqlite(connectionString, b => b.MigrationsAssembly(startupAssemblyName)));
         }
 
         private static void AddRepositories(IServiceCollection services)

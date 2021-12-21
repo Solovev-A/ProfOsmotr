@@ -43,7 +43,6 @@ namespace ProfOsmotr.DAL
         public ProfContext(DbContextOptions<ProfContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
