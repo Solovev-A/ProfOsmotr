@@ -836,7 +836,7 @@ namespace ProfOsmotr.BL
         {
             if (newEmployerDepartmentId.HasValue)
             {
-                if (!examination.EmployerId.HasValue)
+                if (examination.Employer is null)
                 {
                     return new ServiceActionResult("Невозможно задать структурное подразделение, если не задана организация");
                 }
@@ -845,7 +845,7 @@ namespace ProfOsmotr.BL
                 {
                     return new ServiceActionResult(departmentResponse.Message);
                 }
-                if (examination.EmployerId.Value != departmentResponse.Result.ParentId)
+                if (examination.Employer.Id != departmentResponse.Result.ParentId)
                 {
                     return new ServiceActionResult("Структурное подразделение не принадлежит организации");
                 }
