@@ -71,11 +71,6 @@ class ContingentCheckupStatusCreatorStore {
                 this.workPlace.employerDepartment = null;
                 this.workPlace.profession = null;
 
-                // == костыль для очистки полей автокомплитов в форме
-                this.workPlace.isLoading = true;
-                setTimeout(() => this.workPlace.isLoading = false, 10);
-                // == удалить после исправления автокомплита
-
                 this.workPlace.isProcessing = false;
             })
         }
