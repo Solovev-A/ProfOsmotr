@@ -692,6 +692,11 @@ namespace ProfOsmotr.BL
                 var firstPreliminaryStatsPeriod = preliminaryExaminatinsCount.FirstOrDefault()?.Period;
                 var firstCheckupStatusesStatsPeriod = contingentCheckupStatusesCount.FirstOrDefault()?.Period;
 
+                if (firstPreliminaryStatsPeriod is null && firstCheckupStatusesStatsPeriod is null)
+                {
+                    return new ExaminationsStatisticsResponse(new ExaminationsStatisticsData[0]);
+                }
+
                 // опеределяем самый ранний период из представленных в статистике
                 var firstPeriod = firstPreliminaryStatsPeriod is null
                     ? firstCheckupStatusesStatsPeriod is null ? null : firstCheckupStatusesStatsPeriod
