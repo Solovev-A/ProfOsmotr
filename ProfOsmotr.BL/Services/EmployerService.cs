@@ -103,13 +103,17 @@ namespace ProfOsmotr.BL
 
         public async Task<QueryResponse<Employer>> ListActualEmployersAsync(int clinicId)
         {
+            int actualItemsCount = 20;
+
             try
             {
                 var result = await uow.Employers.ExecuteQuery(
                     orderingSelector: employer => employer.Id,
                     descending: true,
-                    length: 20,
+                    length: actualItemsCount,
                     customFilter: employer => employer.ClinicId == clinicId);
+
+                result.TotalCount = Math.Min(actualItemsCount, result.TotalCount);
                 return new QueryResponse<Employer>(result);
             }
             catch (Exception ex)

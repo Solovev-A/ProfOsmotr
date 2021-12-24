@@ -69,13 +69,16 @@ namespace ProfOsmotr.BL
 
         public async Task<QueryResponse<Patient>> ListActualPatientsAsync(int clinicId)
         {
+            int actualItemsCount = 20;
             try
             {
                 var result = await uow.Patients.ExecuteQuery(
                     orderingSelector: patient => patient.Id,
                     descending: true,
-                    length: 20,
+                    length: actualItemsCount,
                     customFilter: patient => patient.ClinicId == clinicId);
+
+                result.TotalCount = Math.Min(actualItemsCount, result.TotalCount);
                 return new QueryResponse<Patient>(result);
             }
             catch (Exception ex)

@@ -66,14 +66,17 @@ namespace ProfOsmotr.BL
 
         public async Task<QueryResponse<PreliminaryMedicalExamination>> ListActualPreliminaryMedicalExaminationsAsync(int clinicId)
         {
+            int actualItemsCount = 20;
+
             try
             {
                 var result = await uow.PreliminaryMedicalExaminations.ExecuteQuery(
                     orderingSelector: ex => ex.Id,
                     descending: true,
-                    length: 20,
+                    length: actualItemsCount,
                     customFilter: ex => ex.ClinicId == clinicId);
 
+                result.TotalCount = Math.Min(actualItemsCount, result.TotalCount);
                 return new QueryResponse<PreliminaryMedicalExamination>(result);
             }
             catch (Exception ex)
@@ -306,14 +309,17 @@ namespace ProfOsmotr.BL
 
         public async Task<QueryResponse<PeriodicMedicalExamination>> ListActualPeriodicMedicalExaminationsAsync(int clinicId)
         {
+            int actualItemsCount = 20;
+
             try
             {
                 var result = await uow.PeriodicMedicalExaminations.ExecuteQuery(
                     orderingSelector: ex => ex.Id,
                     descending: true,
-                    length: 20,
+                    length: actualItemsCount,
                     customFilter: ex => ex.ClinicId == clinicId);
 
+                result.TotalCount = Math.Min(actualItemsCount, result.TotalCount);
                 return new QueryResponse<PeriodicMedicalExamination>(result);
             }
             catch (Exception ex)
