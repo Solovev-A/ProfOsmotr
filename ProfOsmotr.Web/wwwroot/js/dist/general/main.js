@@ -3845,7 +3845,7 @@ class SuccessToast {
 /******/ 			return checkDeferredModules();
 /******/ 		}
 /******/ 		
-/******/ 		var chunkLoadingGlobal = self["webpackChunkProfOsmotr_Web"] = self["webpackChunkProfOsmotr_Web"] || [];
+/******/ 		var chunkLoadingGlobal = globalThis["webpackChunkProfOsmotr_Web"] = globalThis["webpackChunkProfOsmotr_Web"] || [];
 /******/ 		var parentChunkLoadingFunction = chunkLoadingGlobal.push.bind(chunkLoadingGlobal);
 /******/ 		chunkLoadingGlobal.push = webpackJsonpCallback;
 /******/ 	})();

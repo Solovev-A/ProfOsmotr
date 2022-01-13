@@ -1,4 +1,4 @@
-(self["webpackChunkProfOsmotr_Web"] = self["webpackChunkProfOsmotr_Web"] || []).push([["vendor"],{
+(globalThis["webpackChunkProfOsmotr_Web"] = globalThis["webpackChunkProfOsmotr_Web"] || []).push([["vendor"],{
 
 /***/ "./node_modules/bootstrap/dist/js/bootstrap.js":
 /*!*****************************************************!*
