@@ -705,7 +705,7 @@ namespace ProfOsmotr.BL
 
                 // опеределяем самый ранний период из представленных в статистике
                 var firstPeriod = firstPreliminaryStatsPeriod is null
-                    ? firstCheckupStatusesStatsPeriod is null ? null : firstCheckupStatusesStatsPeriod
+                    ? firstCheckupStatusesStatsPeriod
                     : firstCheckupStatusesStatsPeriod is null
                         ? firstPreliminaryStatsPeriod : string.Compare(firstPreliminaryStatsPeriod, firstCheckupStatusesStatsPeriod) >= 0
                             ? firstCheckupStatusesStatsPeriod : firstPreliminaryStatsPeriod;

@@ -12,10 +12,10 @@ namespace ProfOsmotr.BL.Infrastructure
             var period = startPeriod.Split('-');
             if (period.Length != 2) throw new ArgumentException("Неверный формат периода");
 
-            if (!int.TryParse(period[0], out int month) || month < 0 || month > 12)
+            if (!int.TryParse(period[1], out int month) || month < 0 || month > 12)
                 throw new ArgumentException("Неверный формат месяца");
 
-            if (!int.TryParse(period[1], out int year) || year < 0 || year > 9999)
+            if (!int.TryParse(period[0], out int year) || year < 0 || year > 9999)
                 throw new ArgumentException("Неверный формат года");
 
             var result = new List<string>();
@@ -23,7 +23,7 @@ namespace ProfOsmotr.BL.Infrastructure
 
             while (true)
             {
-                var newPeriod = $"{currentDate.Month:D2}-{currentDate.Year}";
+                var newPeriod = $"{currentDate.Year}-{currentDate.Month:D2}";
                 result.Add(newPeriod);
 
                 var now = DateTime.Now;

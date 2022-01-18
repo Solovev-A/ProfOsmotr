@@ -33,9 +33,11 @@ namespace ProfOsmotr.DAL
                     Month = s.DateOfCompletion.Value.Month,
                     Year = s.DateOfCompletion.Value.Year
                 })
+                .OrderBy(g => g.Key.Year)
+                .ThenBy(g => g.Key.Month)
                 .Select(g => new CountResult()
                 {
-                    Period = $"{g.Key.Month:D2}-{g.Key.Year}",
+                    Period = $"{g.Key.Year}-{g.Key.Month:D2}",
                     Count = g.Count()
                 })
                 .ToListAsync();
