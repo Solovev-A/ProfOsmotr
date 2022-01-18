@@ -122,6 +122,7 @@ namespace ProfOsmotr.Web.Infrastructure.Mapping
 
             CreateMap<PreliminaryMedicalExamination, EmployerPreliminaryMedicalExaminationResource>()
                 .ForMember(d => d.Patient, conf => conf.MapFrom(s => GetFullName(s.CheckupStatus.Patient)))
+                .ForMember(d => d.IsCompleted, conf => conf.MapFrom(s => s.Completed))
                 .ForMember(d => d.ReportDate, conf => conf.MapFrom(s => ToString(s.CheckupStatus.DateOfCompletion)));
 
             CreateMap<PreliminaryMedicalExamination, PreliminaryMedicalExaminationsListItemResource>()
