@@ -20,7 +20,7 @@ namespace ProfOsmotr.BL.Models.ReportData
 
             SetCheckupStatuses(examination);
 
-            var employerData = examination.EmployerData;
+            var employerData = examination.EmployerData ?? new EmployerData();
             Employees = new EmployeesNumbersDataFull<IntField>
             {
                 Total = new IntField(employerData.EmployeesTotal),
