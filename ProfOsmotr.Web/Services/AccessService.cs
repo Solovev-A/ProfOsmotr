@@ -17,17 +17,29 @@ namespace ProfOsmotr.Web.Services
         #region Fields
 
         private readonly ICalculationService calculationService;
+        private readonly IEmployerService employerService;
+        private readonly IExaminationsService examinationsService;
         private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IPatientService patientService;
         private readonly IUserService userService;
 
         #endregion Fields
 
         #region Constructors
 
-        public AccessService(IHttpContextAccessor httpContextAccessor, ICalculationService calculationService, IUserService userService)
+        public AccessService(
+            ICalculationService calculationService,
+            IEmployerService employerService,
+            IExaminationsService examinationsService,
+            IHttpContextAccessor httpContextAccessor,
+            IPatientService patientService,
+            IUserService userService)
         {
-            this.httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
             this.calculationService = calculationService ?? throw new ArgumentNullException(nameof(calculationService));
+            this.employerService = employerService ?? throw new ArgumentNullException(nameof(employerService));
+            this.examinationsService = examinationsService ?? throw new ArgumentNullException(nameof(examinationsService));
+            this.httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+            this.patientService = patientService ?? throw new ArgumentNullException(nameof(patientService));
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
@@ -45,6 +57,44 @@ namespace ProfOsmotr.Web.Services
         {
             return await GetAccessResultBasedOnClinicId(calculationId, CanWorkWithCalculation);
         }
+
+        public async Task<AccessResult> CanAccessEmployerAsync(int employerId)
+        {
+            return await GetAccessResultBasedOnClinicId(employerId, CanWorkWithEmployer);
+        }
+
+        public async Task<AccessResult> CanAccessEmployerDepartmentAsync(int employerDepartmentId)
+        {
+            var departmentResponse = await employerService.FindEmployerDepartmentAsync(employerDepartmentId);
+
+            if (!departmentResponse.Succeed)
+            {
+                return new AccessDeniedResult(departmentResponse.Message);
+            }
+
+            return await GetAccessResultBasedOnClinicId(departmentResponse.Result.ParentId, CanWorkWithEmployer);
+        }
+
+        public async Task<AccessResult> CanAccessPatientAsync(int patientId)
+        {
+            return await GetAccessResultBasedOnClinicId(patientId, CanWorkWithPatient);
+        }
+
+        public async Task<AccessResult> CanAccessPeriodicExaminationAsync(int id)
+        {
+            return await GetAccessResultBasedOnClinicId(id, CanWorkWithPeriodicExamination);
+        }
+
+        public async Task<AccessResult> CanAccessPreliminaryExaminationAsync(int examinationId)
+        {
+            return await GetAccessResultBasedOnClinicId(examinationId, CanWorkWithPreliminaryExamination);
+        }
+
+        public async Task<AccessResult> CanAccessContingentCheckupStatus(int id)
+        {
+            return await GetAccessResultBasedOnClinicId(id, CanWorkWithContingentCheckupStatus);
+        }
+
 
         public async Task<AccessResult> CanManageUserAsync(int userId)
         {
@@ -95,6 +145,74 @@ namespace ProfOsmotr.Web.Services
             }
 
             if (calculationResponse.Result.ClinicId == currentUserClinicId)
+            {
+                return new AccessResult();
+            }
+
+            return new AccessDeniedResult();
+        }
+
+        private async Task<AccessResult> CanWorkWithEmployer(int employerId, int currentUserClinicId)
+        {
+            var employerResponse = await employerService.GetEmployerAsync(employerId);
+            if (!employerResponse.Succeed)
+            {
+                return new AccessDeniedResult(employerResponse.Message);
+            }
+
+            if (employerResponse.Result.ClinicId == currentUserClinicId)
+            {
+                return new AccessResult();
+            }
+
+            return new AccessDeniedResult();
+        }
+
+        private async Task<AccessResult> CanWorkWithPatient(int patientId, int currentUserClinicId)
+        {
+            var patientResponse = await patientService.GetPatientAsync(patientId);
+            if (!patientResponse.Succeed)
+            {
+                return new AccessDeniedResult(patientResponse.Message);
+            }
+
+            if (patientResponse.Result.ClinicId == currentUserClinicId)
+            {
+                return new AccessResult();
+            }
+
+            return new AccessDeniedResult();
+        }
+
+        private async Task<AccessResult> CanWorkWithPreliminaryExamination(int examinationId, int currentUserClinicId)
+        {
+            var examinationClinicId = await examinationsService.GetPreliminaryMedicalExaminationClinicIdAsync(examinationId);
+
+            if (examinationClinicId == currentUserClinicId)
+            {
+                return new AccessResult();
+            }
+
+            return new AccessDeniedResult();
+        }
+
+        private async Task<AccessResult> CanWorkWithPeriodicExamination(int examinationId, int currentUserClinicId)
+        {
+            var examinationClinicId = await examinationsService.GetPeriodicMedicalExaminationClinicIdAsync(examinationId);
+
+            if (examinationClinicId == currentUserClinicId)
+            {
+                return new AccessResult();
+            }
+
+            return new AccessDeniedResult();
+        }
+
+        private async Task<AccessResult> CanWorkWithContingentCheckupStatus(int checkupStatusId, int currentUserClinicId)
+        {
+            var checkupStatusClinicId = await examinationsService.GetContingentCheckupStatusClinicIdAsync(checkupStatusId);
+
+            if (checkupStatusClinicId == currentUserClinicId)
             {
                 return new AccessResult();
             }

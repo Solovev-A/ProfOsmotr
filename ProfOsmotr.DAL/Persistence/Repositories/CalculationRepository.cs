@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProfOsmotr.DAL.Abstractions;
+using ProfOsmotr.DAL.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,8 +40,7 @@ namespace ProfOsmotr.DAL
         {
             return await dbSet
                 .Include(calc => calc.CalculationSources)
-                    .ThenInclude(source => source.Profession.ProfessionOrderItems)
-                        .ThenInclude(item => item.OrderItem)
+                    .ThenInclude(source => source.Profession.OrderItems)
                 .Include(calc => calc.Creator.UserProfile)
                 .Include(calc => calc.CalculationResultItems)
                     .ThenInclude(item => item.Service.ServiceDetails)

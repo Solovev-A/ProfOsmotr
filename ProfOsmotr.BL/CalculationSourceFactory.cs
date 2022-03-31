@@ -18,31 +18,31 @@ namespace ProfOsmotr.BL
 
         public async Task<CalculationSourcesResponse> CreateCalculationSources(CreateCalculationRequest request)
         {
-            if (request == null || !request.CreateProfessionRequests.Any())
+            if (request == null || !request.CreateCalculationSourceRequests.Any())
             {
                 return new CalculationSourcesResponse("Невозможно создать исходные данные расчета без сведений о профессиях");
             }
 
             List<CalculationSource> sources = new List<CalculationSource>();
 
-            foreach (var profRequest in request.CreateProfessionRequests)
+            foreach (var calcSourceRequest in request.CreateCalculationSourceRequests)
             {
-                if (!CheckProfessionRequestNumbers(profRequest))
+                if (!CheckProfessionRequestNumbers(calcSourceRequest))
                 {
-                    return new CalculationSourcesResponse($"Профессия '{profRequest.Name}' содержит некорректную численность персонала");
+                    return new CalculationSourcesResponse($"Профессия '{calcSourceRequest.Profession.Name}' содержит некорректную численность персонала");
                 }
 
-                var professionResponse = await professionService.CreateProfessionForCalculation(profRequest, request.ClinicId);
+                var professionResponse = await professionService.CreateProfessionForCalculation(calcSourceRequest.Profession, request.ClinicId);
                 if (!professionResponse.Succeed)
                 {
-                    return new CalculationSourcesResponse($"Профессия '{profRequest.Name}' содержит некорректные данные");
+                    return new CalculationSourcesResponse($"Профессия '{calcSourceRequest.Profession.Name}' содержит некорректные данные");
                 }
-                sources.Add(GetCalculationSource(profRequest, professionResponse));
+                sources.Add(GetCalculationSource(calcSourceRequest, professionResponse));
             }
             return new CalculationSourcesResponse(sources);
         }
 
-        private bool CheckProfessionRequestNumbers(CreateProfessionRequest request)
+        private bool CheckProfessionRequestNumbers(CreateCalculationSourceRequest request)
         {
             return request.NumberOfPersons > 0 &&
                 request.NumberOfPersons >= request.NumberOfPersonsOver40 &&
@@ -52,7 +52,7 @@ namespace ProfOsmotr.BL
                 request.NumberOfWomenOver40 >= 0;
         }
 
-        private CalculationSource GetCalculationSource(CreateProfessionRequest request, ProfessionResponse response)
+        private CalculationSource GetCalculationSource(CreateCalculationSourceRequest request, ProfessionResponse response)
         {
             return new CalculationSource()
             {

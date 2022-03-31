@@ -1,7 +1,9 @@
 ﻿using ProfOsmotr.BL.Abstractions;
 using ProfOsmotr.BL.Infrastructure;
+using ProfOsmotr.BL.Models;
 using ProfOsmotr.DAL;
 using ProfOsmotr.DAL.Abstractions;
+using ProfOsmotr.DAL.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,18 +28,71 @@ namespace ProfOsmotr.BL
             this.orderService = orderService;
         }
 
+        public ProfessionService(IOrderService orderService, IProfUnitOfWork uow)
+        {
+            this.orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
+            this.uow = uow ?? throw new ArgumentNullException(nameof(uow));
+        }
+
         #endregion Constructors
 
         #region Methods
 
         public async Task<ProfessionResponse> CreateProfession(CreateProfessionRequest request)
-        {            
-            return await CreateProfessionResponse(request);
+        {
+            var response = await CreateProfessionResponse(request);
+            if (response.Succeed)
+            {
+                try
+                {
+                    await uow.Professions.AddAsync(response.Result);
+                    await uow.SaveAsync();
+                }
+                catch (Exception ex)
+                {
+                    return new ProfessionResponse(ex.Message);
+                }
+            }
+
+            return response;
         }
 
         public async Task<ProfessionResponse> CreateProfessionForCalculation(CreateProfessionRequest request, int clinicId)
         {
             return await CreateProfessionResponse(request, clinicId);
+        }
+
+        public async Task<Profession> FindProfessionAsync(int id)
+        {
+            return await uow.Professions.FindAsync(id);
+        }
+
+        public async Task<ProfessionSearchResultResponse> FindProfessionWithSuggestions(FindProfessionRequest request)
+        {
+            try
+            {
+                var itemsResult = await uow.Professions.ExecuteQuery(length: 20, search: request.Search);
+
+                IEnumerable<Profession> suggestions = new Profession[0];
+                if (request.EmployerId.HasValue)
+                {
+                    suggestions = await uow.Professions.GetSuggestedProfessions(request.Search, request.EmployerId.Value);
+                }
+
+                var items = itemsResult.Items.Except(suggestions, new ProfessionByIdEqualityComparer());
+
+                var result = new ProfessionSearchResult()
+                {
+                    Items = items,
+                    Suggestions = suggestions
+                };
+
+                return new ProfessionSearchResultResponse(result);
+            }
+            catch (Exception ex)
+            {
+                return new ProfessionSearchResultResponse(ex.Message);
+            }
         }
 
         public async Task<IEnumerable<Profession>> GetAllProfessionsAsync()
@@ -62,20 +117,16 @@ namespace ProfOsmotr.BL
                 return new ProfessionResponse("Запрос не может быть пустым");
 
             var profession = new Profession() { Name = request.Name };
-            IEnumerable<OrderItem> generalOrderItems = await orderService.GetGeneralOrderItemsAsync();
 
-            var orderItemIdentifiersToAdd = request.OrderItemIdentifiers
-                .Concat(generalOrderItems.Select(item => item.Id));
-
-            foreach (var id in orderItemIdentifiersToAdd)
+            foreach (var id in request.OrderItemIdentifiers)
             {
-                var itemResponse = clinicId.HasValue 
+                var itemResponse = clinicId.HasValue
                     ? await orderService.FindItemWithActualServicesAsync(id, clinicId.Value)
                     : await orderService.FindItemAsync(id);
 
                 if (!itemResponse.Succeed)
                     return new ProfessionResponse(itemResponse.Message);
-                profession.ProfessionOrderItems.Add(new ProfessionOrderItem() { OrderItem = itemResponse.Result });
+                profession.OrderItems.Add(itemResponse.Result);
             }
 
             return new ProfessionResponse(profession);

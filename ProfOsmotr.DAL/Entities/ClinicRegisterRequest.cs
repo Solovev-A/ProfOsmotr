@@ -50,7 +50,7 @@ namespace ProfOsmotr.DAL
         /// <summary>
         /// Дата создания запроса
         /// </summary>
-        public DateTime CreationTime { get; set; }       
+        public DateTime CreationTime { get; set; }
 
         /// <summary>
         /// Отметка об обработке запроса

@@ -15,6 +15,6 @@ namespace ProfOsmotr.BL.Abstractions
         /// </summary>
         /// <param name="sources">Первичные исходные данные для расчета медицинского осмотра</param>
         /// <returns>Результаты расчета медицинского осмотра</returns>
-        IEnumerable<CalculationResultItem> CalculateResult(IEnumerable<CalculationSource> sources);
+        IEnumerable<CalculationResultItem> CalculateResult(CalculateResultRequest request);
     }
 }

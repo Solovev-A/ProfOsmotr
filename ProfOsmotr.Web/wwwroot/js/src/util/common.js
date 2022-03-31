@@ -35,31 +35,26 @@
         return div.firstElementChild;
     },
 
-
-
-    getData: async function (url) {
-        var response = await fetch(url, {
+    deleteResource: async function (url) {
+        return await fetchDecorator(url, {
+            method: 'DELETE',
             credentials: 'same-origin'
         });
-        if (response.ok) {
-            return await response.json();
-        }
-        await processBadRequestResult(response);
-        return undefined;
+    },
+
+    getData: async function (url) {
+        return await fetchDecorator(url, {
+            credentials: 'same-origin'
+        });
     },
 
     postData: async function (url, dataObject) {
-        var response = await fetch(url, {
+        return await fetchDecorator(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json;charset=utf-8' },
             credentials: 'same-origin',
             body: JSON.stringify(dataObject)
         });
-        if (response.ok) {
-            return await response.json();
-        }
-        await processBadRequestResult(response);
-        return undefined;
     },
 
     removeAllChildren: function (node) {
@@ -68,6 +63,15 @@
         }
     }
 };
+
+async function fetchDecorator(url, config) {
+    const response = await fetch(url, config);
+    if (response.ok) {
+        return await response.json();
+    }
+    await processBadRequestResult(response);
+    return undefined;
+}
 
 async function processBadRequestResult(response) {
     if (response.status === 400) {

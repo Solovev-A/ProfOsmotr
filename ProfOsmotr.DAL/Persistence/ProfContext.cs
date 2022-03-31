@@ -8,8 +8,6 @@ namespace ProfOsmotr.DAL
 
         internal DbSet<OrderItem> OrderItems { get; private set; }
 
-        internal DbSet<OrderAnnex> OrderAnnex { get; private set; }
-
         internal DbSet<Profession> Professions { get; private set; }
 
         internal DbSet<Service> Services { get; private set; }
@@ -26,20 +24,31 @@ namespace ProfOsmotr.DAL
 
         internal DbSet<ClinicRegisterRequest> ClinicRegisterRequests { get; private set; }
 
+        internal DbSet<ExaminationResultIndex> ExaminationResultIndexes { get; private set; }
+
+        internal DbSet<PreliminaryMedicalExamination> PreliminaryMedicalExaminations { get; private set; }
+
+        internal DbSet<PeriodicMedicalExamination> PeriodicMedicalExaminations { get; private set; }
+
+        internal DbSet<IndividualCheckupStatus> IndividualCheckupStatuses { get; private set; }
+
+        internal DbSet<ContingentCheckupStatus> ContingentCheckupStatuses { get; private set; }
+
+        internal DbSet<Employer> Employers { get; private set; }
+
+        internal DbSet<ICD10Chapter> ICD10Chapters { get; private set; }
+
+        internal DbSet<Patient> Patients { get; private set; }
+
         public ProfContext(DbContextOptions<ProfContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ActualClinicService>(EFConfigure.ActualClinicService);
             modelBuilder.Entity<OrderExamination>(EFConfigure.OrderExamination);
-            modelBuilder.Entity<OrderAnnex>(EFConfigure.OrderAnnex);
-            modelBuilder.Entity<OrderItem>(EFConfigure.OrderItem);
-            modelBuilder.Entity<OrderItemOrderExamination>(EFConfigure.OrderItemOrderExamination);
-            modelBuilder.Entity<ProfessionOrderItem>(EFConfigure.ProfessionOrderItem);
             modelBuilder.Entity<Service>(EFConfigure.Service);
             modelBuilder.Entity<ServiceAvailabilityGroup>(EFConfigure.ServiceAvailabilityGroup);
             modelBuilder.Entity<Calculation>(EFConfigure.Calculation);
@@ -47,6 +56,18 @@ namespace ProfOsmotr.DAL
             modelBuilder.Entity<Role>(EFConfigure.Role);
             modelBuilder.Entity<TargetGroup>(EFConfigure.TargetGroup);
             modelBuilder.Entity<ClinicRegisterRequest>(EFConfigure.ClinicRegisterRequest);
+            modelBuilder.Entity<IndividualCheckupIndexValue>(EFConfigure.IndividualCheckupIndexValue);
+            modelBuilder.Entity<ContingentCheckupIndexValue>(EFConfigure.ContingentCheckupIndexValue);
+            modelBuilder.Entity<CheckupResult>(EFConfigure.CheckupResult);
+            modelBuilder.Entity<EmployerDepartment>(EFConfigure.EmployerDepartment);
+            modelBuilder.Entity<Gender>(EFConfigure.Gender);
+            modelBuilder.Entity<Patient>(EFConfigure.Patient);
+            modelBuilder.Entity<PreliminaryMedicalExamination>(EFConfigure.PreliminaryMedicalExamination);
+            modelBuilder.Entity<PeriodicMedicalExamination>(EFConfigure.PeriodicMedicalExamination);
+            modelBuilder.Entity<IndividualCheckupStatus>(EFConfigure.IndividualCheckupStatus);
+            modelBuilder.Entity<ContingentCheckupStatus>(EFConfigure.ContingentCheckupStatus);
+            modelBuilder.Entity<NewlyDiagnosedChronicSomaticDisease>(EFConfigure.NewlyDiagnosedChronicSomaticDisease);
+            modelBuilder.Entity<NewlyDiagnosedOccupationalDisease>(EFConfigure.NewlyDiagnosedOccupationalDisease);
         }
     }
 }

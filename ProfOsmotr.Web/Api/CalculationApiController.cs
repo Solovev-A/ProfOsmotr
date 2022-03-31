@@ -24,10 +24,9 @@ namespace ProfOsmotr.Web.Api
             this.accessService = accessService ?? throw new ArgumentNullException(nameof(accessService));
         }
 
-        [HttpPost]
-        [Route("create")]
+        [HttpPost("create")]
         [ModelStateValidationFilter]
-        public async Task<IActionResult> Create([FromBody] CreateCalculationResource resource)
+        public async Task<IActionResult> Create([FromBody] CreateCalculationQuery resource)
         {
             if (!accessService.TryGetUserClinicId(out int clinicId) || !accessService.TryGetUserId(out int userId))
                 return Forbid();
@@ -44,10 +43,9 @@ namespace ProfOsmotr.Web.Api
             return Ok(calculationResource);
         }
 
-        [HttpPost]
-        [Route("update")]
+        [HttpPost("update")]
         [ModelStateValidationFilter]
-        public async Task<IActionResult> Update([FromBody] UpdateCalculationResource resource)
+        public async Task<IActionResult> Update([FromBody] UpdateCalculationQuery resource)
         {
             if (!accessService.TryGetUserId(out int userId))
                 return Forbid();

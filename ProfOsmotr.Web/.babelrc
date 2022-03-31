@@ -1,0 +1,16 @@
+﻿{
+  "presets": [
+    "@babel/preset-react",
+    [
+      "@babel/env",
+      {
+        "useBuiltIns": "entry",
+        "corejs": "^3.16.0"
+      }
+    ]
+  ],
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-transform-runtime"
+  ]
+}

@@ -4,8 +4,7 @@ import { initOrderItemsSelect } from './util/profession-input';
 
 
 async function initCalculationSingle() {
-    const SELECTOR_ORDER_ITEMS1_SELECT = '#OrderItems1';
-    const SELECTOR_ORDER_ITEMS2_SELECT = '#OrderItems2';
+    const SELECTOR_ORDER_ITEMS_SELECT = '#OrderItems';
     const SELECTOR_CREATE_CALCULATION_BUTTON = '#createSingleCalculation';
     const SELECTOR_PROFESSION_NAME_INPUT = '#ProfessionName';
     const SELECTOR_IS_WOMAN_CHECKBOX = '#IsWoman';
@@ -48,9 +47,8 @@ async function initCalculationSingle() {
     function getCalculationSource() {
         let professionName = professionNameInput.value;
 
-        let annex1Items = $(SELECTOR_ORDER_ITEMS1_SELECT).select2('data');
-        let annex2Items = $(SELECTOR_ORDER_ITEMS2_SELECT).select2('data');
-        let orderItems = annex1Items.concat(annex2Items).map((item) => parseInt(item.id));
+        let orderItems = $(SELECTOR_ORDER_ITEMS_SELECT).select2('data')
+            .map((item) => parseInt(item.id));
         if (orderItems.length == 0) {
             alert('Выберите хотя бы один пункт приказа');
             return;
@@ -66,13 +64,15 @@ async function initCalculationSingle() {
 
         return {
             name: 'Индивидуальный расчет',
-            professions: [{
-                name: professionName,
+            sources: [{
+                profession: {
+                    name: professionName,
+                    orderItems: orderItems
+                },
                 numberOfPersons: 1,
                 numberOfWomen: womenCount,
                 numberOfWomenOver40: womenOver40Count,
-                numberOfPersonsOver40: over40Count,
-                orderItems: orderItems
+                numberOfPersonsOver40: over40Count
             }]
         };
     }

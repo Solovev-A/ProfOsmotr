@@ -110,8 +110,8 @@ namespace ProfOsmotr.DAL
 
             return new QueryResult<TEntity>()
             {
-                Data = data,
-                TotalItems = count
+                Items = data,
+                TotalCount = count
             };
         }
 

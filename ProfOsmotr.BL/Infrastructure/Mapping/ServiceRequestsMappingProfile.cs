@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ProfOsmotr.Hashing;
 using ProfOsmotr.DAL;
+using System;
 
 namespace ProfOsmotr.BL.Infrastructure.Mapping
 {
@@ -24,8 +25,7 @@ namespace ProfOsmotr.BL.Infrastructure.Mapping
                 .ForMember(d => d.DefaultServiceFullName, opt => opt.MapFrom(s => s.DefaultServiceDetails.FullName))
                 .ReverseMap();
 
-            CreateMap<AddOrderItemRequest, OrderItem>()
-                .ForMember(d => d.OrderAnnexId, conf => conf.Ignore());
+            CreateMap<AddOrderItemRequest, OrderItem>();
 
             //CreateMap<User, UpdateUserRequest>()
             //    .ForMember(d => d.Name, opt => opt.MapFrom(s => s.UserProfile.Name))
@@ -41,6 +41,60 @@ namespace ProfOsmotr.BL.Infrastructure.Mapping
 
             CreateMap<UpdateClinicDetailsRequest, ClinicDetails>()
                 .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
+
+            CreateMap<SaveExaminationResultIndexRequest, ExaminationResultIndex>();
+
+            CreateMap<CreatePatientRequest, Patient>()
+                .ForMember(d => d.Gender, conf => conf.Ignore())
+                .ForMember(d => d.GenderId, conf => conf.MapFrom(s => s.Gender));
+
+            CreateMap<PatchPatientQuery, Patient>()
+                .ForMember(d => d.Gender, conf => conf.Ignore())
+                .ForMember(d => d.Address, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.Address))))
+                .ForMember(d => d.FirstName, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.FirstName))))
+                .ForMember(d => d.LastName, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.LastName))))
+                .ForMember(d => d.PatronymicName, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.PatronymicName))))
+                .ForMember(d => d.DateOfBirth, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.DateOfBirth))))
+                .ForMember(d => d.GenderId, conf =>
+                {
+                    conf.Condition(s => s.IsFieldPresent(nameof(s.Gender)));
+                    conf.MapFrom(s => s.Gender);
+                });
+
+            CreateMap<CreateEmployerRequest, Employer>();
+
+            CreateMap<PatchEmployerQuery, Employer>()
+                .ForMember(d => d.Name, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.Name))))
+                .ForMember(d => d.HeadFirstName, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.HeadFirstName))))
+                .ForMember(d => d.HeadLastName, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.HeadLastName))))
+                .ForMember(d => d.HeadPatronymicName, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.HeadPatronymicName))))
+                .ForMember(d => d.HeadPosition, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.HeadPosition))));
+
+            CreateMap<CreateEmployerDepartmentRequest, EmployerDepartment>();
+
+            CreateMap<PatchEmployerDepartmentQuery, EmployerDepartment>()
+                .ForMember(d => d.Name, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.Name))));
+
+            CreateMap<PatchPeriodicExaminationQuery, PeriodicMedicalExamination>()
+                .ForMember(d => d.EmployerData, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.EmployerData))))
+                .ForMember(d => d.Recommendations, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.Recommendations))))
+                .ForMember(d => d.ReportDate, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.ReportDate))));
+
+            CreateMap<PatchEmployerDataQuery, EmployerData>()
+                .ForMember(d => d.EmployeesPersistentlyDisabled, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.EmployeesPersistentlyDisabled))))
+                .ForMember(d => d.EmployeesTotal, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.EmployeesTotal))))
+                .ForMember(d => d.EmployeesUnder18, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.EmployeesUnder18))))
+                .ForMember(d => d.EmployeesWomen, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.EmployeesWomen))))
+                .ForMember(d => d.WorkingWithHarmfulFactorsPersistentlyDisabled, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.WorkingWithHarmfulFactorsPersistentlyDisabled))))
+                .ForMember(d => d.WorkingWithHarmfulFactorsTotal, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.WorkingWithHarmfulFactorsTotal))))
+                .ForMember(d => d.WorkingWithHarmfulFactorsUnder18, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.WorkingWithHarmfulFactorsUnder18))))
+                .ForMember(d => d.WorkingWithHarmfulFactorsWomen, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.WorkingWithHarmfulFactorsWomen))))
+                .ForMember(d => d.WorkingWithJobTypesPersistentlyDisabled, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.WorkingWithJobTypesPersistentlyDisabled))))
+                .ForMember(d => d.WorkingWithJobTypesTotal, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.WorkingWithJobTypesTotal))))
+                .ForMember(d => d.WorkingWithJobTypesUnder18, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.WorkingWithJobTypesUnder18))))
+                .ForMember(d => d.WorkingWithJobTypesWomen, conf => conf.Condition(s => s.IsFieldPresent(nameof(s.WorkingWithJobTypesWomen))));
+
+            CreateMap<UpdateContingentGroupMedicalReportQuery, ContingentCheckupStatus>();
         }
     }
 }

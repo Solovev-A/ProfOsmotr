@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProfOsmotr.BL.Abstractions;
 using ProfOsmotr.DAL;
+using ProfOsmotr.DAL.Models;
 using ProfOsmotr.Web.Infrastructure;
 using ProfOsmotr.Web.Models;
 using ProfOsmotr.Web.Services;
@@ -43,7 +44,7 @@ namespace ProfOsmotr.Web.Controllers
             return View(calculationResource);
         }
 
-        public async Task<IActionResult> List([FromQuery] PaginationQueryResource queryResource)
+        public async Task<IActionResult> List([FromQuery] BasePaginationQuery queryResource)
         {
             if (queryResource.Page < 1)
                 ModelState.AddModelError("page", "Страница должна быть положительным числом");

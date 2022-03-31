@@ -12,17 +12,25 @@ namespace ProfOsmotr.DAL.Abstractions
 
         ICalculationRepository Calculations { get; }
 
+        IRepository<CheckupResult> CheckupResults { get; }
+
         IQueryAwareRepository<ClinicRegisterRequest> ClinicRegisterRequests { get; }
 
         IQueryAwareRepository<Clinic> Clinics { get; }
 
-        IRepository<OrderAnnex> OrderAnnexes { get; }
+        IRepository<ExaminationResultIndex> ExamintaionResultIndexes { get; }
 
-        IRepository<OrderExamination> OrderExaminations { get; }
+        IRepository<ICD10Chapter> ICD10Chapters { get; }
 
-        IOrderReposytory OrderItems { get; }
+        IRepository<Gender> Genders { get; }
 
-        IRepository<Profession> Professions { get; }
+        IOrderExaminationRepository OrderExaminations { get; }
+
+        IOrderRepository OrderItems { get; }
+
+        IPatientRepository Patients { get; }
+
+        IProfessionRepository Professions { get; }
 
         IRepository<Role> Roles { get; }
 
@@ -33,6 +41,10 @@ namespace ProfOsmotr.DAL.Abstractions
         IRepository<TargetGroup> TargetGroups { get; }
 
         IQueryAwareRepository<User> Users { get; }
+        IEmployerRepository Employers { get; }
+        IPreliminaryMedicalExaminationRepository PreliminaryMedicalExaminations { get; }
+        IRepository<EmployerDepartment> EmployerDepartments { get; }
+        IPeriodicMedicalExaminationRepository PeriodicMedicalExaminations { get; }
 
         /// <summary>
         /// Сохраняет изменения, сделанные в хранилищах

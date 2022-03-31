@@ -67,30 +67,20 @@ namespace ProfOsmotr.BL
                 return new OrderItemResponse("Запрос не может быть пустым");
             if (!request.OrderExaminationIdentifiers.Any())
                 return new OrderItemResponse("Список обследований не должен быть пустым");
-            if (!Enum.IsDefined(typeof(OrderAnnexId), request.AnnexId))
-                return new OrderItemResponse("Приложение с таким номером не существует");
 
             OrderItem existingItem = await uow.OrderItems
-                .FirstOrDefaultAsync(item => item.OrderAnnexId == (OrderAnnexId)request.AnnexId
-                                          && item.Key == request.Key
-                                          && !item.IsDeleted);
+                .FirstOrDefaultAsync(item => item.Key == request.Key && !item.IsDeleted);
             if (existingItem != null)
                 return new OrderItemResponse("Пункт приказа с таким номером уже существует");
 
-            var annex = await uow.OrderAnnexes.FirstOrDefaultAsync(a => a.Id == (OrderAnnexId)request.AnnexId);
-
             OrderItem newOrderItem = mapper.Map<AddOrderItemRequest, OrderItem>(request);
-            newOrderItem.OrderAnnex = annex;
 
             foreach (var id in request.OrderExaminationIdentifiers)
             {
                 OrderExamination orderExamination = await FindExaminationAsync(id);
                 if (orderExamination == null)
                     return new OrderItemResponse($"Обследование по приказу с id #{id} не найдено");
-                newOrderItem.OrderItemOrderExaminations.Add(new OrderItemOrderExamination()
-                {
-                    OrderExamination = orderExamination
-                });
+                newOrderItem.OrderExaminations.Add(orderExamination);
             }
 
             try
@@ -132,24 +122,19 @@ namespace ProfOsmotr.BL
             return new OrderItemResponse(result);
         }
 
-        public async Task<IEnumerable<OrderItem>> GetAllItems()
-        {
-            return await uow.OrderItems.GetActualItems();
-        }
-
         public async Task<IEnumerable<OrderExamination>> GetExaminationsAsync()
         {
-            return await uow.OrderItems.GetExaminationsWithDetailsAsync();
+            return await uow.OrderExaminations.GetExaminationsWithDetailsAsync();
         }
 
         public async Task<IEnumerable<OrderExamination>> GetExaminationsShortDataAsync()
         {
-            return await uow.OrderItems.GetExaminationsAsync();
+            return await uow.OrderExaminations.GetExaminationsAsync();
         }
 
-        public async Task<IEnumerable<OrderAnnex>> GetOrderAsync()
+        public async Task<IEnumerable<OrderItem>> GetOrderAsync(bool nocache)
         {
-            return await uow.OrderItems.GetOrderAsync();
+            return await uow.OrderItems.GetOrderAsync(nocache);
         }
 
         public async Task<IEnumerable<TargetGroup>> GetTargetGroupsAsync()
@@ -197,7 +182,7 @@ namespace ProfOsmotr.BL
                 return new OrderItemResponse("Элемент приказа не найден");
 
             existingItem.Name = request.Name;
-            existingItem.OrderItemOrderExaminations.Clear();
+            existingItem.OrderExaminations.Clear();
 
             foreach (var id in request.OrderExaminationIdentifiers)
             {
@@ -205,10 +190,7 @@ namespace ProfOsmotr.BL
                 if (orderExamination == null)
                     return new OrderItemResponse($"Обследование по приказу с id #{id} не найдено");
 
-                existingItem.OrderItemOrderExaminations.Add(new OrderItemOrderExamination()
-                {
-                    OrderExamination = orderExamination
-                });
+                existingItem.OrderExaminations.Add(orderExamination);
             }
 
             try
@@ -220,6 +202,11 @@ namespace ProfOsmotr.BL
             {
                 return new OrderItemResponse($"Во время обновления приказа произошла непредвиденная ошибка: {ex.Message}");
             }
+        }
+
+        public async Task<ExaminationResultIndex> FindExaminationResultIndexAsync(int id)
+        {
+            return await uow.ExamintaionResultIndexes.FindAsync(id);
         }
 
         private async Task<OrderExamination> FindExaminationAsync(int id)
@@ -248,9 +235,78 @@ namespace ProfOsmotr.BL
             return new OrderItemResponse(item);
         }
 
-        async Task<IEnumerable<OrderItem>> IOrderService.GetGeneralOrderItemsAsync()
+        async Task<IEnumerable<OrderExamination>> IOrderService.GetMandatoryOrderExaminationsWithActualServicesAsync(int clinicId)
         {
-            return await uow.OrderItems.FindAsync(item => item.OrderAnnexId == OrderAnnexId.General && !item.IsDeleted);
+            return await uow.OrderExaminations.GetMandatoryExaminationsWithActualServicesAsync(clinicId);
+        }
+
+        public async Task<ExaminationResultIndexesResponse> GetExaminationResultIndexes(int examinationId)
+        {
+            var examination = await FindExaminationAsync(examinationId);
+            if (examination == null)
+                return new ExaminationResultIndexesResponse($"Обследование с идентификатором ${examinationId} не найдено");
+
+            IEnumerable<ExaminationResultIndex> indexes = await uow.OrderExaminations.GetIndexes(examinationId);
+
+            return new ExaminationResultIndexesResponse(indexes);
+        }
+
+        public async Task<ExaminationResultIndexResponse> AddIndexAsync(int examinationId, SaveExaminationResultIndexRequest request)
+        {
+            var examination = await FindExaminationAsync(examinationId);
+            if (examination == null)
+                return new ExaminationResultIndexResponse($"Обследование с id {examinationId} не найдено");
+
+            ExaminationResultIndex newIndex = mapper.Map<ExaminationResultIndex>(request);
+            examination.ExaminationResultIndexes.Add(newIndex);
+
+            try
+            {
+                await uow.SaveAsync();
+                return new ExaminationResultIndexResponse(newIndex);
+            }
+            catch (Exception ex)
+            {
+                return new ExaminationResultIndexResponse(ex.Message);
+            }
+        }
+
+        public async Task<ExaminationResultIndexResponse> UpdateIndexAsync(int indexId, SaveExaminationResultIndexRequest request)
+        {
+            var index = await FindExaminationResultIndexAsync(indexId);
+            if (index == null)
+                return new ExaminationResultIndexResponse($"Показатель результата с id {indexId} не найден");
+
+            mapper.Map(request, index);
+
+            try
+            {
+                await uow.SaveAsync();
+                return new ExaminationResultIndexResponse(index);
+            }
+            catch (Exception ex)
+            {
+                return new ExaminationResultIndexResponse(ex.Message);
+            }
+        }
+
+        public async Task<ExaminationResultIndexResponse> DeleteIndexAsync(int indexId)
+        {
+            var index = await FindExaminationResultIndexAsync(indexId);
+            if (index == null)
+                return new ExaminationResultIndexResponse($"Показатель результата с id {indexId} не найден");
+
+            index.IsDeleted = true;
+
+            try
+            {
+                await uow.SaveAsync();
+                return new ExaminationResultIndexResponse(index);
+            }
+            catch (Exception ex)
+            {
+                return new ExaminationResultIndexResponse(ex.Message);
+            }
         }
 
         #endregion Methods

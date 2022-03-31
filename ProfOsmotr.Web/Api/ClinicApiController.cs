@@ -28,11 +28,10 @@ namespace ProfOsmotr.Web.Api
             this.accessService = accessService ?? throw new ArgumentNullException(nameof(accessService));
         }
 
-        [HttpPost]
-        [Route("addRegisterRequest")]
+        [HttpPost("addRegisterRequest")]
         [ModelStateValidationFilter]
         [AllowAnonymous]
-        public async Task<IActionResult> CreateRegisterRequest([FromBody] CreateRegisterRequestResource resource)
+        public async Task<IActionResult> CreateRegisterRequest([FromBody] CreateRegisterRequestQuery resource)
         {
             var request = mapper.Map<RegisterDataRequest>(resource);
 
@@ -45,8 +44,7 @@ namespace ProfOsmotr.Web.Api
             return Ok(result);
         }
 
-        [HttpPost]
-        [Route("list")]
+        [HttpPost("list")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
         public async Task<IActionResult> ListClincs([FromBody] DataTablesParameters parameters)
@@ -67,19 +65,18 @@ namespace ProfOsmotr.Web.Api
                                                            query.Descending);
             if (!response.Succeed)
                 return BadRequest(new ErrorResource(response.Message));
-            var resource = mapper.Map<IEnumerable<ClinicResource>>(response.Result.Data);
+            var resource = mapper.Map<IEnumerable<ClinicResource>>(response.Result.Items);
             var result = new DataTablesResult<ClinicResource>()
             {
                 Data = resource,
                 Draw = parameters.Draw,
-                RecordsFiltered = response.Result.TotalItems,
-                RecordsTotal = response.Result.TotalItems
+                RecordsFiltered = response.Result.TotalCount,
+                RecordsTotal = response.Result.TotalCount
             };
             return Ok(result);
         }
 
-        [HttpPost]
-        [Route("newRequests")]
+        [HttpPost("newRequests")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
         public async Task<IActionResult> ListNewRegisterRequests([FromBody] DataTablesParameters parameters)
@@ -87,8 +84,7 @@ namespace ProfOsmotr.Web.Api
             return await ListRegisterRequests(parameters, GetNewRegisterRequests);
         }
 
-        [HttpPost]
-        [Route("processedRequests")]
+        [HttpPost("processedRequests")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
         public async Task<IActionResult> ListProcessedRegisterRequests([FromBody] DataTablesParameters parameters)
@@ -96,11 +92,10 @@ namespace ProfOsmotr.Web.Api
             return await ListRegisterRequests(parameters, GetProcessedRegisterRequests);
         }
 
-        [HttpPost]
-        [Route("manageRequest")]
+        [HttpPost("manageRequest")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
-        public async Task<IActionResult> ManageRegisterRequest([FromBody] ManageRegisterRequestResource resource)
+        public async Task<IActionResult> ManageRegisterRequest([FromBody] ManageRegisterRequestQuery resource)
         {
             if (resource.Approved)
             {
@@ -122,11 +117,10 @@ namespace ProfOsmotr.Web.Api
             }
         }
 
-        [HttpPost]
-        [Route("manageClinic")]
+        [HttpPost("manageClinic")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
-        public async Task<IActionResult> ManageClinic([FromBody] ManageClinicResource resource)
+        public async Task<IActionResult> ManageClinic([FromBody] ManageClinicQuery resource)
         {
             if (!accessService.TryGetUserClinicId(out int userClinicId))
                 return Forbid();
@@ -142,11 +136,10 @@ namespace ProfOsmotr.Web.Api
             return Ok(result);
         }
 
-        [HttpPost]
-        [Route("updateDetails")]
+        [HttpPost("updateDetails")]
         [ModelStateValidationFilter]
         [AuthorizeAdministratorAndClinicModerator]
-        public async Task<IActionResult> UpdateDetails([FromBody] UpdateClinicDetailsResource resource)
+        public async Task<IActionResult> UpdateDetails([FromBody] UpdateClinicDetailsQuery resource)
         {
             if (!accessService.TryGetUserClinicId(out int clinicId))
                 return Forbid();
@@ -176,13 +169,13 @@ namespace ProfOsmotr.Web.Api
             QueryResponse<ClinicRegisterRequest> response = await listGetter(query);
             if (!response.Succeed)
                 return BadRequest(new ErrorResource(response.Message));
-            var resource = mapper.Map<IEnumerable<RegisterRequestResource>>(response.Result.Data);
+            var resource = mapper.Map<IEnumerable<RegisterRequestResource>>(response.Result.Items);
             var result = new DataTablesResult<RegisterRequestResource>()
             {
                 Data = resource,
                 Draw = parameters.Draw,
-                RecordsFiltered = response.Result.TotalItems,
-                RecordsTotal = response.Result.TotalItems
+                RecordsFiltered = response.Result.TotalCount,
+                RecordsTotal = response.Result.TotalCount
             };
             return Ok(result);
         }

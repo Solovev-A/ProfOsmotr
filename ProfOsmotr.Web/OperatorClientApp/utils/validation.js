@@ -1,0 +1,1 @@
+export const requiredString = (value) => value.length > 0;

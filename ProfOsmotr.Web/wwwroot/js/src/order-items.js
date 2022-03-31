@@ -1,22 +1,20 @@
 ﻿import Util from './util/common';
-import CustomBootstrapModal from './util/custom-modal';
+import ModalForm from './util/modal/modal-form';
 import CustomDataTable from './util/custom-datatable';
 import SuccessToast from './util/success-toast';
 import { DefaultChecks } from './util/custom-validation';
 
 
-const URI_API_ORDER_ITEMS = '/api/order/getOrder';
+const URI_API_ORDER_ITEMS = '/api/order/getOrder?nocache=true';
 const URI_API_ORDER_ITEM_CREATE = '/api/order/addItem';
 const URI_API_ORDER_ITEM_UPDATE = '/api/order/updateItem';
 const URI_API_ORDER_ITEM_REMOVE = '/api/order/deleteItem';
 const URI_API_ORDER_EXAMINATIONS = '/api/order/getExaminationsMin';
 
 const ID_SELECT_EXAMINATIONS = 'examinations';
-const ID_ANNEX_ID = 'annexId';
 const ID_KEY = 'key';
 
 const SELECTOR_EXAMINATIONS = `select[data-custom-modal-id="${ID_SELECT_EXAMINATIONS}"`;
-const SELECTOR_ANNEX_ID = `select[data-custom-modal-id="${ID_ANNEX_ID}"`;
 const SELECTOR_KEY = `input[data-custom-modal-id="${ID_KEY}"`;
 
 
@@ -70,9 +68,6 @@ class OrderItemsPage {
                         render: (data, type, row) => data.map(ex => Util.escapeHTML(ex.name)).join('<br>')
                     }
                 ],
-                rowGroup: {
-                    dataSrc: 'annex.name'
-                },
                 buttons: [
                     {
                         text: 'Добавить пункт',
@@ -109,13 +104,6 @@ class OrderItemsPage {
             title: (model) => model.editing ? `Редактирование пункта ${model.key}` : 'Создание нового пункта',
             data: [
                 {
-                    id: 'annexId',
-                    path: 'annex.id',
-                    label: 'Приложение',
-                    type: 'select',
-                    options: this._orderItems.annexes.map(annex => new Option(`Приложение ${annex.id}`, annex.id))
-                },
-                {
                     id: 'key',
                     path: 'key',
                     label: 'Пункт',
@@ -140,28 +128,22 @@ class OrderItemsPage {
             buttons: [
                 {
                     text: 'Сохранить',
-                    action: async (model) => await this._onSave(model)
+                    action: this._onSave.bind(this)
                 }
             ]
         };
 
-        this.orderItemModal = new CustomBootstrapModal(config);
+        this.orderItemModal = new ModalForm(config);
         this._initSelect2();
     }
 
     _getDataTableData() {
-        return this._orderItems.annexes
-            .map(annex => annex.orderItems.map(item => this._convertToTableData(item)))
-            .flat();
+        return this._orderItems.map(item => this._convertToTableData(item));
     }
 
     _convertToTableData(orderItemResource) {
         return {
             id: orderItemResource.id,
-            annex: {
-                id: orderItemResource.annexId,
-                name: `Приложение ${orderItemResource.annexId}`
-            },
             key: orderItemResource.key,
             name: orderItemResource.name,
             examinations: orderItemResource.orderExaminations.map(id => {
@@ -191,14 +173,13 @@ class OrderItemsPage {
     }
 
     async _onSave(model) {
-        const _this = this;
         const examinations = $(SELECTOR_EXAMINATIONS).select2('data').map(i => parseInt(i.id));
         let response;
 
         if (model.editing === true) {
-            response = await updateOrderItem();
+            response = await updateOrderItem.call(this);
         } else {
-            response = await createOrderItem();
+            response = await createOrderItem.call(this);
         }
 
         if (response) {
@@ -217,9 +198,9 @@ class OrderItemsPage {
             });
 
             if (updatedItem) {
-                _this.orderTable
+                this.orderTable
                     .row((index, data, node) => data.id === updatedItem.id)
-                    .data(_this._convertToTableData(updatedItem))
+                    .data(this._convertToTableData(updatedItem))
                     .draw();
                 return updatedItem;
             }
@@ -227,16 +208,15 @@ class OrderItemsPage {
 
         async function createOrderItem() {
             const newItem = await Util.postData(URI_API_ORDER_ITEM_CREATE, {
-                annexId: parseInt(model.annex.id),
                 key: model.key,
                 name: model.name,
                 examinations
             });
 
             if (newItem) {
-                _this.orderTable
+                this.orderTable
                     .row
-                    .add(_this._convertToTableData(newItem))
+                    .add(this._convertToTableData(newItem))
                     .draw();
                 return newItem;
             }
@@ -258,7 +238,6 @@ class OrderItemsPage {
 
     _showModal(model) {
         const elementsToDisableOnEditItem = [
-            document.querySelector(SELECTOR_ANNEX_ID),
             document.querySelector(SELECTOR_KEY)
         ];
 

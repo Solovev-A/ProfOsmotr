@@ -4,28 +4,40 @@
  *  Добавление опций в селекты пунктов приказа
  */
 async function initOrderItemsSelect() {
-    const itemsData = await Util.getData('/api/order/getItemsList');
-    if (itemsData) {
-        workWithSelect('#OrderItems1', itemsData.annex1);
-        workWithSelect('#OrderItems2', itemsData.annex2);
+    const orderData = await Util.getData('/api/order/getOrder');
+    if (orderData) {
+        workWithSelect('#OrderItems', orderData);
     }
 }
 
-function workWithSelect(selector, sourceDataArray) {
+function workWithSelect(selector, orderData) {
+    const _formatOption = option => {
+        const text = Util.escapeHTML(option.text);
+        const html = `<span style="display: block; overflow: hidden; white-space: nowrap;" title="${text}">${text}</span>`;
+        return $(html);
+    };
+    const _formatSelection = option => option.key;
+
+
     $(selector).select2({
-        data: sourceDataArray.map(getSelect2Data),
+        data: orderData.map(getSelect2Data),
         multiple: true,
-        placeholder: 'Найти по номеру пункта...',
+        placeholder: 'Найти по номеру или названию пункта...',
         theme: 'bootstrap4',
-        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style'
+        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+        templateResult: _formatOption,
+        templateSelection: _formatSelection,
+        language: {
+            noResults: () => 'Совпадений не найдено'
+        }
     });
 }
 
-function getSelect2Data(value) {
-    let name = value.name == null ? '' : value.name;
+function getSelect2Data(orderItem) {
     return {
-        id: value.id,
-        text: Util.escapeHTML(value.key + ' ' + name)
+        id: orderItem.id,
+        text: `${orderItem.key}. ${orderItem.name}`,
+        key: orderItem.key
     }
 }
 

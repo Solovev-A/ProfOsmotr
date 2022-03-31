@@ -26,6 +26,6 @@ namespace ProfOsmotr.BL
         /// Перечисление исходных данных, необходимых для создания профессий, в отношении которых
         /// планируется проведение медицинского осмотра
         /// </summary>
-        public IEnumerable<CreateProfessionRequest> CreateProfessionRequests { get; set; }
+        public IEnumerable<CreateCalculationSourceRequest> CreateCalculationSourceRequests { get; set; }
     }
 }

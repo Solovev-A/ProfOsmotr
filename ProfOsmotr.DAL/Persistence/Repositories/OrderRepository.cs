@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProfOsmotr.DAL
 {
-    public class OrderRepository : EFRepository<OrderItem>, IOrderReposytory
+    public class OrderRepository : EFRepository<OrderItem>, IOrderRepository
     {
         private const string itemsCollectionKey = "ORDER_ITEMS";
         private readonly IMemoryCache cache;
@@ -25,59 +25,29 @@ namespace ProfOsmotr.DAL
             return await query.FirstOrDefaultAsync(item => item.Id == itemId && !item.IsDeleted);
         }
 
-        public async Task<IEnumerable<OrderItem>> GetActualItems()
+
+        public async Task<IEnumerable<OrderItem>> GetOrderAsync(bool nocache)
         {
-            if (!cache.TryGetValue(itemsCollectionKey, out IEnumerable<OrderItem> value))
+            if (!cache.TryGetValue(itemsCollectionKey, out IEnumerable<OrderItem> value) || nocache)
             {
                 value = await dbSet
+                    .AsNoTracking()
+                    .Include(item => item.OrderExaminations.OrderBy(ex => ex.Name))
                     .Where(item => !item.IsDeleted)
                     .ToListAsync();
-                value = value.OrderBy(item => item.Key, new OrderItemKeyComparer()).ToList();
-                
+
+                value = value.OrderBy(item => item.Key, new OrderItemKeyComparer());
+
                 cache.Set(itemsCollectionKey, value, TimeSpan.FromMinutes(5));
             }
             return value;
         }
 
-        public async Task<IEnumerable<OrderExamination>> GetExaminationsAsync()
-        {
-            return await context.OrderExaminations
-                .AsNoTracking()
-                .OrderBy(examination => examination.Name)
-                .ToListAsync();
-        }
-
-        public async Task<IEnumerable<OrderExamination>> GetExaminationsWithDetailsAsync()
-        {
-            return await context.OrderExaminations
-                .AsNoTracking()
-                .Include(x => x.DefaultServiceDetails)
-                .OrderBy(examination => examination.Name)
-                .ToListAsync();
-        }
-
-        public async Task<IEnumerable<OrderAnnex>> GetOrderAsync()
-        {
-            var annexes = await context.OrderAnnex
-                .AsNoTracking()
-                .Include(x => x.OrderItems.Where(item => !item.IsDeleted))
-                    .ThenInclude(x => x.OrderItemOrderExaminations.OrderBy(ie => ie.OrderExamination.Name))
-                        .ThenInclude(x => x.OrderExamination)
-                .ToListAsync();
-
-            return annexes.Select(annex =>
-            {
-                annex.OrderItems = annex.OrderItems.OrderBy(item => item.Key, new OrderItemKeyComparer()).ToList();
-                return annex;
-            });
-        }
-
         private IQueryable<OrderItem> GetOrderItemWithActualServicesQuery(int clinicId)
         {
             return dbSet
-                .Include(item => item.OrderItemOrderExaminations)
-                    .ThenInclude(i => i.OrderExamination.ActualClinicServices
-                                            .Where(actual => actual.ClinicId == clinicId))
+                .Include(item => item.OrderExaminations)
+                    .ThenInclude(ex => ex.ActualClinicServices.Where(actual => actual.ClinicId == clinicId))
                         .ThenInclude(actual => actual.Service.ServiceDetails);
         }
     }

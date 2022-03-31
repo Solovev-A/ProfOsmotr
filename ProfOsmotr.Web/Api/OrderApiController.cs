@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace ProfOsmotr.Web.Api
 {
+    delegate Task<ExaminationResultIndexResponse> SaveIndexFunc(int targetId, SaveExaminationResultIndexRequest request);
+
     [Route("api/order")]
     public class OrderApiController : ControllerBase
     {
@@ -22,11 +24,10 @@ namespace ProfOsmotr.Web.Api
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        [HttpPost]
-        [Route("addExamination")]
+        [HttpPost("addExamination")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
-        public async Task<IActionResult> AddExamination([FromBody] AddOrderExaminationResource resource)
+        public async Task<IActionResult> AddExamination([FromBody] AddOrderExaminationQuery resource)
         {
             var request = mapper.Map<SaveOrderExaminationRequest>(resource);
 
@@ -40,11 +41,10 @@ namespace ProfOsmotr.Web.Api
             return Ok(examinationResource);
         }
 
-        [HttpPost]
-        [Route("addItem")]
+        [HttpPost("addItem")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
-        public async Task<IActionResult> AddItem([FromBody] AddOrderItemResource resource)
+        public async Task<IActionResult> AddItem([FromBody] AddOrderItemQuery resource)
         {
             var request = mapper.Map<AddOrderItemRequest>(resource);
 
@@ -58,8 +58,7 @@ namespace ProfOsmotr.Web.Api
             return Ok(itemResource);
         }
 
-        [HttpPost]
-        [Route("deleteItem")]
+        [HttpPost("deleteItem")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
         public async Task<IActionResult> DeleteItem([FromBody] int id)
@@ -72,7 +71,7 @@ namespace ProfOsmotr.Web.Api
             return Ok(new { succeed = true });
         }
 
-        [Route("getExaminations")]
+        [HttpGet("getExaminations")]
         public async Task<IActionResult> GetExaminations()
         {
             var examinations = await orderService.GetExaminationsAsync();
@@ -86,7 +85,7 @@ namespace ProfOsmotr.Web.Api
             return Ok(result);
         }
 
-        [Route("getExaminationsMin")]
+        [HttpGet("getExaminationsMin")]
         public async Task<IActionResult> GetExaminationsMin()
         {
             var examinations = await orderService.GetExaminationsShortDataAsync();
@@ -95,29 +94,59 @@ namespace ProfOsmotr.Web.Api
             return Ok(resource);
         }
 
-        [Route("getItemsList")]
-        public async Task<IActionResult> GetItemsList()
+        [HttpGet("getIndexes/{examinationId}")]
+        public async Task<IActionResult> GetIndexes(int examinationId)
         {
-            var orderItems = await orderService.GetAllItems();
-            var result = MapListResource(orderItems);
-            return new JsonResult(result);
+            var response = await orderService.GetExaminationResultIndexes(examinationId);
+
+            if (!response.Succeed)
+                return BadRequest(response.Message);
+
+            var resource = mapper.Map<IEnumerable<ExaminationResultIndexResource>>(response.Result);
+
+            return Ok(resource);
         }
 
-        [Route("getOrder")]
-        public async Task<IActionResult> GetOrder()
+        [HttpPost("examination/{examinationId}/index")]
+        [ModelStateValidationFilter]
+        [AuthorizeAdministrator]
+        public async Task<IActionResult> CreateIndex(int examinationId, [FromBody] SaveExaminationResultIndexQuery resource)
         {
-            var order = await orderService.GetOrderAsync();
-            var annexResources = mapper.Map<IEnumerable<AnnexResource>>(order);
-            var orderResource = new OrderResource(annexResources);
+            return await SaveExaminationIndex(examinationId, resource, orderService.AddIndexAsync);
+        }
+
+        [HttpPost("index/{id}")]
+        [ModelStateValidationFilter]
+        [AuthorizeAdministrator]
+        public async Task<IActionResult> UpdateIndex(int id, [FromBody] SaveExaminationResultIndexQuery resource)
+        {
+            return await SaveExaminationIndex(id, resource, orderService.UpdateIndexAsync);
+        }
+
+        [HttpDelete("index/{id}")]
+        [AuthorizeAdministrator]
+        public async Task<IActionResult> DeleteIndex(int id)
+        {
+            var response = await orderService.DeleteIndexAsync(id);
+            if (!response.Succeed)
+                return BadRequest(new ErrorResource(response.Message));
+            var result = mapper.Map<ExaminationResultIndexResource>(response.Result);
+            return Ok(result);
+        }
+
+        [HttpGet("getOrder")]
+        public async Task<IActionResult> GetOrder(bool nocache)
+        {
+            IEnumerable<DAL.OrderItem> order = await orderService.GetOrderAsync(nocache);
+            var orderResource = mapper.Map<IEnumerable<OrderItemDetailedResource>>(order);
 
             return Ok(orderResource);
         }
 
-        [HttpPost]
-        [Route("updateExamination")]
+        [HttpPost("updateExamination")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
-        public async Task<IActionResult> UpdateExamination([FromBody] UpdateOrderExaminationResource resource)
+        public async Task<IActionResult> UpdateExamination([FromBody] UpdateOrderExaminationQuery resource)
         {
             var request = mapper.Map<SaveOrderExaminationRequest>(resource);
 
@@ -131,11 +160,10 @@ namespace ProfOsmotr.Web.Api
             return Ok(examinationResource);
         }
 
-        [HttpPost]
-        [Route("updateItem")]
+        [HttpPost("updateItem")]
         [ModelStateValidationFilter]
         [AuthorizeAdministrator]
-        public async Task<IActionResult> UpdateItem([FromBody] UpdateOrderItemResource resource)
+        public async Task<IActionResult> UpdateItem([FromBody] UpdateOrderItemQuery resource)
         {
             var request = mapper.Map<UpdateOrderItemRequest>(resource);
 
@@ -149,20 +177,16 @@ namespace ProfOsmotr.Web.Api
             return Ok(itemResource);
         }
 
-        private OrderItemsListResource MapListResource(IEnumerable<DAL.OrderItem> orderItems)
+        private async Task<IActionResult> SaveExaminationIndex(int targetId, SaveExaminationResultIndexQuery resource, SaveIndexFunc func)
         {
-            var result = new OrderItemsListResource();
-            foreach (var item in orderItems)
-            {
-                var resource = new OrderItemResource() { Id = item.Id, Key = item.Key, Name = item.Name };
-                if (item.OrderAnnexId == DAL.OrderAnnexId.General)
-                    continue;
-                else if (item.OrderAnnexId == DAL.OrderAnnexId.HarmfulFactors)
-                    result.Annex1.Add(resource);
-                else
-                    result.Annex2.Add(resource);
-            }
-            return result;
+            var request = mapper.Map<SaveExaminationResultIndexRequest>(resource);
+            ExaminationResultIndexResponse response = await func(targetId, request);
+
+            if (!response.Succeed)
+                return BadRequest(response.Message);
+
+            var result = mapper.Map<ExaminationResultIndexResource>(response.Result);
+            return Ok(result);
         }
     }
 }

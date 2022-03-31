@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace ProfOsmotr.DAL
@@ -8,11 +9,26 @@ namespace ProfOsmotr.DAL
     {
         public static string Description(this Enum value)
         {
-            var attributes = value.GetType().GetField(value.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
-            if (attributes.Any())
-                return (attributes.First() as DescriptionAttribute).Description;
+            var attribute = GetAttribute<DescriptionAttribute>(value);
 
-            return value.ToString();
+            return attribute?.Description ?? value.ToString();
+        }
+
+        public static string DisplayName(this Enum value)
+        {
+            var attribute = GetAttribute<DisplayAttribute>(value);
+
+            return attribute?.Name ?? value.ToString();
+        }
+
+        private static T GetAttribute<T>(Enum value)
+            where T : class
+        {
+            var attributes = value.GetType()
+                .GetField(value.ToString())
+                .GetCustomAttributes(typeof(T), false);
+
+            return attributes.FirstOrDefault() as T;
         }
     }
 }

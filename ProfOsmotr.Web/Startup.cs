@@ -8,9 +8,10 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Converters;
 using ProfOsmotr.Web.Infrastructure;
 using ProfOsmotr.Web.Services;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ProfOsmotr.Web
@@ -18,10 +19,12 @@ namespace ProfOsmotr.Web
     public class Startup
     {
         private const string GLOBAL_AUTH_POLICY_NAME = "AuthenticatedAndNotBanned";
+        private readonly bool isAuthorizationEnabled;
 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            isAuthorizationEnabled = bool.Parse(Configuration["AuthorizationEnabled"] ?? bool.TrueString);
         }
 
         public IConfiguration Configuration { get; }
@@ -43,15 +46,38 @@ namespace ProfOsmotr.Web
                         OnRedirectToAccessDenied = (context) => SendStatusCodeForApiRequest(context, 403)
                     };
                 });
-            services.AddTransient<IAuthorizationHandler, NotBannedHandler>();
-            services.AddAuthorization(auth => auth.AddPolicy(GLOBAL_AUTH_POLICY_NAME,
-                                        policy => policy.Requirements.Add(new NotBannedRequirement())));
 
-            services.AddControllersWithViews(options => options.Filters.Add(new AuthorizeFilter(GLOBAL_AUTH_POLICY_NAME)))
-                .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+            if (isAuthorizationEnabled)
+            {
+                services.AddTransient<IAuthorizationHandler, NotBannedHandler>();
+                services.AddAuthorization(auth => auth.AddPolicy(GLOBAL_AUTH_POLICY_NAME,
+                                            policy => policy.Requirements.Add(new NotBannedRequirement())));
+            }
+            else
+            {
+                services.AddSingleton<IAuthorizationHandler, AllowAnonymousHandler>();
+            }
+
+            services.AddControllersWithViews(options =>
+            {
+                if (isAuthorizationEnabled)
+                {
+                    options.Filters.Add(new AuthorizeFilter(GLOBAL_AUTH_POLICY_NAME));
+                }
+            })
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                    options.SerializerSettings.ContractResolver = new PatchRequestContractResolver();
+                });
 
             services.AddMemoryCache();
-            services.AddProfOsmotr(connection);
+            services.AddProfOsmotr(connection, isAuthorizationEnabled);
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Profosmotr Api", Version = "v1" });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -80,11 +106,20 @@ namespace ProfOsmotr.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("v1/swagger.json", "Profosmotr V1");
+            });
+
             app.UseEndpoints(endpoints =>
             {
+                var action = isAuthorizationEnabled ? "About" : "Index";
+                
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=About}/{id?}");
+                    pattern: $"{{controller=Home}}/{{action={action}}}/{{id?}}");
+
+                endpoints.MapSwagger();
             });
         }
 

@@ -32,8 +32,7 @@ namespace ProfOsmotr.Web.Api
             this.accessService = accessService ?? throw new ArgumentNullException(nameof(accessService));
         }
 
-        [HttpPost]
-        [Route("create")]
+        [HttpPost("create")]
         [ModelStateValidationFilter]
         [AuthorizeAdministratorAndClinicModerator]
         public async Task<IActionResult> Create([FromBody] CreateUserResource resource)
@@ -51,8 +50,7 @@ namespace ProfOsmotr.Web.Api
             return Ok(result);
         }
 
-        [HttpPost]
-        [Route("list")]
+        [HttpPost("list")]
         [ModelStateValidationFilter]
         [AuthorizeAdministratorAndClinicModerator]
         public async Task<IActionResult> List([FromBody] DataTablesParameters parameters)
@@ -83,20 +81,18 @@ namespace ProfOsmotr.Web.Api
             }
         }
 
-        [HttpPost]
-        [Route("login")]
+        [HttpPost("login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody] UserLoginResource resource)
+        public async Task<IActionResult> Login([FromBody] UserLoginQuery resource)
         {
             var authResult = await authService.Authenticate(resource);
             return Ok(authResult);
         }
 
-        [HttpPost]
-        [Route("update/{id}")]
+        [HttpPost("update/{id}")]
         [ModelStateValidationFilter]
         [AuthorizeAdministratorAndClinicModerator]
-        public async Task<IActionResult> Update(int id, [FromBody] UpdateUserResource resource)
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateUserQuery resource)
         {
             if (resource.RoleId.HasValue && !CanSetRole(resource.RoleId.Value, id))
                 return BadRequest(new ErrorResource("Недопустимое значение roleId"));
@@ -137,13 +133,13 @@ namespace ProfOsmotr.Web.Api
         {
             if (!response.Succeed)
                 return BadRequest(new ErrorResource(response.Message));
-            IEnumerable<TModel> resource = mapper.Map<IEnumerable<TModel>>(response.Result.Data);
+            IEnumerable<TModel> resource = mapper.Map<IEnumerable<TModel>>(response.Result.Items);
             DataTablesResult<TModel> result = new DataTablesResult<TModel>()
             {
                 Data = resource,
                 Draw = parameters.Draw,
-                RecordsFiltered = response.Result.TotalItems,
-                RecordsTotal = response.Result.TotalItems
+                RecordsFiltered = response.Result.TotalCount,
+                RecordsTotal = response.Result.TotalCount
             };
             return Ok(result);
         }

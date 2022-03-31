@@ -24,11 +24,10 @@ namespace ProfOsmotr.Web.Api
             this.accessService = accessService ?? throw new ArgumentNullException(nameof(accessService));
         }
 
-        [HttpPost]
-        [Route("update")]
+        [HttpPost("update")]
         [ModelStateValidationFilter]
         [AuthorizeAdministratorAndClinicModerator]
-        public async Task<IActionResult> Update([FromBody] UpdateCatalogItemResource updateResource)
+        public async Task<IActionResult> Update([FromBody] UpdateCatalogItemQuery updateResource)
         {
             if (!accessService.TryGetUserClinicId(out int clinicId))
                 return Forbid();

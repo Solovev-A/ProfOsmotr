@@ -27,7 +27,7 @@ namespace ProfOsmotr.Web.Services
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
-        public async Task<AuthenticationResult> Authenticate(UserLoginResource resource)
+        public async Task<AuthenticationResult> Authenticate(UserLoginQuery resource)
         {
             var response = await userService.ValidatePassword(resource.Username, resource.Password);
             if (!response.Succeed)

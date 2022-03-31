@@ -8,12 +8,13 @@ namespace ProfOsmotr.BL.Tests
     public class CalculationSourceFactoryTests
     {
         private readonly Mock<IProfessionService> mockProfessionService;
-        private readonly CreateProfessionRequest validCreateProfessionRequest;
+        private readonly CreateCalculationSourceRequest validCreateProfessionRequest;
 
         public CalculationSourceFactoryTests()
         {
             mockProfessionService = new Mock<IProfessionService>();
-            validCreateProfessionRequest = Mock.Of<CreateProfessionRequest>(request =>
+            validCreateProfessionRequest = Mock.Of<CreateCalculationSourceRequest>(request =>
+                request.Profession == Mock.Of<CreateProfessionRequest>() &&
                 request.NumberOfPersons == 1 &&
                 request.NumberOfPersonsOver40 == 1 &&
                 request.NumberOfWomen == 0 &&
@@ -21,7 +22,7 @@ namespace ProfOsmotr.BL.Tests
         }
 
         [Fact]
-        public async Task ShouldReturnErrorOnEmptyCreateProfessionRequests()
+        public async Task ShouldReturnErrorOnEmptyCreateCalculationSourceRequests()
         {
             CreateCalculationRequest request = GetCreateCalculationRequestWith();
 
@@ -69,13 +70,14 @@ namespace ProfOsmotr.BL.Tests
                                                               int numberOfWomen,
                                                               int numberOfWomenOver40)
         {
-            var invalidProfessionRequest = Mock.Of<CreateProfessionRequest>(request =>
+            var invalidCalculationSourceRequest = Mock.Of<CreateCalculationSourceRequest>(request =>
+            request.Profession == Mock.Of<CreateProfessionRequest>() &&
             request.NumberOfPersons == numberOfPersons &&
             request.NumberOfPersonsOver40 == numberOfPersonsOver40 &&
             request.NumberOfWomen == numberOfWomen &&
             request.NumberOfWomenOver40 == numberOfWomenOver40);
 
-            CreateCalculationRequest request = GetCreateCalculationRequestWith(invalidProfessionRequest);
+            CreateCalculationRequest request = GetCreateCalculationRequestWith(invalidCalculationSourceRequest);
 
             await AssertReturnsErrorWithCorrectProfessionResponse(request);
         }
@@ -92,10 +94,10 @@ namespace ProfOsmotr.BL.Tests
             Assert.False(response.Succeed);
         }
 
-        private CreateCalculationRequest GetCreateCalculationRequestWith(params CreateProfessionRequest[] professionRequests)
+        private CreateCalculationRequest GetCreateCalculationRequestWith(params CreateCalculationSourceRequest[] calculationSourceRequests)
         {
             return Mock.Of<CreateCalculationRequest>(request =>
-                    request.CreateProfessionRequests == professionRequests);
+                    request.CreateCalculationSourceRequests == calculationSourceRequests);
         }
     }
 }

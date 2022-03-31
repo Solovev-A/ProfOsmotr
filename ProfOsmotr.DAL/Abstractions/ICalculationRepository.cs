@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using ProfOsmotr.DAL.Models;
+using System.Threading.Tasks;
 
 namespace ProfOsmotr.DAL.Abstractions
 {

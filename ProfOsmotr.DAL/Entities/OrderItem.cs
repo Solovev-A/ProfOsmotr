@@ -14,16 +14,6 @@ namespace ProfOsmotr.DAL
         public int Id { get; private set; }
 
         /// <summary>
-        /// Идентификатор приложения приказа
-        /// </summary>
-        public OrderAnnexId OrderAnnexId { get; set; }
-
-        /// <summary>
-        /// Приложение приказа
-        /// </summary>
-        public virtual OrderAnnex OrderAnnex { get; set; }
-
-        /// <summary>
         /// Ключ, номер пункта по приказу
         /// </summary>
         [Required]
@@ -34,9 +24,9 @@ namespace ProfOsmotr.DAL
         /// </summary>
         public string Name { get; set; }
 
-        public virtual ICollection<OrderItemOrderExamination> OrderItemOrderExaminations { get; } = new List<OrderItemOrderExamination>();
+        public virtual ICollection<OrderExamination> OrderExaminations { get; } = new List<OrderExamination>();
 
-        public virtual ICollection<ProfessionOrderItem> ProfessionOrderItems { get; } = new List<ProfessionOrderItem>();
+        public virtual ICollection<Profession> Professions { get; } = new List<Profession>();
 
         /// <summary>
         /// Значение статуса удаления элемента
